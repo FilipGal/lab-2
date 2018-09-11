@@ -8,7 +8,7 @@ class DateTimeView {
 		$dayOfMonth = date('jS');
 		$month = date('F');
 		$year = date('Y');
-		$currentTime = date('h:i:s');
+		$currentTime = date('G:i:s');
 
 		return "<p> {$day}, the {$dayOfMonth} of {$month} {$year}. The time is {$currentTime} </p>";
 	}
