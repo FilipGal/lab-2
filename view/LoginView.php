@@ -11,6 +11,11 @@ class LoginView
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
 
+    public function __construct()
+    {
+        $this->connectToDatabase();
+    }
+
     /**
      * Create HTTP response
      *
@@ -19,6 +24,18 @@ class LoginView
      * @return  void BUT writes to standard output and cookies!
      */
     public function response(): string
+    {
+        //$response .= $this->generateLogoutButtonHTML($message);
+        // var_dump($_GET);
+        return $this->provideUserFeedback();
+    }
+
+    /**
+     * Provide users with the appropriate feedback
+     *
+     * @return string
+     */
+    private function provideUserFeedback(): string
     {
         $message = '';
 
@@ -33,7 +50,6 @@ class LoginView
         $response = $this->generateLoginFormHTML($message);
         //$response .= $this->generateLogoutButtonHTML($message);
         // var_dump($_GET);
-        $this->connectToDatabase();
         return $response;
     }
 
@@ -45,11 +61,24 @@ class LoginView
     private function connectToDatabase()
     {
         $mysqli = new mysqli("localhost:3306", "root", "", "1dv610");
-        $result = $mysqli->query("SELECT User FROM mysql.user");
+        $sql = "SELECT username, userId FROM Users";
+        $result = $mysqli->query($sql);
+
         if ($mysqli->connect_error) {
             die("Connection failed: " . $mysqli->connect_error);
         }
-        return $result;
+
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                echo "id: " . $row["userId"] . " - Name: " . $row["username"];
+            }
+        } else {
+            echo "0 results";
+        }
+        // var_dump($result);
+        // echo "Connected to mysql db";
+        return $sql;
     }
 
     private function getUser()
@@ -60,7 +89,7 @@ class LoginView
     /**
      * Generate HTML code on the output buffer for the logout button
      * @param $message, String output message
-     * @return  void, BUT writes to standard output!
+     * @return  string BUT writes to standard output!
      */
     private function generateLogoutButtonHTML($message): string
     {
@@ -75,7 +104,7 @@ class LoginView
     /**
      * Generate HTML code on the output buffer for the logout button
      * @param $message, String output message
-     * @return  void, BUT writes to standard output!
+     * @return  string, BUT writes to standard output!
      */
     private function generateLoginFormHTML($message): string
     {
