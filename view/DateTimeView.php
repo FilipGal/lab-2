@@ -3,7 +3,7 @@
 class DateTimeView {
 
 
-	public function show() {
+	public function dateTime(): string {
 		$day = date('l');
 		$dayOfMonth = date('jS');
 		$month = date('F');

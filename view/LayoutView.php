@@ -3,7 +3,13 @@
 class LayoutView
 {
 
-    public function render($isLoggedIn, LoginView $v, DateTimeView $dtv)
+    private $date;
+
+    function __construct () {
+        $this->date = new DateTimeView();
+    }
+
+    public function renderLayoutView($isLoggedIn, LoginView $v)
     {
         echo '<!DOCTYPE html>
       <html>
@@ -18,19 +24,23 @@ class LayoutView
           <div class="container">
               ' . $v->response() . '
 
-              ' . $dtv->show() . '
+              ' . $this->renderDateTime() . '
           </div>
          </body>
       </html>
     ';
     }
 
-    private function renderIsLoggedIn($isLoggedIn)
+    private function renderDateTime () {
+        return $this->date->dateTime();
+    }
+
+    private function renderIsLoggedIn($isLoggedIn): string
     {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         } else {
-            return '<a href="#">Register a new user</a>
+            return '<a href="?register">Register a new user</a>
                     <br />
                     <h2>Not logged in</h2>';
         }

@@ -18,10 +18,9 @@ class LoginView
      *
      * @return  void BUT writes to standard output and cookies!
      */
-    public function response()
+    public function response(): string
     {
         $message = '';
-        $incorrectCredentials = 'Wrong username or password';
 
         if (empty($_POST[self::$name])) {
             $message = 'Username is missing';
@@ -33,19 +32,24 @@ class LoginView
 
         $response = $this->generateLoginFormHTML($message);
         //$response .= $this->generateLogoutButtonHTML($message);
-        // var_dump($_SERVER['REQUEST_METHOD']);
+        // var_dump($_GET);
         $this->connectToDatabase();
         return $response;
     }
 
+    /**
+     * Connect to mysql database
+     *
+     * @return void
+     */
     private function connectToDatabase()
     {
         $mysqli = new mysqli("localhost:3306", "root", "", "1dv610");
-        // $result = $mysqli->query("SELECT User FROM mysql.user");
+        $result = $mysqli->query("SELECT User FROM mysql.user");
         if ($mysqli->connect_error) {
             die("Connection failed: " . $mysqli->connect_error);
         }
-        echo "Connected successfully to db";
+        return $result;
     }
 
     private function getUser()
