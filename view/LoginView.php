@@ -25,8 +25,6 @@ class LoginView
      */
     public function response(): string
     {
-        //$response .= $this->generateLogoutButtonHTML($message);
-        // var_dump($_GET);
         return $this->provideUserFeedback();
     }
 
@@ -122,7 +120,7 @@ class LoginView
      *
      * @return string the entered username
      */
-    private function getRequestUserName(): string
+    private function getRequestUserName()
     {
         $username = $_REQUEST[self::$name];
         if (!empty($username)) {
