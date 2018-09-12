@@ -1,5 +1,7 @@
 <?php
 
+require_once "Feedback.php";
+
 class LoginView
 {
     private static $login = 'LoginView::Login';
@@ -13,6 +15,7 @@ class LoginView
 
     public function __construct()
     {
+        $this->feedback = new Feedback();
         $this->connectToDatabase();
     }
 
@@ -38,11 +41,11 @@ class LoginView
         $message = '';
 
         if (empty($_POST[self::$name])) {
-            $message = 'Username is missing';
+            $message = $this->feedback->missingUsername();
         }
 
         if (empty($_POST[self::$password])) {
-            $message = 'Password is missing';
+            $message = $this->feedback->missingPassword();
         }
 
         $response = $this->generateLoginFormHTML($message);
