@@ -1,6 +1,7 @@
 <?php
 
 require_once "Feedback.php";
+require_once "model/DatabaseModel.php";
 
 class LoginView
 {
@@ -16,7 +17,8 @@ class LoginView
     public function __construct()
     {
         $this->feedback = new Feedback();
-        $this->connectToDatabase();
+        $this->db = new DatabaseModel();
+        $this->db->connectToDatabase();
     }
 
     /**
@@ -55,70 +57,6 @@ class LoginView
     }
 
     /**
-     * Connect to mysql database
-     *
-     * @return void
-     */
-    private function connectToDatabase()
-    {
-        $mysqli = new mysqli("localhost:3306", "root", "", "1dv610");
-        $result = $mysqli->query("SELECT username, userId FROM Users");
-
-        if ($mysqli->connect_error) {
-            die("Connection failed: " . $mysqli->connect_error);
-        }
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                return "id: {$row["userId"]} - Name: {$row["username"]}";
-            }
-        }
-    }
-
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  string BUT writes to standard output!
-     */
-    private function generateLogoutButtonHTML($message): string
-    {
-        return '
-			<form  method="post" >
-				<p id="' . self::$messageId . '">' . $message . '</p>
-				<input type="submit" name="' . self::$logout . '" value="logout"/>
-			</form>
-		';
-    }
-
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  string, BUT writes to standard output!
-     */
-    private function generateLoginFormHTML($message): string
-    {
-        return '
-			<form method="post" >
-				<fieldset>
-					<legend>Login - enter Username and password</legend>
-					<p id="' . self::$messageId . '">' . $message . '</p>
-
-					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
-
-					<label for="' . self::$password . '">Password :</label>
-					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
-
-					<label for="' . self::$keep . '">Keep me logged in  :</label>
-					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
-
-					<input type="submit" name="' . self::$login . '" value="login" />
-				</fieldset>
-			</form>
-		';
-    }
-
-    /**
      * Request the entered username
      *
      * @return string the entered username
@@ -131,4 +69,46 @@ class LoginView
         }
     }
 
+    /**
+     * Generate HTML code on the output buffer for the logout button
+     * @param $message, String output message
+     * @return  string BUT writes to standard output!
+     */
+    private function generateLogoutButtonHTML($message): string
+    {
+        return '
+            <form  method="post" >
+                <p id="' . self::$messageId . '">' . $message . '</p>
+                <input type="submit" name="' . self::$logout . '" value="logout"/>
+            </form>
+        ';
+    }
+
+    /**
+     * Generate HTML code on the output buffer for the logout button
+     * @param $message, String output message
+     * @return  string, BUT writes to standard output!
+     */
+    private function generateLoginFormHTML($message): string
+    {
+        return '
+            <form method="post" >
+                <fieldset>
+                    <legend>Login - enter Username and password</legend>
+                    <p id="' . self::$messageId . '">' . $message . '</p>
+
+                    <label for="' . self::$name . '">Username :</label>
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+
+                    <label for="' . self::$password . '">Password :</label>
+                    <input type="password" id="' . self::$password . '" name="' . self::$password . '" />
+
+                    <label for="' . self::$keep . '">Keep me logged in  :</label>
+                    <input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
+
+                    <input type="submit" name="' . self::$login . '" value="login" />
+                </fieldset>
+            </form>
+        ';
+    }
 }
