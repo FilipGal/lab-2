@@ -48,8 +48,8 @@ class LoginView
         }
 
         $response = $this->generateLoginFormHTML($message);
+        $this->getRequestUserName();
         //$response .= $this->generateLogoutButtonHTML($message);
-        // var_dump($_GET);
         return $response;
     }
 
@@ -61,29 +61,17 @@ class LoginView
     private function connectToDatabase()
     {
         $mysqli = new mysqli("localhost:3306", "root", "", "1dv610");
-        $sql = "SELECT username, userId FROM Users";
-        $result = $mysqli->query($sql);
+        $result = $mysqli->query("SELECT username, userId FROM Users");
 
         if ($mysqli->connect_error) {
             die("Connection failed: " . $mysqli->connect_error);
         }
 
         if ($result->num_rows > 0) {
-            // output data of each row
             while ($row = $result->fetch_assoc()) {
-                echo "id: " . $row["userId"] . " - Name: " . $row["username"];
+                return "id: {$row["userId"]} - Name: {$row["username"]}";
             }
-        } else {
-            echo "0 results";
         }
-        // var_dump($result);
-        // echo "Connected to mysql db";
-        return $sql;
-    }
-
-    private function getUser()
-    {
-
     }
 
     /**
@@ -129,10 +117,17 @@ class LoginView
 		';
     }
 
-    //CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-    private function getRequestUserName()
+    /**
+     * Request the entered username
+     *
+     * @return string the entered username
+     */
+    private function getRequestUserName(): string
     {
-        //RETURN REQUEST VARIABLE: USERNAME
+        $username = $_REQUEST[self::$name];
+        if (!empty($username)) {
+            return $username;
+        }
     }
 
 }
