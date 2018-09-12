@@ -19,6 +19,7 @@ class LoginView
         $this->feedback = new Feedback();
         $this->db = new DatabaseModel();
         $this->db->connectToDatabase();
+        $this->db->queryUsernames();
     }
 
     /**
@@ -63,9 +64,8 @@ class LoginView
      */
     private function getRequestUserName()
     {
-        $username = $_REQUEST[self::$name];
-        if (!empty($username)) {
-            return $username;
+        if (!empty($_REQUEST[self::$name])) {
+            return $_REQUEST[self::$name];
         }
     }
 

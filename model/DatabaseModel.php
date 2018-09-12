@@ -1,6 +1,16 @@
 <?php
 class DatabaseModel
 {
+    private static $host = 'localhost:3306';
+    private static $user = 'root';
+    private static $pass = '';
+    private static $name = '1dv610';
+
+    public function __construct()
+    {
+        $this->mysqli = new mysqli(self::$host, self::$user, self::$pass, self::$name);
+    }
+
     /**
      * Connect to mysql database
      *
@@ -8,16 +18,21 @@ class DatabaseModel
      */
     public function connectToDatabase()
     {
-        //TODO: pass mysqli params as args
-        $mysqli = new mysqli("localhost:3306", "root", "", "1dv610");
-
-        if ($mysqli->connect_error) {
-            die("Connection failed: " . $mysqli->connect_error);
+        if ($this->mysqli->connect_error) {
+            die("Connection failed: " . $this->mysqli->connect_error);
+        } else {
+            return $this->mysqli;
         }
+    }
 
-        //TODO: Separate query from the db connection
-        $result = $mysqli->query("SELECT username, userId FROM Users");
-
+    /**
+     * Query usernames and IDs from database
+     *
+     * @return void
+     */
+    public function queryUsernames()
+    {
+        $result = $this->mysqli->query("SELECT username, userId FROM Users");
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 return "id: {$row["userId"]} - Name: {$row["username"]}";
