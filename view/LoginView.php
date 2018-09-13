@@ -19,7 +19,7 @@ class LoginView
         $this->feedback = new Feedback();
         $this->db = new DatabaseModel();
         $this->db->connectToDatabase();
-        $this->db->isUsernameAvailable(self::$name);
+        $this->db->attemptLogin(self::$name, self::$password);
     }
 
     /**

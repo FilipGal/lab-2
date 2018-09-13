@@ -29,19 +29,18 @@ class DatabaseModel
     }
 
     /**
-     * Checks if a username exists or not
+     * Attempts to login
      *
      * @param [type] $desiredName
      * @return boolean
      */
-    public function isUsernameAvailable($desiredName)
+    public function attemptLogin($username, $password)
     {
-        $user = $_POST[$desiredName];
-        $result = $this->mysqli->query("SELECT username FROM Users WHERE username='$user'");
+        $result = $this->mysqli->query("SELECT * FROM Users WHERE username='$_POST[$username]' AND password='$_POST[$password]'");
         if ($result->num_rows >= 1) {
-            echo "Username $user exists";
+            echo "Correct credentials entered for user $_POST[$username]";
         } else {
-            echo "Username $user does not exist";
+            echo "That login failed";
         }
     }
 }
