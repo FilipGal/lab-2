@@ -21,4 +21,14 @@ class Feedback
     {
         return 'Password is missing';
     }
+
+    /**
+     * Display an error message if incorrect credentials is entered
+     *
+     * @return string
+     */
+    public function incorrectCredentials(): string
+    {
+        return 'Wrong name or password';
+    }
 }

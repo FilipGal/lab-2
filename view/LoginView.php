@@ -19,7 +19,7 @@ class LoginView
         $this->feedback = new Feedback();
         $this->db = new DatabaseModel();
         $this->db->connectToDatabase();
-        $this->db->queryUsernames();
+        $this->db->isUsernameAvailable(self::$name);
     }
 
     /**
@@ -43,12 +43,16 @@ class LoginView
     {
         $message = '';
 
-        if (empty($_POST[self::$name])) {
-            $message = $this->feedback->missingUsername();
-        }
-
-        if (empty($_POST[self::$password])) {
-            $message = $this->feedback->missingPassword();
+        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
+            if (empty($_POST[self::$name])) {
+                $message = $this->feedback->missingUsername();
+            } else if (empty($_POST[self::$password])) {
+                $message = $this->feedback->missingPassword();
+            } else if (empty($_POST[self::$name]) && empty($_POST[self::$password])) {
+                $message = $this->feedback->missingUsername();
+            } else {
+                $message = '';
+            }
         }
 
         $response = $this->generateLoginFormHTML($message);

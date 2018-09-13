@@ -1,11 +1,14 @@
 <?php
 class DatabaseModel
 {
-    private static $host = 'localhost:3306';
+    private static $host = '127.0.0.1';
     private static $user = 'root';
     private static $pass = '';
     private static $name = '1dv610';
 
+    /**
+     * Instantiate mysqli connection
+     */
     public function __construct()
     {
         $this->mysqli = new mysqli(self::$host, self::$user, self::$pass, self::$name);
@@ -26,17 +29,19 @@ class DatabaseModel
     }
 
     /**
-     * Query usernames and IDs from database
+     * Checks if a username exists or not
      *
-     * @return void
+     * @param [type] $desiredName
+     * @return boolean
      */
-    public function queryUsernames()
+    public function isUsernameAvailable($desiredName)
     {
-        $result = $this->mysqli->query("SELECT username, userId FROM Users");
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                return "id: {$row["userId"]} - Name: {$row["username"]}";
-            }
+        $user = $_POST[$desiredName];
+        $result = $this->mysqli->query("SELECT username FROM Users WHERE username='$user'");
+        if ($result->num_rows >= 1) {
+            echo "Username $user exists";
+        } else {
+            echo "Username $user does not exist";
         }
     }
 }
