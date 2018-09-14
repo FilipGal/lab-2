@@ -3,8 +3,6 @@
 class LayoutView
 {
 
-    private $date;
-
     public function __construct()
     {
         $this->date = new DateTimeView();
