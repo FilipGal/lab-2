@@ -27,20 +27,4 @@ class DatabaseModel
             return $this->mysqli;
         }
     }
-
-    /**
-     * Attempts to login
-     *
-     * @param [type] $desiredName
-     * @return boolean
-     */
-    public function attemptLogin($username, $password)
-    {
-        $result = $this->mysqli->query("SELECT * FROM Users WHERE username='$_POST[$username]' AND password='$_POST[$password]'");
-        if ($result->num_rows >= 1) {
-            echo "Correct credentials entered for user $_POST[$username]";
-        } else {
-            echo "That login failed";
-        }
-    }
 }

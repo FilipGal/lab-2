@@ -18,8 +18,6 @@ class LoginView
     {
         $this->feedback = new Feedback();
         $this->db = new DatabaseModel();
-        $this->db->connectToDatabase();
-        $this->db->attemptLogin(self::$name, self::$password);
     }
 
     /**
@@ -31,6 +29,7 @@ class LoginView
      */
     public function response(): string
     {
+        $this->attemptLogin(self::$name, self::$password);
         return $this->provideUserFeedback();
     }
 
@@ -70,6 +69,25 @@ class LoginView
     {
         if (!empty($_REQUEST[self::$name])) {
             return $_REQUEST[self::$name];
+        }
+    }
+
+    /**
+     * Attempt to login
+     *
+     * @param [type] $username the entered username
+     * @param [type] $password  the entered password
+     * @return void
+     */
+    private function attemptLogin($username, $password)
+    {
+        $query = "SELECT * FROM Users WHERE username='$_POST[$username]' AND password='$_POST[$password]'";
+
+        $result = mysqli_query($this->db->connectToDatabase(), $query);
+        if ($result->num_rows >= 1) {
+            echo "Correct credentials entered for user $_POST[$username]";
+        } else {
+            echo "That login failed";
         }
     }
 
