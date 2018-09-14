@@ -42,12 +42,15 @@ class LoginView
     {
         $message = '';
 
-        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
-            if (empty($_POST[self::$name])) {
+        $username = !empty($_POST[self::$name]);
+        $password = !empty($_POST[self::$password]);
+
+        if (isset($username) && isset($password)) {
+            if (!$username) {
                 $message = $this->feedback->missingUsername();
-            } else if (empty($_POST[self::$password])) {
+            } else if (!$password) {
                 $message = $this->feedback->missingPassword();
-            } else if (empty($_POST[self::$name]) && empty($_POST[self::$password])) {
+            } else if (empty($username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
             } else {
                 $message = '';
@@ -81,13 +84,15 @@ class LoginView
      */
     private function attemptLogin($username, $password)
     {
-        $query = "SELECT * FROM Users WHERE username='$_POST[$username]' AND password='$_POST[$password]'";
+        if (isset($_POST[$username]) && isset($_POST[$username])) {
+            $query = "SELECT * FROM Users WHERE username='$_POST[$username]' AND password='$_POST[$password]'";
 
-        $result = mysqli_query($this->db->connectToDatabase(), $query);
-        if ($result->num_rows >= 1) {
-            echo "Correct credentials entered for user $_POST[$username]";
-        } else {
-            echo "That login failed";
+            $result = mysqli_query($this->db->connectToDatabase(), $query);
+            if ($result->num_rows >= 1) {
+                echo "Correct credentials entered for user $_POST[$username]";
+            } else {
+                echo "That login failed";
+            }
         }
     }
 

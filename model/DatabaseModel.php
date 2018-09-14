@@ -7,24 +7,17 @@ class DatabaseModel
     private static $name = '1dv610';
 
     /**
-     * Instantiate mysqli connection
-     */
-    public function __construct()
-    {
-        $this->mysqli = new mysqli(self::$host, self::$user, self::$pass, self::$name);
-    }
-
-    /**
      * Connect to mysql database
      *
      * @return void
      */
     public function connectToDatabase()
     {
-        if ($this->mysqli->connect_error) {
-            die("Connection failed: " . $this->mysqli->connect_error);
+        $mysqli = new mysqli(self::$host, self::$user, self::$pass, self::$name);
+        if ($mysqli->connect_error) {
+            die("Connection failed: " . $mysqli->connect_error);
         } else {
-            return $this->mysqli;
+            return $mysqli;
         }
     }
 }
