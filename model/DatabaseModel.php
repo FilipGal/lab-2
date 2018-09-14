@@ -1,10 +1,13 @@
 <?php
+
+require_once "config/Config.php";
+
 class DatabaseModel
 {
-    private static $host = '127.0.0.1';
-    private static $user = 'root';
-    private static $pass = '';
-    private static $name = '1dv610';
+    public function __construct()
+    {
+        $this->config = new Config();
+    }
 
     /**
      * Connect to mysql database
@@ -13,7 +16,14 @@ class DatabaseModel
      */
     public function connectToDatabase()
     {
-        $mysqli = new mysqli(self::$host, self::$user, self::$pass, self::$name);
+        $mysqli = new mysqli(
+            $this->config->dbHost(),
+            $this->config->dbUser(),
+            $this->config->dbPass(),
+            $this->config->dbName()
+        );
+
+        // $mysqli = new mysqli(self::$host, self::$user, self::$pass, self::$name);
         if ($mysqli->connect_error) {
             die("Connection failed: " . $mysqli->connect_error);
         } else {
