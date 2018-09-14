@@ -4,8 +4,6 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-// var_dump($_SESSION);
-
 //INCLUDE THE FILES NEEDED...
 require_once 'view/LoginView.php';
 require_once 'view/DateTimeView.php';
@@ -16,9 +14,11 @@ require_once 'view/RegisterView.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-//CREATE OBJECTS OF THE VIEWS
-$v = new LoginView();
-$lv = new LayoutView();
-$rv = new RegisterView();
+$isLoggedIn = (!empty($_SESSION['loggedIn']) ? $_SESSION['loggedIn'] : null);
 
-$lv->renderLayoutView(false, $v, $rv);
+//CREATE OBJECTS OF THE VIEWS
+$loginView = new LoginView();
+$layoutView = new LayoutView();
+$registerView = new RegisterView();
+
+$layoutView->renderLayoutView($isLoggedIn, $loginView, $registerView);

@@ -33,6 +33,11 @@ class LoginView
         return $this->provideUserFeedback();
     }
 
+    private function checkIfSet($array, $key, $default = null)
+    {
+        return isset($array[$key]) ? $array[$key] : $default;
+    }
+
     /**
      * Provide users with the appropriate feedback
      *
@@ -40,27 +45,54 @@ class LoginView
      */
     private function provideUserFeedback(): string
     {
+
         $message = '';
 
-        $username = !empty($_POST[self::$name]);
-        $password = !empty($_POST[self::$password]);
-
-        if (isset($username) && isset($password)) {
-            if (!$username) {
+        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
+            if (!$_POST[self::$name]) {
                 $message = $this->feedback->missingUsername();
-            } else if (!$password) {
+            } else if (!$_POST[self::$password]) {
                 $message = $this->feedback->missingPassword();
-            } else if (empty($username) && empty($password)) {
+            } else if (empty(!$_POST[self::$name]) && empty($_POST[self::$password])) {
                 $message = $this->feedback->missingUsername();
+            } else if ($_SESSION['loggedIn'] == false) {
+                $message = $this->feedback->incorrectCredentials();
             } else {
                 $message = '';
             }
         }
 
+        $this->destroyUserSession();
+        return $this->generateView($message);
+
+    }
+
+    private function generateView($message)
+    {
         $response = $this->generateLoginFormHTML($message);
-        $this->getRequestUserName();
-        //$response .= $this->generateLogoutButtonHTML($message);
+
+        if (isset($_SESSION['username'])) {
+            $response .= $this->generateLogoutButtonHTML($message);
+            $message = '';
+        } else {
+            $response = $this->generateLoginFormHTML($message);
+            $this->getRequestUserName();
+        }
         return $response;
+
+    }
+
+    /**
+     * Destroys the session, logging the user out
+     * //TODO: Finish this function
+     * @return void
+     */
+    private function destroyUserSession()
+    {
+        if ($this->checkIfSet($_POST, self::$logout)) {
+            $_SESSION['loggedIn'] = false;
+            echo "Destroy session and redirect";
+        }
     }
 
     /**
@@ -85,13 +117,14 @@ class LoginView
     private function attemptLogin($username, $password)
     {
         if (isset($_POST[$username]) && isset($_POST[$username])) {
-            $query = "SELECT * FROM Users WHERE username='$_POST[$username]' AND password='$_POST[$password]'";
+            $query = "SELECT * FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
 
             $result = mysqli_query($this->db->connectToDatabase(), $query);
             if ($result->num_rows >= 1) {
-                echo "Correct credentials entered for user $_POST[$username]";
+                $_SESSION['username'] = $username;
+                $_SESSION['loggedIn'] = true;
             } else {
-                echo "That login failed";
+                $_SESSION['loggedIn'] = false;
             }
         }
     }

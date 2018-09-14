@@ -5,7 +5,8 @@ class LayoutView
 
     private $date;
 
-    function __construct () {
+    public function __construct()
+    {
         $this->date = new DateTimeView();
     }
 
@@ -31,7 +32,8 @@ class LayoutView
     ';
     }
 
-    private function renderDateTime () {
+    private function renderDateTime()
+    {
         return $this->date->dateTime();
     }
 
