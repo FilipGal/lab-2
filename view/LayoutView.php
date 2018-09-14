@@ -10,7 +10,7 @@ class LayoutView
         $this->date = new DateTimeView();
     }
 
-    public function renderLayoutView($isLoggedIn, LoginView $v)
+    public function renderLayoutView($isLoggedIn, LoginView $v, RegisterView $rv)
     {
         echo '<!DOCTYPE html>
       <html>

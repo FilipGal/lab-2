@@ -31,4 +31,19 @@ class Feedback
     {
         return 'Wrong name or password';
     }
+
+    public function loggedIn(): string
+    {
+        return 'Welcome';
+    }
+
+    public function loggedInSaveCookie(): string
+    {
+        return 'Welcome and you will be remembered';
+    }
+
+    public function logOut(): string
+    {
+        return 'Bye bye';
+    }
 }

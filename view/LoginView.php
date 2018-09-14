@@ -2,6 +2,7 @@
 
 require_once "Feedback.php";
 require_once "model/DatabaseModel.php";
+require_once "controller/LoginController.php";
 
 class LoginView
 {
@@ -18,6 +19,7 @@ class LoginView
     {
         $this->feedback = new Feedback();
         $this->db = new DatabaseModel();
+        $this->loginController = new LoginController();
     }
 
     /**
@@ -31,11 +33,6 @@ class LoginView
     {
         $this->attemptLogin(self::$name, self::$password);
         return $this->provideUserFeedback();
-    }
-
-    private function checkIfSet($array, $key, $default = null)
-    {
-        return isset($array[$key]) ? $array[$key] : $default;
     }
 
     /**
@@ -62,7 +59,7 @@ class LoginView
             }
         }
 
-        $this->destroyUserSession();
+        $this->loginController->destroyUserSession(self::$logout);
         return $this->generateView($message);
 
     }
@@ -72,27 +69,14 @@ class LoginView
         $response = $this->generateLoginFormHTML($message);
 
         if (isset($_SESSION['username'])) {
-            $response .= $this->generateLogoutButtonHTML($message);
-            $message = '';
+            $message = $this->feedback->loggedIn();
+            $response = $this->generateLogoutButtonHTML($message);
         } else {
             $response = $this->generateLoginFormHTML($message);
             $this->getRequestUserName();
         }
         return $response;
 
-    }
-
-    /**
-     * Destroys the session, logging the user out
-     * //TODO: Finish this function
-     * @return void
-     */
-    private function destroyUserSession()
-    {
-        if ($this->checkIfSet($_POST, self::$logout)) {
-            $_SESSION['loggedIn'] = false;
-            echo "Destroy session and redirect";
-        }
     }
 
     /**
