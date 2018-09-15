@@ -38,6 +38,6 @@ class DatabaseModel
      */
     public function validateUserCredentials(string $username, string $password)
     {
-        return "SELECT * FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
+        return "SELECT username, password FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
     }
 }
