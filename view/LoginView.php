@@ -37,7 +37,7 @@ class LoginView
 
     /**
      * Provide users with the appropriate feedback
-     *
+     * //TODO: Clean this mess up...
      * @return string
      */
     private function provideUserFeedback()
@@ -57,8 +57,10 @@ class LoginView
                 $message = $this->feedback->missingUsername();
             } else if (!isset($_SESSION['username'])) {
                 $message = $this->feedback->incorrectCredentials();
-            } else if (($_SESSION['loggedIn'] == true)) {
+            } else if (($_SESSION['loggedIn'] == true && !$this->keepUserLoggedIn())) {
                 $message = $this->feedback->loggedIn();
+            } else if ($this->keepUserLoggedIn()) {
+                $message = $this->feedback->loggedInSaveCookie();
             } else {
                 $message = '';
             }
@@ -68,12 +70,25 @@ class LoginView
     }
 
     /**
+     * Keeps the user logged in if requested by checking checkbox
+     * //TODO: Set cookie as well
+     * @return bool
+     */
+    public function keepUserLoggedIn(): bool
+    {
+        if (isset($_POST[self::$keep])) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Generate a view depending on if the user is logged in or not
      *
      * @param [type] $message
      * @return void
      */
-    public function generateView(string $message)
+    private function generateView(string $message)
     {
         if ($_SESSION['loggedIn'] == true) {
             return $this->generateLogoutButtonHTML($message);
