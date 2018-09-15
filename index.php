@@ -14,7 +14,7 @@ require_once 'view/RegisterView.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-$isLoggedIn = (!empty($_SESSION['loggedIn']) ? $_SESSION['loggedIn'] : null);
+$isLoggedIn = (isset($_SESSION['loggedIn']) ? true : false);
 
 //CREATE OBJECTS OF THE VIEWS
 $loginView = new LoginView();

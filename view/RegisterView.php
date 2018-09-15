@@ -1,16 +1,18 @@
 <?php
 class RegisterView
 {
-    private static $login = 'RegisterView::Login';
-    private static $logout = 'RegisterView::Logout';
+    private static $register = 'RegisterView::Register';
     private static $name = 'RegisterView::UserName';
     private static $password = 'RegisterView::Password';
-    private static $cookieName = 'RegisterView::CookieName';
-    private static $cookiePassword = 'RegisterView::CookiePassword';
-    private static $keep = 'RegisterView::KeepMeLoggedIn';
+    private static $confirmPassword = 'RegisterView::confirmPassword';
     private static $messageId = 'RegisterView::Message';
 
-    public function response()
+    /**
+     * Called after user clicks the register button
+     *
+     * @return void
+     */
+    public function response(): string
     {
         return $this->generateRegisterFormHTML();
     }

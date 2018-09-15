@@ -10,7 +10,7 @@ class DatabaseModel
     }
 
     /**
-     * Connect to mysql database
+     * Attempt to connect to mysql database
      *
      * @return void
      */
@@ -22,12 +22,22 @@ class DatabaseModel
             $this->config->dbPass(),
             $this->config->dbName()
         );
-
-        // $mysqli = new mysqli(self::$host, self::$user, self::$pass, self::$name);
         if ($mysqli->connect_error) {
             die("Connection failed: " . $mysqli->connect_error);
         } else {
             return $mysqli;
         }
+    }
+
+    /**
+     * Check if username and password matches from db query
+     *
+     * @param [type] $username
+     * @param [type] $password
+     * @return void
+     */
+    public function validateUserCredentials($username, $password)
+    {
+        return "SELECT * FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
     }
 }

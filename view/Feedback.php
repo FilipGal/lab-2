@@ -32,16 +32,31 @@ class Feedback
         return 'Wrong name or password';
     }
 
+    /**
+     * Display welcome message is user logs in
+     *
+     * @return string
+     */
     public function loggedIn(): string
     {
         return 'Welcome';
     }
 
+    /**
+     * Displays welcome message if user logs in and decides to save the cookie
+     *
+     * @return string
+     */
     public function loggedInSaveCookie(): string
     {
         return 'Welcome and you will be remembered';
     }
 
+    /**
+     * Displays a message to the user when she logs out
+     *
+     * @return string
+     */
     public function logOut(): string
     {
         return 'Bye bye';
