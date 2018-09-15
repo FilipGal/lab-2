@@ -22,7 +22,7 @@ class RegisterView
      * @param $message, String output message
      * @return  string, BUT writes to standard output!
      */
-    private function generateRegisterFormHTML($message): string
+    private function generateRegisterFormHTML(string $message): string
     {
         return '
             <form method="post" >

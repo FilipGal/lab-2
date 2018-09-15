@@ -36,7 +36,7 @@ class DatabaseModel
      * @param [type] $password
      * @return void
      */
-    public function validateUserCredentials($username, $password)
+    public function validateUserCredentials(string $username, string $password)
     {
         return "SELECT * FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
     }

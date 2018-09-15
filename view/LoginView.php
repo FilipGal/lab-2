@@ -63,18 +63,8 @@ class LoginView
                 $message = '';
             }
         }
-        $this->logout();
+        $this->loginController->logout(self::$logout);
         return $this->generateView($message);
-    }
-
-    /**
-     * Logs user out and destroys the user session
-     *
-     * @return void
-     */
-    private function logout()
-    {
-        return $this->loginController->destroyUserSession(self::$logout);
     }
 
     /**
@@ -83,7 +73,7 @@ class LoginView
      * @param [type] $message
      * @return void
      */
-    public function generateView($message)
+    public function generateView(string $message)
     {
         if ($_SESSION['loggedIn'] == true) {
             return $this->generateLogoutButtonHTML($message);

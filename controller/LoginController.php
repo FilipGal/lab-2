@@ -9,7 +9,7 @@ class LoginController
      * @param [type] $default is set to null
      * @return void
      */
-    private function checkIfSet($array, $key, $default = null)
+    private function checkIfSet(array $array, string $key, $default = null)
     {
         return isset($array[$key]) ? $array[$key] : $default;
     }
@@ -19,7 +19,7 @@ class LoginController
      *
      * @return void
      */
-    public function destroyUserSession($param)
+    public function logout(string $param)
     {
         if ($this->checkIfSet($_POST, $param)) {
             $_SESSION['loggedIn'] = false;

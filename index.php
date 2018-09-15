@@ -14,11 +14,18 @@ require_once 'view/RegisterView.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-$isLoggedIn = (isset($_SESSION['loggedIn']) ? true : false);
+function isLoggedIn (): bool {
+    if (isset($_SESSION['loggedIn'])) {
+        if ($_SESSION['loggedIn'] == true) {
+            return true;
+        }
+    }
+    return false;
+}
 
 //CREATE OBJECTS OF THE VIEWS
 $loginView = new LoginView();
 $layoutView = new LayoutView();
 $registerView = new RegisterView();
 
-$layoutView->renderLayoutView($isLoggedIn, $loginView, $registerView);
+$layoutView->renderLayoutView(isLoggedIn(), $loginView, $registerView);

@@ -8,7 +8,7 @@ class LayoutView
         $this->date = new DateTimeView();
     }
 
-    public function renderLayoutView($isLoggedIn, LoginView $v, RegisterView $rv)
+    public function renderLayoutView(bool $isLoggedIn, LoginView $v, RegisterView $rv)
     {
         echo '<!DOCTYPE html>
       <html>
@@ -35,7 +35,7 @@ class LayoutView
         return $this->date->dateTime();
     }
 
-    private function renderIsLoggedIn($isLoggedIn): string
+    private function renderIsLoggedIn(bool $isLoggedIn): string
     {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
