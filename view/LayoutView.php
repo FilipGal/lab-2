@@ -18,6 +18,13 @@ class LayoutView
      */
     public function renderLayoutView(bool $isLoggedIn, LoginView $v, RegisterView $rv)
     {
+        $page;
+        if ($_SERVER['REQUEST_URI'] == '/?register') {
+            $page = $rv->response();
+        } else {
+            $page = $v->response();
+        }
+
         echo '<!DOCTYPE html>
       <html>
         <head>
@@ -29,7 +36,7 @@ class LayoutView
           ' . $this->renderIsLoggedIn($isLoggedIn) . '
 
           <div class="container">
-              ' . $v->response() . '
+              ' . $page . '
 
               ' . $this->renderDateTime() . '
           </div>
@@ -50,7 +57,7 @@ class LayoutView
 
     /**
      * Renders a header depending on if the user is logged in or not
-     *
+     * //TODO: Fix this crazy ugly navigation 
      * @param boolean $isLoggedIn
      * @return string
      */
@@ -59,9 +66,15 @@ class LayoutView
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         } else {
-            return '<a href="?register">Register a new user</a>
-                    <br />
-                    <h2>Not logged in</h2>';
+            if ($_SERVER['REQUEST_URI'] != '/?register') {
+                return '<a href="?register">Register a new user</a>
+                        <br />
+                        <h2>Not logged in</h2>';
+            } else {
+                return '<a href="/">Back to login</a>
+                        <br />
+                        <h2>Not logged in</h2>';
+            }
         }
     }
 }
