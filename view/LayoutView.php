@@ -20,28 +20,28 @@ class LayoutView
     {
         $page;
         if ($_SERVER['REQUEST_URI'] == '/?register') {
-            $page = $rv->response();
+            $page = $rv->renderRegisterView();
         } else {
-            $page = $v->response();
+            $page = $v->renderLoginView();
         }
 
         echo '<!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Login Example</title>
-        </head>
-        <body>
-          <h1>Assignment 2</h1>
-          ' . $this->renderIsLoggedIn($isLoggedIn) . '
+        <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Login Example</title>
+            </head>
+            <body>
+                <h1>Assignment 2</h1>
+                ' . $this->renderIsLoggedIn($isLoggedIn) . '
 
-          <div class="container">
-              ' . $page . '
+                <div class="container">
+                    ' . $page . '
 
-              ' . $this->renderDateTime() . '
-          </div>
-         </body>
-      </html>
+                    ' . $this->renderDateTime() . '
+                </div>
+            </body>
+        </html>
     ';
     }
 
@@ -57,7 +57,7 @@ class LayoutView
 
     /**
      * Renders a header depending on if the user is logged in or not
-     * //TODO: Fix this crazy ugly navigation 
+     * //TODO: Fix this crazy ugly navigation
      * @param boolean $isLoggedIn
      * @return string
      */

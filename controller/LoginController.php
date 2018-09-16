@@ -23,6 +23,7 @@ class LoginController
     {
         if ($this->checkIfSet($_POST, $param)) {
             $_SESSION['loggedIn'] = false;
+            $_SESSION = array();
             session_destroy();
         }
     }

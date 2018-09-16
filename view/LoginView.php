@@ -29,7 +29,7 @@ class LoginView
      *
      * @return  void BUT writes to standard output and cookies!
      */
-    public function response()
+    public function renderLoginView()
     {
         $this->attemptLogin(self::$name, self::$password);
         return $this->provideUserFeedback();
@@ -90,7 +90,8 @@ class LoginView
      */
     private function generateView(string $message)
     {
-        if ($_SESSION['loggedIn'] == true) {
+        $isSessionSet = (isset($_SESSION['loggedIn']) ? $_SESSION['loggedIn'] : null);
+        if ($isSessionSet) {
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
