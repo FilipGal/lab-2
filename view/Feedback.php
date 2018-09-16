@@ -61,4 +61,24 @@ class Feedback
     {
         return 'Bye bye';
     }
+
+    public function usernameTooShort(): string
+    {
+        return 'Username has too few characters, at least 3 characters.';
+    }
+
+    public function passwordTooShort(): string
+    {
+        return 'Password has too few characters, at least 6 characters.';
+    }
+
+    public function passwordsNotMatching(): string
+    {
+        return 'Passwords do not match.';
+    }
+
+    public function invalidCharacters(): string
+    {
+        return 'Username contains invalid characters';
+    }
 }

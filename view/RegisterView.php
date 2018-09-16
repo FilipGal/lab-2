@@ -7,6 +7,11 @@ class RegisterView
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
 
+    public function __construct()
+    {
+        $this->feedback = new Feedback();
+    }
+
     /**
      * Called after user clicks the register button
      *
@@ -16,13 +21,36 @@ class RegisterView
     {
         return $this->provideUserFeedback();
     }
-    
-    private function provideUserFeedback() {
+
+    private function provideUserFeedback()
+    {
         $message = '';
+        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
+            if (strlen($_POST[self::$name]) < 3) {
+                $message .= $this->feedback->usernameTooShort() . '<br />';
+            }
+
+            if (strlen($_POST[self::$password]) < 6) {
+                $message .= $this->feedback->passwordTooShort() . '<br />';
+            }
+
+            if ($this->checkIfUnallowedCharacters()) {
+                $message .= $this->feedback->invalidCharacters() . '<br />';
+            }
+
+            if ($_POST[self::$password] != $_POST[self::$passwordRepeat]) {
+                $message .= $this->feedback->passwordsNotMatching();
+            }
+        }
         return $this->generateRegisterFormHTML($message);
     }
 
-        /**
+    private function checkIfUnallowedCharacters()
+    {
+        return !preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
+    }
+
+    /**
      * Generate HTML code on the output buffer for the logout button
      * @param $message, String output message
      * @return  string, BUT writes to standard output!
@@ -35,7 +63,7 @@ class RegisterView
                 <fieldset>
                     <legend>Register a new user - Write username and password</legend>
                     <p id="' . self::$messageId . '">' . $message . '</p>
-                    
+
                     <label for="' . self::$name . '">Username :</label>
                     <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
                     <br />
