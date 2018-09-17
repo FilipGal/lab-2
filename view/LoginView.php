@@ -139,14 +139,8 @@ class LoginView
         }
     }
 
-    public function isLoggedIn(): bool
-    {
-        if (isset($_SESSION[self::$sessionActive])) {
-            if ($_SESSION[self::$sessionActive] == true) {
-                return true;
-            }
-        }
-        return false;
+    public function userLogsIn() {
+        return isset($_POST[self::$login]);
     }
 
     /**

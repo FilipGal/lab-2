@@ -3,6 +3,7 @@
 class SessionModel
 {
     private static $loggedIn = 'loggedIn';
+    private static $sessionUser = 'user';
 
     public function isUserLoggedIn()
     {
