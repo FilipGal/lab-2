@@ -14,7 +14,7 @@ require_once 'view/RegisterView.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-var_dump($_SESSION);
+// var_dump($_SESSION);
 
 //CREATE OBJECTS OF THE VIEWS
 $loginView = new LoginView();

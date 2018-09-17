@@ -14,8 +14,8 @@ class LoginView
     private static $cookiePassword = 'LoginView::CookiePassword';
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
-    private static $sessionActive = 'loggedIn';
-    private static $sessionUser = 'username';
+    private static $sessionActive = 'LoginView::loggedIn';
+    private static $sessionUser = 'LoginView::username';
 
     public function __construct()
     {
@@ -23,7 +23,7 @@ class LoginView
         $this->db = new DatabaseModel();
         $this->loginController = new LoginController();
     }
-
+    
     /**
      * Create HTTP response
      *
@@ -33,7 +33,7 @@ class LoginView
      */
     public function renderLoginView()
     {
-        $this->attemptLogin(self::$name, self::$password);
+        $this->attemptLogin();
         return $this->provideUserFeedback();
     }
 
@@ -123,15 +123,15 @@ class LoginView
      * @param [type] $password  the entered password
      * @return void
      */
-    private function attemptLogin(string $username, string $password)
+    private function attemptLogin()
     {
-        if (isset($_POST[$username]) && isset($_POST[$username])) {
+        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
             $user = mysqli_query(
                 $this->db->connectToDatabase(),
-                $this->db->validateUserCredentials($username, $password));
+                $this->db->validateUserCredentials(self::$name, self::$password));
 
             if ($user->num_rows > 0) {
-                $_SESSION[self::$sessionUser] = $username;
+                $_SESSION[self::$sessionUser] = self::$name;
                 $_SESSION[self::$sessionActive] = true;
             } else {
                 $_SESSION[self::$sessionActive] = false;

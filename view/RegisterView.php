@@ -23,7 +23,7 @@ class RegisterView
         return $this->provideUserFeedback();
     }
 
-    private function provideUserFeedback()
+    private function provideUserFeedback(): string
     {
         $message = '';
         if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
