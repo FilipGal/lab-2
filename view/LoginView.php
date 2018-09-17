@@ -14,6 +14,8 @@ class LoginView
     private static $cookiePassword = 'LoginView::CookiePassword';
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
+    private static $sessionActive = 'loggedIn';
+    private static $sessionUser = 'username';
 
     public function __construct()
     {
@@ -55,9 +57,9 @@ class LoginView
                 $message = $this->feedback->missingPassword();
             } else if (empty(!$username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
-            } else if (!isset($_SESSION['username'])) {
+            } else if (!isset($_SESSION[self::$sessionUser])) {
                 $message = $this->feedback->incorrectCredentials();
-            } else if (($_SESSION['loggedIn'] == true && !$this->keepUserLoggedIn())) {
+            } else if (($_SESSION[self::$sessionActive] == true && !$this->keepUserLoggedIn())) {
                 $message = $this->feedback->loggedIn();
             } else if ($this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedInSaveCookie();
@@ -90,12 +92,16 @@ class LoginView
      */
     private function generateView(string $message)
     {
-        $isSessionSet = (isset($_SESSION['loggedIn']) ? $_SESSION['loggedIn'] : null);
-        if ($isSessionSet) {
+        if ($this->isSessionSet()) {
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
         }
+    }
+
+    private function isSessionSet()
+    {
+        return (isset($_SESSION[self::$sessionActive]) ? $_SESSION[self::$sessionActive] : null);
     }
 
     /**
@@ -124,13 +130,23 @@ class LoginView
                 $this->db->connectToDatabase(),
                 $this->db->validateUserCredentials($username, $password));
 
-            if ($user->num_rows >= 1) {
-                $_SESSION['username'] = $username;
-                $_SESSION['loggedIn'] = true;
+            if ($user->num_rows > 0) {
+                $_SESSION[self::$sessionUser] = $username;
+                $_SESSION[self::$sessionActive] = true;
             } else {
-                $_SESSION['loggedIn'] = false;
+                $_SESSION[self::$sessionActive] = false;
             }
         }
+    }
+
+    public function isLoggedIn(): bool
+    {
+        if (isset($_SESSION[self::$sessionActive])) {
+            if ($_SESSION[self::$sessionActive] == true) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

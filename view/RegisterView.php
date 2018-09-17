@@ -10,6 +10,7 @@ class RegisterView
     public function __construct()
     {
         $this->feedback = new Feedback();
+        $this->db = new DatabaseModel();
     }
 
     /**
@@ -42,6 +43,7 @@ class RegisterView
                 $message .= $this->feedback->passwordsNotMatching();
             }
         }
+        $this->db->registerUser(self::$name, self::$password);
         return $this->generateRegisterFormHTML($message);
     }
 
@@ -66,24 +68,24 @@ class RegisterView
 
                     <label for="' . self::$name . '">Username :</label>
                     <input
-                        type="text" 
-                        id="' . self::$name . '" 
-                        name="' . self::$name . '" 
-                        value="' . self::$name . '" 
+                        type="text"
+                        id="' . self::$name . '"
+                        name="' . self::$name . '"
+                        value=""
                     />
                     <br />
                     <label for="' . self::$password . '">Password :</label>
-                    <input 
+                    <input
                         type="password"
                         id="' . self::$password . '"
-                        name="' . self::$password . '" 
+                        name="' . self::$password . '"
                     />
                     <br />
                     <label for="' . self::$passwordRepeat . '">Repeat password :</label>
-                    <input 
+                    <input
                         type="password"
                         id="' . self::$passwordRepeat . '"
-                        name="' . self::$passwordRepeat . '" 
+                        name="' . self::$passwordRepeat . '"
                     />
                     <br />
                     <input type="submit" name="' . self::$register . '" value="Register" />

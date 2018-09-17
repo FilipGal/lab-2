@@ -22,7 +22,6 @@ class LoginController
     public function logout(string $param)
     {
         if ($this->checkIfSet($_POST, $param)) {
-            $_SESSION['loggedIn'] = false;
             $_SESSION = array();
             session_destroy();
         }
