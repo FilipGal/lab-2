@@ -20,6 +20,7 @@ class RegisterView
      */
     public function renderRegisterView(): string
     {
+        $this->db->registerUser(self::$name, self::$password);
         return $this->provideUserFeedback();
     }
 
@@ -35,7 +36,7 @@ class RegisterView
                 $message .= $this->feedback->passwordTooShort() . '<br />';
             }
 
-            if ($this->checkIfUnallowedCharacters()) {
+            if (!$this->checkIfUnallowedCharacters()) {
                 $message .= $this->feedback->invalidCharacters() . '<br />';
             }
 
@@ -43,13 +44,12 @@ class RegisterView
                 $message .= $this->feedback->passwordsNotMatching();
             }
         }
-        $this->db->registerUser(self::$name, self::$password);
         return $this->generateRegisterFormHTML($message);
     }
 
     private function checkIfUnallowedCharacters()
     {
-        return !preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
+        return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
 
     /**

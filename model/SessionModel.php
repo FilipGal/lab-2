@@ -2,13 +2,21 @@
 
 class SessionModel
 {
-    private static $loggedIn = 'loggedIn';
-    private static $sessionUser = 'user';
+    private static $LOGGED_IN_SESSION_LOCATION = __CLASS__ . 'isLoggedIn';
+    private static $sessionUser = 'loggedIn';
 
-    public function isUserLoggedIn()
+    public function isLoggedIn(): bool
     {
-        if (isset($_SESSION[self::$loggedIn])) {
-            return $_SESSION[self::$loggedIn];
-        }
+        return isset($_SESSION[self::$LOGGED_IN_SESSION_LOCATION]);
+    }
+
+    public function setLoggedIn(bool $isLoggedIn)
+    {
+        return $_SESSION[self::$LOGGED_IN_SESSION_LOCATION] = $isLoggedIn;
+    }
+
+    public function setLoggedOut()
+    {
+        unset($_SESSION[self::$LOGGED_IN_SESSION_LOCATION]);
     }
 }

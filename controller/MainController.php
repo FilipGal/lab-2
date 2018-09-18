@@ -1,8 +1,8 @@
 <?php
+require_once 'model/SessionModel.php';
 require_once 'view/LoginView.php';
 require_once 'view/LayoutView.php';
 require_once 'view/RegisterView.php';
-require_once 'model/SessionModel.php';
 
 class MainController
 {
@@ -18,7 +18,8 @@ class MainController
     public function render()
     {
         $this->layoutView->renderLayoutView(
-            $this->loginView->userLogsIn(),
+            $this->session->isLoggedIn(),
+            // $this->loginView->isLoggedIn(),
             $this->loginView,
             $this->registerView
         );

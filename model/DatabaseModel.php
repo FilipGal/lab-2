@@ -29,6 +29,11 @@ class DatabaseModel
         }
     }
 
+    public function registerUserQuery($username, $password)
+    {
+        return "INSERT INTO Users (username, password) VALUES ($_POST[$username], $_POST[$password])";
+    }
+
     /**
      * Check if username and password matches from db query
      *
@@ -39,7 +44,6 @@ class DatabaseModel
     public function validateUserCredentials(string $username, string $password)
     {
         return "SELECT username, password FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
-        exit();
     }
 
     /**
@@ -55,13 +59,12 @@ class DatabaseModel
             $sql = "SELECT username FROM Users WHERE username='$_POST[$username]'";
             $user = mysqli_query($this->connectToDatabase(), $sql);
 
-            if ($user->num_rows > 0) {
-                echo "name taken";
+            if ($user->num_rows == 0) {
+                $this->registerUserQuery($username, $password);
                 //TODO: skapa funktion för insert :: $this->insertNewUser
             } else {
-                echo "registered";
+                return false;
             }
         }
-
     }
 }

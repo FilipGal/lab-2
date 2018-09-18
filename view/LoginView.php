@@ -14,16 +14,15 @@ class LoginView
     private static $cookiePassword = 'LoginView::CookiePassword';
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
-    private static $sessionActive = 'LoginView::loggedIn';
-    private static $sessionUser = 'LoginView::username';
 
     public function __construct()
     {
         $this->feedback = new Feedback();
         $this->db = new DatabaseModel();
         $this->loginController = new LoginController();
+        $this->session = new SessionModel();
     }
-    
+
     /**
      * Create HTTP response
      *
@@ -37,6 +36,11 @@ class LoginView
         return $this->provideUserFeedback();
     }
 
+    private function formFilled()
+    {
+        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+    }
+
     /**
      * Provide users with the appropriate feedback
      * //TODO: Clean this mess up...
@@ -47,7 +51,7 @@ class LoginView
 
         $message = '';
 
-        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
+        if ($this->formFilled()) {
             $username = $_POST[self::$name];
             $password = $_POST[self::$password];
 
@@ -57,9 +61,9 @@ class LoginView
                 $message = $this->feedback->missingPassword();
             } else if (empty(!$username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
-            } else if (!isset($_SESSION[self::$sessionUser])) {
+            } else if ($this->doesUserExist()->num_rows == 0) {
                 $message = $this->feedback->incorrectCredentials();
-            } else if (($_SESSION[self::$sessionActive] == true && !$this->keepUserLoggedIn())) {
+            } else if ($this->session->isLoggedIn()) {
                 $message = $this->feedback->loggedIn();
             } else if ($this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedInSaveCookie();
@@ -72,19 +76,6 @@ class LoginView
     }
 
     /**
-     * Keeps the user logged in if requested by checking checkbox
-     * //TODO: Set cookie as well
-     * @return bool
-     */
-    public function keepUserLoggedIn(): bool
-    {
-        if (isset($_POST[self::$keep])) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Generate a view depending on if the user is logged in or not
      *
      * @param [type] $message
@@ -92,16 +83,12 @@ class LoginView
      */
     private function generateView(string $message)
     {
-        if ($this->isSessionSet()) {
+        var_dump($this->session->isLoggedIn());
+        if ($this->session->isLoggedIn() == true) {
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
         }
-    }
-
-    private function isSessionSet()
-    {
-        return (isset($_SESSION[self::$sessionActive]) ? $_SESSION[self::$sessionActive] : null);
     }
 
     /**
@@ -125,22 +112,34 @@ class LoginView
      */
     private function attemptLogin()
     {
-        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
-            $user = mysqli_query(
-                $this->db->connectToDatabase(),
-                $this->db->validateUserCredentials(self::$name, self::$password));
-
-            if ($user->num_rows > 0) {
-                $_SESSION[self::$sessionUser] = self::$name;
-                $_SESSION[self::$sessionActive] = true;
+        if ($this->formFilled()) {
+            if ($this->doesUserExist()->num_rows > 0) {
+                $this->session->setLoggedIn(true);
             } else {
-                $_SESSION[self::$sessionActive] = false;
+                $this->session->setLoggedOut();
             }
         }
     }
 
-    public function userLogsIn() {
-        return isset($_POST[self::$login]);
+    private function doesUserExist()
+    {
+        return mysqli_query(
+            $this->db->connectToDatabase(),
+            $this->db->validateUserCredentials(self::$name, self::$password));
+            var_dump($this->session->isLoggedIn());
+        }
+
+    /**
+     * Keeps the user logged in if requested by checking checkbox
+     * //TODO: Set cookie as well
+     * @return bool
+     */
+    public function keepUserLoggedIn(): bool
+    {
+        if (isset($_POST[self::$keep])) {
+            return true;
+        }
+        return false;
     }
 
     /**
