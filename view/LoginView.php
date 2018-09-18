@@ -120,12 +120,16 @@ class LoginView
         }
     }
 
+    /**
+     * Query the database for users
+     *
+     * @return void
+     */
     private function doesUserExist()
     {
         return mysqli_query(
             $this->db->connectToDatabase(),
             $this->db->validateUserCredentials(self::$name, self::$password));
-        var_dump($this->session->isLoggedIn());
     }
 
     /**
@@ -141,6 +145,11 @@ class LoginView
         return false;
     }
 
+    /**
+     * Gets the value of the username, if it's entered
+     *
+     * @return void
+     */
     private function getUsername()
     {
         if (isset($_POST[self::$name])) {
@@ -153,7 +162,7 @@ class LoginView
      * @param $message, String output message
      * @return  string BUT writes to standard output!
      */
-    private function generateLogoutButtonHTML($message): string
+    private function generateLogoutButtonHTML(string $message): string
     {
         return '
             <form  method="post" >

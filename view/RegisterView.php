@@ -24,6 +24,11 @@ class RegisterView
         return $this->provideUserFeedback();
     }
 
+    /**
+     * Provides the user with the appropriate feedback depending on the 
+     * error that occurs
+     * @return string
+     */
     private function provideUserFeedback(): string
     {
         $message = '';
@@ -47,11 +52,21 @@ class RegisterView
         return $this->generateRegisterFormHTML($message);
     }
 
-    private function checkIfUnallowedCharacters()
+    /**
+     * Validate user input
+     *
+     * @return bool
+     */
+    private function checkIfUnallowedCharacters(): bool
     {
         return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
 
+    /**
+     * Gets the value of the username, if it's entered
+     *
+     * @return void
+     */
     private function getUsername()
     {
         if(isset($_POST[self::$name])) {
