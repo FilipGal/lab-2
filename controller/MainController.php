@@ -18,8 +18,6 @@ class MainController
     public function render()
     {
         $this->layoutView->renderLayoutView(
-            $this->session->isLoggedIn(),
-            // $this->loginView->isLoggedIn(),
             $this->loginView,
             $this->registerView
         );

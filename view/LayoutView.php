@@ -1,5 +1,6 @@
 <?php
 require_once 'view/DateTimeView.php';
+require_once 'model/SessionModel.php';
 
 class LayoutView
 {
@@ -7,6 +8,7 @@ class LayoutView
     public function __construct()
     {
         $this->date = new DateTimeView();
+        $this->session = new SessionModel();
     }
 
     /**
@@ -17,7 +19,7 @@ class LayoutView
      * @param RegisterView $rv
      * @return void
      */
-    public function renderLayoutView(bool $isLoggedIn, LoginView $v, RegisterView $rv)
+    public function renderLayoutView(LoginView $v, RegisterView $rv)
     {
         $page;
         if ($_SERVER['REQUEST_URI'] == '/?register') {
@@ -34,7 +36,7 @@ class LayoutView
             </head>
             <body>
                 <h1>Assignment 2</h1>
-                ' . $this->renderIsLoggedIn($isLoggedIn) . '
+                ' . $this->renderIsLoggedIn() . '
 
                 <div class="container">
                     ' . $page . '
@@ -62,9 +64,9 @@ class LayoutView
      * @param boolean $isLoggedIn
      * @return string
      */
-    private function renderIsLoggedIn(bool $isLoggedIn): string
+    private function renderIsLoggedIn(): string
     {
-        if ($isLoggedIn) {
+        if ($this->session->isLoggedIn()) {
             return '<h2>Logged in</h2>';
         } else {
             if ($_SERVER['REQUEST_URI'] != '/?register') {

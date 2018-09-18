@@ -63,7 +63,7 @@ class LoginView
                 $message = $this->feedback->missingUsername();
             } else if ($this->doesUserExist()->num_rows == 0) {
                 $message = $this->feedback->incorrectCredentials();
-            } else if ($this->session->isLoggedIn()) {
+            } else if ($this->session->isLoggedIn() && !$this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedIn();
             } else if ($this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedInSaveCookie();
@@ -83,8 +83,7 @@ class LoginView
      */
     private function generateView(string $message)
     {
-        var_dump($this->session->isLoggedIn());
-        if ($this->session->isLoggedIn() == true) {
+        if ($this->session->isLoggedIn()) {
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
@@ -126,20 +125,27 @@ class LoginView
         return mysqli_query(
             $this->db->connectToDatabase(),
             $this->db->validateUserCredentials(self::$name, self::$password));
-            var_dump($this->session->isLoggedIn());
-        }
+        var_dump($this->session->isLoggedIn());
+    }
 
     /**
      * Keeps the user logged in if requested by checking checkbox
      * //TODO: Set cookie as well
      * @return bool
      */
-    public function keepUserLoggedIn(): bool
+    private function keepUserLoggedIn(): bool
     {
         if (isset($_POST[self::$keep])) {
             return true;
         }
         return false;
+    }
+
+    private function getUsername()
+    {
+        if (isset($_POST[self::$name])) {
+            return $_POST[self::$name];
+        }
     }
 
     /**
@@ -171,7 +177,7 @@ class LoginView
                     <p id="' . self::$messageId . '">' . $message . '</p>
 
                     <label for="' . self::$name . '">Username :</label>
-                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUsername() . '" />
 
                     <label for="' . self::$password . '">Password :</label>
                     <input type="password" id="' . self::$password . '" name="' . self::$password . '" />
