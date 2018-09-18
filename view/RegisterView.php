@@ -52,6 +52,13 @@ class RegisterView
         return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
 
+    private function getUsername()
+    {
+        if(isset($_POST[self::$name])) {
+            return $_POST[self::$name];
+        }
+    }
+
     /**
      * Generate HTML code on the output buffer for the logout button
      * @param $message, String output message
@@ -71,7 +78,7 @@ class RegisterView
                         type="text"
                         id="' . self::$name . '"
                         name="' . self::$name . '"
-                        value=""
+                        value="' . $this->getUsername() . '"
                     />
                     <br />
                     <label for="' . self::$password . '">Password :</label>
