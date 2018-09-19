@@ -13,6 +13,24 @@ class RegisterModel
         return "INSERT INTO Users (username, password) VALUES ('$username', '$password')";
     }
 
+    public function userExists($username)
+    {
+        $sql = "SELECT username FROM Users WHERE username='$_POST[$username]'";
+        $user = mysqli_query($this->db->connectToDatabase(), $sql);
+        $usernameTaken = false;
+
+        if ($user->num_rows > 0) {
+            return $usernameTaken = true;
+        } else {
+            return $usernameTaken = false;
+        }
+    }
+
+    private function addNewUser()
+    {
+        return;
+    }
+
     /**
      * Attempt to insert the newly created user into the db
      *
@@ -23,23 +41,12 @@ class RegisterModel
     public function registerUser(string $username, string $password)
     {
         if (isset($_POST[$username]) && isset($_POST[$username])) {
-            $sql = "SELECT username FROM Users WHERE username='$_POST[$username]'";
-            $user = mysqli_query($this->db->connectToDatabase(), $sql);
-            $userExists = false;
-
-            if ($user->num_rows > 0) {
-                $userExists = true;
-                var_dump($userExists);
-            } else {
-                $userExists = false;
-                var_dump($userExists);
-            }
-
-            if (!$userExists) {
-                echo "Available name";
+            if (!$this->userExists($username)) {
+                return;
+                //TODO: Add user registration here
                 // $this->registerUserQuery($username, $password);
             } else {
-                echo "Unavailable name";
+                return;
             }
         }
     }

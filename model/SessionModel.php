@@ -3,7 +3,6 @@
 class SessionModel
 {
     private static $LOGGED_IN_SESSION_LOCATION = __CLASS__ . 'isLoggedIn';
-    private static $sessionUser = 'loggedIn';
 
     /**
      * Check if the $LOGGED_IN_SESSION_LOCATION is true or false

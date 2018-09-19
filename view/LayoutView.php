@@ -14,7 +14,6 @@ class LayoutView
     /**
      * Renders the layout view
      *
-     * @param boolean $isLoggedIn
      * @param LoginView $v
      * @param RegisterView $rv
      * @return void
@@ -59,9 +58,9 @@ class LayoutView
     /**
      * Render the datetime view
      *
-     * @return void
+     * @return string
      */
-    private function renderDateTime()
+    private function renderDateTime(): string
     {
         return $this->date->dateTime();
     }
@@ -72,7 +71,7 @@ class LayoutView
      * @param boolean $isLoggedIn
      * @return string
      */
-    private function renderIsLoggedIn()
+    private function renderIsLoggedIn(): string
     {
         if ($this->session->isLoggedIn()) {
             return '<h2>Logged in</h2>';

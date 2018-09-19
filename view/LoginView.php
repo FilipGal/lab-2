@@ -36,7 +36,7 @@ class LoginView
         return $this->provideUserFeedback();
     }
 
-    private function formFilled()
+    private function inputNotEmpty()
     {
         return isset($_POST[self::$name]) && isset($_POST[self::$password]);
     }
@@ -51,7 +51,7 @@ class LoginView
 
         $message = '';
 
-        if ($this->formFilled()) {
+        if ($this->inputNotEmpty()) {
             $username = $_POST[self::$name];
             $password = $_POST[self::$password];
 
@@ -77,7 +77,7 @@ class LoginView
     /**
      * Generate a view depending on if the user is logged in or not
      *
-     * @param [type] $message
+     * @param [string] $message
      * @return void
      */
     private function generateView(string $message)
@@ -94,7 +94,7 @@ class LoginView
      *
      * @return string the entered username
      */
-    private function getRequestUserName()
+    private function getRequestUserName(): string
     {
         if (!empty($_REQUEST[self::$name])) {
             return $_REQUEST[self::$name];
@@ -110,7 +110,7 @@ class LoginView
      */
     private function attemptLogin()
     {
-        if ($this->formFilled()) {
+        if ($this->inputNotEmpty()) {
             if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows > 0) {
                 $this->session->setLoggedIn(true);
             } else {

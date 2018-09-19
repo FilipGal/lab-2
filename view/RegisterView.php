@@ -23,7 +23,7 @@ class RegisterView
      */
     public function renderRegisterView(): string
     {
-        // $this->registerModel->registerUser(self::$name, self::$password);
+        $this->registerModel->registerUser(self::$name, self::$password);
         return $this->provideUserFeedback();
     }
 
@@ -52,7 +52,8 @@ class RegisterView
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
 
-            if ($this->registerModel->registerUser(self::$name, self::$password)) {
+            if ($this->registerModel->userExists(self::$name)) {
+            // if ($this->registerModel->registerUser(self::$name, self::$password)) {
                 $message .= $this->feedback->userExists();
             }
         }
