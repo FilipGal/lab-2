@@ -1,8 +1,8 @@
 <?php
 
-require_once "Feedback.php";
-require_once "model/DatabaseModel.php";
-require_once "controller/LoginController.php";
+require_once 'Feedback.php';
+require_once 'model/DatabaseModel.php';
+require_once 'model/LoginModel.php';
 
 class LoginView
 {
@@ -18,9 +18,8 @@ class LoginView
     public function __construct()
     {
         $this->feedback = new Feedback();
-        $this->db = new DatabaseModel();
-        $this->loginController = new LoginController();
         $this->session = new SessionModel();
+        $this->loginModel = new LoginModel();
     }
 
     /**
@@ -61,7 +60,7 @@ class LoginView
                 $message = $this->feedback->missingPassword();
             } else if (empty(!$username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
-            } else if ($this->db->queryUser(self::$name, self::$password)->num_rows == 0) {
+            } else if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows == 0) {
                 $message = $this->feedback->incorrectCredentials();
             } else if ($this->session->isLoggedIn() && !$this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedIn();
@@ -71,7 +70,7 @@ class LoginView
                 $message = '';
             }
         }
-        $this->loginController->logout(self::$logout);
+        $this->loginModel->logout(self::$logout);
         return $this->generateView($message);
     }
 
@@ -112,7 +111,7 @@ class LoginView
     private function attemptLogin()
     {
         if ($this->formFilled()) {
-            if ($this->db->queryUser(self::$name, self::$password)->num_rows > 0) {
+            if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows > 0) {
                 $this->session->setLoggedIn(true);
             } else {
                 $this->session->setLoggedOut();

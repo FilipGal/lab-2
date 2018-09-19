@@ -1,4 +1,7 @@
 <?php
+
+require_once 'model/RegisterModel.php';
+
 class RegisterView
 {
     private static $register = 'RegisterView::Register';
@@ -10,7 +13,7 @@ class RegisterView
     public function __construct()
     {
         $this->feedback = new Feedback();
-        $this->db = new DatabaseModel();
+        $this->registerModel = new RegisterModel();
     }
 
     /**
@@ -20,7 +23,7 @@ class RegisterView
      */
     public function renderRegisterView(): string
     {
-        $this->db->registerUser(self::$name, self::$password);
+        $this->registerModel->registerUser(self::$name, self::$password);
         return $this->provideUserFeedback();
     }
 
