@@ -8,9 +8,9 @@ class RegisterModel
         $this->db = new DatabaseModel();
     }
 
-    public function registerUserQuery($username, $password)
+    private function registerUserQuery($username, $password)
     {
-        return "INSERT INTO Users (username, password) VALUES ($_POST[$username], $_POST[$password])";
+        return "INSERT INTO Users (username, password) VALUES ('$username', '$password')";
     }
 
     /**
@@ -25,12 +25,21 @@ class RegisterModel
         if (isset($_POST[$username]) && isset($_POST[$username])) {
             $sql = "SELECT username FROM Users WHERE username='$_POST[$username]'";
             $user = mysqli_query($this->db->connectToDatabase(), $sql);
+            $userExists = false;
 
-            if ($user->num_rows == 0) {
-                $this->registerUserQuery($username, $password);
-                //TODO: skapa funktion för insert :: $this->insertNewUser
+            if ($user->num_rows > 0) {
+                $userExists = true;
+                var_dump($userExists);
             } else {
-                return false;
+                $userExists = false;
+                var_dump($userExists);
+            }
+
+            if (!$userExists) {
+                echo "Available name";
+                // $this->registerUserQuery($username, $password);
+            } else {
+                echo "Unavailable name";
             }
         }
     }

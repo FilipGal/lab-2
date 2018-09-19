@@ -32,6 +32,7 @@ class LoginView
     public function renderLoginView()
     {
         $this->attemptLogin();
+        $this->loginModel->logout(self::$logout);
         return $this->provideUserFeedback();
     }
 
@@ -70,7 +71,6 @@ class LoginView
                 $message = '';
             }
         }
-        $this->loginModel->logout(self::$logout);
         return $this->generateView($message);
     }
 
@@ -173,15 +173,32 @@ class LoginView
                     <p id="' . self::$messageId . '">' . $message . '</p>
 
                     <label for="' . self::$name . '">Username :</label>
-                    <input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->getUsername() . '" />
+                    <input 
+                        type="text" 
+                        id="' . self::$name . '" 
+                        name="' . self::$name . '" 
+                        value="' . $this->getUsername() . '" 
+                    />
 
                     <label for="' . self::$password . '">Password :</label>
-                    <input type="password" id="' . self::$password . '" name="' . self::$password . '" />
+                    <input 
+                    type="password"
+                        id="' . self::$password . '" 
+                        name="' . self::$password . '" 
+                    />
 
                     <label for="' . self::$keep . '">Keep me logged in  :</label>
-                    <input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
+                    <input 
+                        type="checkbox" 
+                        id="' . self::$keep . '" 
+                        name="' . self::$keep . '" 
+                    />
 
-                    <input type="submit" name="' . self::$login . '" value="login" />
+                    <input 
+                        type="submit" 
+                        name="' . self::$login . '" 
+                        value="login" 
+                    />
                 </fieldset>
             </form>
         ';

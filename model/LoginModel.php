@@ -15,7 +15,7 @@ class LoginModel
      * @param [type] $password
      * @return void
      */
-    public function validateUserCredentials(string $username, string $password)
+    public function doesUserExist(string $username, string $password)
     {
         return "SELECT username, password FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
     }
@@ -29,7 +29,7 @@ class LoginModel
     {
         return mysqli_query(
             $this->db->connectToDatabase(),
-            $this->validateUserCredentials($username, $password));
+            $this->doesUserExist($username, $password));
     }
 
     /**

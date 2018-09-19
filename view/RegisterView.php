@@ -23,12 +23,12 @@ class RegisterView
      */
     public function renderRegisterView(): string
     {
-        $this->registerModel->registerUser(self::$name, self::$password);
+        // $this->registerModel->registerUser(self::$name, self::$password);
         return $this->provideUserFeedback();
     }
 
     /**
-     * Provides the user with the appropriate feedback depending on the 
+     * Provides the user with the appropriate feedback depending on the
      * error that occurs
      * @return string
      */
@@ -49,12 +49,12 @@ class RegisterView
             }
 
             if ($_POST[self::$password] != $_POST[self::$passwordRepeat]) {
-                $message .= $this->feedback->passwordsNotMatching();
+                $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
 
-            // if ($this->db->queryUser($_POST[self::$name], $_POST[self::$password])->num_rows < 0) {
-            //     $message .= 'Username taken';
-            // }
+            if ($this->registerModel->registerUser(self::$name, self::$password)) {
+                $message .= $this->feedback->userExists();
+            }
         }
         return $this->generateRegisterFormHTML($message);
     }
@@ -76,7 +76,7 @@ class RegisterView
      */
     private function getUsername()
     {
-        if(isset($_POST[self::$name])) {
+        if (isset($_POST[self::$name])) {
             return $_POST[self::$name];
         }
     }

@@ -79,6 +79,11 @@ class Feedback
 
     public function invalidCharacters(): string
     {
-        return 'Username contains invalid characters';
+        return 'Username contains invalid characters.';
+    }
+
+    public function userExists(): string
+    {
+        return 'User exists, pick another username.';
     }
 }
