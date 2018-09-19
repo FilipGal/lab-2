@@ -48,6 +48,10 @@ class RegisterView
             if ($_POST[self::$password] != $_POST[self::$passwordRepeat]) {
                 $message .= $this->feedback->passwordsNotMatching();
             }
+
+            // if ($this->db->queryUser($_POST[self::$name], $_POST[self::$password])->num_rows < 0) {
+            //     $message .= 'Username taken';
+            // }
         }
         return $this->generateRegisterFormHTML($message);
     }

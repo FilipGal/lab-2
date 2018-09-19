@@ -61,7 +61,7 @@ class LoginView
                 $message = $this->feedback->missingPassword();
             } else if (empty(!$username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
-            } else if ($this->queryUser()->num_rows == 0) {
+            } else if ($this->db->queryUser(self::$name, self::$password)->num_rows == 0) {
                 $message = $this->feedback->incorrectCredentials();
             } else if ($this->session->isLoggedIn() && !$this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedIn();
@@ -112,24 +112,12 @@ class LoginView
     private function attemptLogin()
     {
         if ($this->formFilled()) {
-            if ($this->queryUser()->num_rows > 0) {
+            if ($this->db->queryUser(self::$name, self::$password)->num_rows > 0) {
                 $this->session->setLoggedIn(true);
             } else {
                 $this->session->setLoggedOut();
             }
         }
-    }
-
-    /**
-     * Query the database for users
-     *
-     * @return void
-     */
-    private function queryUser()
-    {
-        return mysqli_query(
-            $this->db->connectToDatabase(),
-            $this->db->validateUserCredentials(self::$name, self::$password));
     }
 
     /**

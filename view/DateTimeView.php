@@ -3,6 +3,11 @@
 class DateTimeView
 {
 
+    /**
+     * Display a formatted datetime string
+     *
+     * @return string
+     */
     public function dateTime(): string
     {
         date_default_timezone_set('Europe/Stockholm');

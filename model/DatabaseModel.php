@@ -2,6 +2,8 @@
 
 require_once "config/Config.php";
 
+//TODO: Split functionality from this class to the separate Login/Register models
+
 class DatabaseModel
 {
     public function __construct()
@@ -66,5 +68,17 @@ class DatabaseModel
                 return false;
             }
         }
+    }
+
+    /**
+     * Query the database for users
+     *
+     * @return void
+     */
+    public function queryUser(string $username, string $password)
+    {
+        return mysqli_query(
+            $this->connectToDatabase(),
+            $this->validateUserCredentials($username, $password));
     }
 }
