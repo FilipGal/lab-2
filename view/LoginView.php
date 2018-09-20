@@ -63,7 +63,7 @@ class LoginView
                 $message = $this->feedback->missingUsername();
             } else if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows == 0) {
                 $message = $this->feedback->incorrectCredentials();
-            } else if ($this->session->isLoggedIn() && !$this->keepUserLoggedIn()) {
+            } else if ($this->getLogin() && !$this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedIn();
             } else if ($this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedInSaveCookie();
@@ -82,22 +82,10 @@ class LoginView
      */
     private function generateView(string $message)
     {
-        if ($this->session->isLoggedIn()) {
+        if ($this->getLogin()) {
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
-        }
-    }
-
-    /**
-     * Request the entered username
-     *
-     * @return string the entered username
-     */
-    private function getRequestUserName(): string
-    {
-        if (!empty($_REQUEST[self::$name])) {
-            return $_REQUEST[self::$name];
         }
     }
 
@@ -108,7 +96,7 @@ class LoginView
      * @param [type] $password  the entered password
      * @return void
      */
-    private function attemptLogin()
+    public function attemptLogin()
     {
         if ($this->inputNotEmpty()) {
             if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows > 0) {
@@ -133,14 +121,36 @@ class LoginView
     }
 
     /**
+     * Checks
+     *
+     * @return boolean
+     */
+    public function getLogin(): bool
+    {
+        return $this->session->isLoggedIn();
+    }
+
+    /**
      * Gets the value of the username, if it's entered
      *
      * @return void
      */
-    private function getUsername()
+    public function getUsername()
     {
-        if (isset($_POST[self::$name])) {
-            return $_POST[self::$name];
+        if (isset($_REQUEST[self::$name])) {
+            return $_REQUEST[self::$name];
+        }
+    }
+
+    /**
+     * Gets the value of the password, if it's entered
+     *
+     * @return void
+     */
+    public function getPassword()
+    {
+        if (isset($_REQUEST[self::$password])) {
+            return $_REQUEST[self::$password];
         }
     }
 
@@ -173,31 +183,31 @@ class LoginView
                     <p id="' . self::$messageId . '">' . $message . '</p>
 
                     <label for="' . self::$name . '">Username :</label>
-                    <input 
-                        type="text" 
-                        id="' . self::$name . '" 
-                        name="' . self::$name . '" 
-                        value="' . $this->getUsername() . '" 
+                    <input
+                        type="text"
+                        id="' . self::$name . '"
+                        name="' . self::$name . '"
+                        value="' . $this->getUsername() . '"
                     />
 
                     <label for="' . self::$password . '">Password :</label>
-                    <input 
+                    <input
                     type="password"
-                        id="' . self::$password . '" 
-                        name="' . self::$password . '" 
+                        id="' . self::$password . '"
+                        name="' . self::$password . '"
                     />
 
                     <label for="' . self::$keep . '">Keep me logged in  :</label>
-                    <input 
-                        type="checkbox" 
-                        id="' . self::$keep . '" 
-                        name="' . self::$keep . '" 
+                    <input
+                        type="checkbox"
+                        id="' . self::$keep . '"
+                        name="' . self::$keep . '"
                     />
 
-                    <input 
-                        type="submit" 
-                        name="' . self::$login . '" 
-                        value="login" 
+                    <input
+                        type="submit"
+                        name="' . self::$login . '"
+                        value="login"
                     />
                 </fieldset>
             </form>
