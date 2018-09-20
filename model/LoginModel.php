@@ -19,7 +19,7 @@ class LoginModel
      */
     public function attemptLogin($name, $pass)
     {
-        if (isset($name) && isset($pass)) {
+        if ($name && $pass){
             if ($this->queryUser($name, $pass)->num_rows > 0) {
                 $this->session->setLoggedIn(true);
             } else {
@@ -66,11 +66,11 @@ class LoginModel
     }
 
     /**
-     * Destroys the session, logging the user out
+     * Destroy user session
      *
      * @return void
      */
-    public function logout(string $logout)
+    public function doLogout(string $logout)
     {
         if ($this->checkIfSet($_POST, $logout)) {
             $_SESSION = array();

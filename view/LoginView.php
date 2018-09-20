@@ -31,13 +31,84 @@ class LoginView
      */
     public function renderLoginView()
     {
-        $this->loginModel->logout(self::$logout);
         return $this->provideUserFeedback();
     }
 
     private function inputNotEmpty()
     {
         return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+    }
+
+    /**
+     * Generate a view depending on if the user is logged in or not
+     *
+     * @param [string] $message
+     * @return void
+     */
+    private function generateView(string $message)
+    {
+        if ($this->getLogin()) {
+            return $this->generateLogoutButtonHTML($message);
+        } else {
+            return $this->generateLoginFormHTML($message);
+        }
+    }
+
+    /**
+     * Keeps the user logged in if requested by checking checkbox
+     * //TODO: Set cookie as well
+     * @return bool
+     */
+    private function keepUserLoggedIn(): bool
+    {
+        if (isset($_POST[self::$keep])) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the user is currently logged in or not
+     *
+     * @return boolean
+     */
+    public function getLogin(): bool
+    {
+        return $this->session->isLoggedIn();
+    }
+
+    /**
+     * Get logout value
+     *
+     * @return void
+     */
+    public function getLogout()
+    {
+        return self::$logout;
+    }
+
+    /**
+     * Gets the value of the username, if it's entered
+     *
+     * @return void
+     */
+    public function getUsername()
+    {
+        if (isset($_REQUEST[self::$name])) {
+            return $_REQUEST[self::$name];
+        }
+    }
+
+    /**
+     * Gets the value of the password, if it's entered
+     *
+     * @return void
+     */
+    public function getPassword()
+    {
+        if (isset($_REQUEST[self::$password])) {
+            return $_REQUEST[self::$password];
+        }
     }
 
     /**
@@ -72,73 +143,11 @@ class LoginView
         }
 
         //FIXME: Fix to the message is removed when user press F5
-        if (isset($_POST[self::$logout])) {
+        if (isset($_POST[$this->getLogout()])) {
             $message = $this->feedback->logOut();
         }
 
         return $this->generateView($message);
-    }
-
-    /**
-     * Generate a view depending on if the user is logged in or not
-     *
-     * @param [string] $message
-     * @return void
-     */
-    private function generateView(string $message)
-    {
-        if ($this->getLogin()) {
-            return $this->generateLogoutButtonHTML($message);
-        } else {
-            return $this->generateLoginFormHTML($message);
-        }
-    }
-
-    /**
-     * Keeps the user logged in if requested by checking checkbox
-     * //TODO: Set cookie as well
-     * @return bool
-     */
-    private function keepUserLoggedIn(): bool
-    {
-        if (isset($_POST[self::$keep])) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks
-     *
-     * @return boolean
-     */
-    public function getLogin(): bool
-    {
-        return $this->session->isLoggedIn();
-    }
-
-    /**
-     * Gets the value of the username, if it's entered
-     *
-     * @return void
-     */
-    public function getUsername()
-    {
-        if (isset($_REQUEST[self::$name])) {
-            return $_REQUEST[self::$name];
-        }
-    }
-
-    /**
-     * Gets the value of the password, if it's entered
-     *
-     * @return void
-     */
-    public function getPassword()
-    {
-        if (isset($_REQUEST[self::$password])) {
-            return $_REQUEST[self::$password];
-        }
     }
 
     /**

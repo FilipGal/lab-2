@@ -11,6 +11,11 @@ class LoginController extends BaseController
         $this->loginView = new LoginView();
     }
 
+    /**
+     * Logs user in or out
+     *
+     * @return void
+     */
     public function loginResponse()
     {
         if (!$this->userWantsToLogin()) {
@@ -18,11 +23,28 @@ class LoginController extends BaseController
                 $this->loginView->getUsername(),
                 $this->loginView->getPassword()
             );
+        } else if ($this->userWantsToLogout()) {
+            $this->loginModel->doLogout($this->userWantsToLogout());
         }
     }
 
+    /**
+     * Listen for user request to login
+     *
+     * @return void
+     */
     private function userWantsToLogin()
     {
         return $this->loginView->getLogin();
+    }
+
+    /**
+     * Listen for user request to logout
+     *
+     * @return void
+     */
+    private function userWantsToLogout()
+    {
+        return $this->loginView->getLogout();
     }
 }
