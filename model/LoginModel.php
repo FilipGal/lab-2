@@ -50,9 +50,9 @@ class LoginModel
      *
      * @return void
      */
-    public function logout(string $param)
+    public function logout(string $logout)
     {
-        if ($this->checkIfSet($_POST, $param)) {
+        if ($this->checkIfSet($_POST, $logout)) {
             $_SESSION = array();
             session_destroy();
         }

@@ -59,7 +59,7 @@ class Feedback
      */
     public function logOut(): string
     {
-        return 'Bye bye';
+        return 'Bye bye!';
     }
 
     public function usernameTooShort(): string

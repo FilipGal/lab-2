@@ -31,8 +31,11 @@ class LoginView
      */
     public function renderLoginView()
     {
-        $this->attemptLogin();
-        $this->loginModel->logout(self::$logout);
+        if (!$this->session->isLoggedIn()) {
+            $this->attemptLogin();
+        } else {
+            $this->loginModel->logout(self::$logout);
+        }
         return $this->provideUserFeedback();
     }
 
@@ -59,7 +62,7 @@ class LoginView
                 $message = $this->feedback->missingUsername();
             } else if (!$password) {
                 $message = $this->feedback->missingPassword();
-            } else if (empty(!$username) && empty($password)) {
+            } else if (empty($username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
             } else if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows == 0) {
                 $message = $this->feedback->incorrectCredentials();
@@ -71,6 +74,12 @@ class LoginView
                 $message = '';
             }
         }
+
+        //FIXME: Fix to the message is removed when user press F5
+        if (isset($_POST[self::$logout])) {
+            $message = $this->feedback->logOut();
+        }
+
         return $this->generateView($message);
     }
 
