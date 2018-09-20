@@ -31,11 +31,7 @@ class LoginView
      */
     public function renderLoginView()
     {
-        if (!$this->session->isLoggedIn()) {
-            $this->attemptLogin();
-        } else {
-            $this->loginModel->logout(self::$logout);
-        }
+        $this->loginModel->logout(self::$logout);
         return $this->provideUserFeedback();
     }
 
@@ -64,7 +60,7 @@ class LoginView
                 $message = $this->feedback->missingPassword();
             } else if (empty($username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
-            } else if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows == 0) {
+            } else if ($this->loginModel->queryUser($username, $password)->num_rows == 0) {
                 $message = $this->feedback->incorrectCredentials();
             } else if ($this->getLogin() && !$this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedIn();
@@ -95,24 +91,6 @@ class LoginView
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
-        }
-    }
-
-    /**
-     * Attempt to login
-     *
-     * @param [type] $username the entered username
-     * @param [type] $password  the entered password
-     * @return void
-     */
-    public function attemptLogin()
-    {
-        if ($this->inputNotEmpty()) {
-            if ($this->loginModel->queryUser(self::$name, self::$password)->num_rows > 0) {
-                $this->session->setLoggedIn(true);
-            } else {
-                $this->session->setLoggedOut();
-            }
         }
     }
 

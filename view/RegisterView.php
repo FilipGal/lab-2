@@ -23,7 +23,7 @@ class RegisterView
      */
     public function renderRegisterView(): string
     {
-        $this->registerModel->registerUser(self::$name, self::$password);
+        $this->registerModel->registerUser($this->getUsername(), $this->getPassword());
         return $this->provideUserFeedback();
     }
 
@@ -36,11 +36,14 @@ class RegisterView
     {
         $message = '';
         if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
-            if (strlen($_POST[self::$name]) < 3) {
+            $username = $_POST[self::$name];
+            $password = $_POST[self::$password];
+
+            if (strlen($username) < 3) {
                 $message .= $this->feedback->usernameTooShort() . '<br />';
             }
 
-            if (strlen($_POST[self::$password]) < 6) {
+            if (strlen($password) < 6) {
                 $message .= $this->feedback->passwordTooShort() . '<br />';
             }
 
@@ -48,14 +51,15 @@ class RegisterView
                 $message .= $this->feedback->invalidCharacters() . '<br />';
             }
 
-            if ($_POST[self::$password] != $_POST[self::$passwordRepeat]) {
+            if ($password != $_POST[self::$passwordRepeat]) {
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
 
-            if ($this->registerModel->userExists(self::$name)) {
-            // if ($this->registerModel->registerUser(self::$name, self::$password)) {
+            if ($this->registerModel->userExists($this->getUsername()) == true) {
                 $message .= $this->feedback->userExists();
             }
+        } else {
+            $message = '';
         }
         return $this->generateRegisterFormHTML($message);
     }
@@ -65,7 +69,7 @@ class RegisterView
      *
      * @return bool
      */
-    private function checkIfUnallowedCharacters(): bool
+    public function checkIfUnallowedCharacters(): bool
     {
         return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
@@ -79,6 +83,13 @@ class RegisterView
     {
         if (isset($_POST[self::$name])) {
             return $_POST[self::$name];
+        }
+    }
+
+    private function getPassword()
+    {
+        if (isset($_POST[self::$password])) {
+            return $_POST[self::$password];
         }
     }
 

@@ -1,20 +1,23 @@
 <?php
 
-require_once 'model/LoginModel.php';
+require_once 'BaseController.php';
 require_once 'view/LoginView.php';
 
-class LoginController
+class LoginController extends BaseController
 {
     public function __construct()
     {
+        parent::__construct();
         $this->loginView = new LoginView();
-        $this->loginModel = new LoginModel();
     }
 
     public function loginResponse()
     {
-        if ($this->userWantsToLogin()) {
-            $this->loginView->attemptLogin();
+        if (!$this->userWantsToLogin()) {
+            $this->loginModel->attemptLogin(
+                $this->loginView->getUsername(),
+                $this->loginView->getPassword()
+            );
         }
     }
 

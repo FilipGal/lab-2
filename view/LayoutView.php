@@ -67,7 +67,7 @@ class LayoutView
 
     /**
      * Renders a header depending on if the user is logged in or not
-     * //TODO: Fix this crazy ugly navigation
+     * 
      * @param boolean $isLoggedIn
      * @return string
      */

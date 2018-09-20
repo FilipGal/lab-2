@@ -17,10 +17,10 @@ class MainController
 
     public function render()
     {
+        $this->loginController->loginResponse();
         $this->layoutView->renderLayoutView(
             $this->loginView,
             $this->registerView
         );
-        $this->loginController->loginResponse();
     }
 }

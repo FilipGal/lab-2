@@ -1,11 +1,31 @@
 <?php
 require_once 'DatabaseModel.php';
+require_once 'SessionModel.php';
 
 class LoginModel
 {
     public function __construct()
     {
         $this->db = new DatabaseModel();
+        $this->session = new SessionModel();
+    }
+
+    /**
+     * Attempt to login
+     *
+     * @param [type] $username the entered username
+     * @param [type] $password  the entered password
+     * @return void
+     */
+    public function attemptLogin($name, $pass)
+    {
+        if (isset($name) && isset($pass)) {
+            if ($this->queryUser($name, $pass)->num_rows > 0) {
+                $this->session->setLoggedIn(true);
+            } else {
+                $this->session->setLoggedOut();
+            }
+        }
     }
 
     /**
@@ -17,7 +37,7 @@ class LoginModel
      */
     public function doesUserExist(string $username, string $password)
     {
-        return "SELECT username, password FROM Users WHERE BINARY username='$_POST[$username]' AND BINARY password='$_POST[$password]'";
+        return "SELECT username, password FROM Users WHERE BINARY username='$username' AND BINARY password='$password'";
     }
 
     /**
