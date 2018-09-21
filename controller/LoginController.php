@@ -18,7 +18,7 @@ class LoginController extends BaseController
      */
     public function loginResponse()
     {
-        if (!$this->userWantsToLogin()) {
+        if (!$this->isUserLoggedIn()) {
             $this->loginModel->attemptLogin(
                 $this->loginView->getUsername(),
                 $this->loginView->getPassword()
@@ -31,9 +31,9 @@ class LoginController extends BaseController
     /**
      * Listen for user request to login
      *
-     * @return void
+     * @return bool
      */
-    private function userWantsToLogin()
+    private function isUserLoggedIn(): bool
     {
         return $this->loginView->getLogin();
     }

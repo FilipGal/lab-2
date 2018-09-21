@@ -54,6 +54,14 @@ class LoginView
         }
     }
 
+    public function setCookie()
+    {
+        if ($this->keepUserLoggedIn()) {
+            setcookie('username', $this->getUsername(), time() + 3600);
+            setcookie('password', hash('sha256', $this->getPassword()), time() + 3600);
+        }
+    }
+
     /**
      * Keeps the user logged in if requested by checking checkbox
      * //TODO: Set cookie as well

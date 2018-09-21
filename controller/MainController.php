@@ -19,6 +19,7 @@ class MainController extends Basecontroller
 
     public function render()
     {
+        $this->loginView->setCookie();
         $this->loginController->loginResponse();
         $this->layoutView->renderLayoutView(
             $this->loginView,
