@@ -23,7 +23,7 @@ class RegisterView
      */
     public function renderRegisterView(): string
     {
-        $this->registerModel->registerUser($this->getUsername(), $this->getPassword());
+        $this->registerModel->registerUser($this->getUsername(), $this->getPassword(), $this->getRepeatPassword());
         return $this->provideUserFeedback();
     }
 
@@ -90,6 +90,13 @@ class RegisterView
     {
         if (isset($_POST[self::$password])) {
             return $_POST[self::$password];
+        }
+    }
+
+    private function getRepeatPassword()
+    {
+        if (isset($_POST[self::$passwordRepeat])) {
+            return $_POST[self::$passwordRepeat];
         }
     }
 

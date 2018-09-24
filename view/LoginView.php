@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Feedback.php';
-require_once 'model/DatabaseModel.php';
 require_once 'model/LoginModel.php';
 
 class LoginView
@@ -57,8 +56,8 @@ class LoginView
     public function setCookie()
     {
         if ($this->keepUserLoggedIn()) {
-            setcookie('username', $this->getUsername(), time() + 3600);
-            setcookie('password', hash('sha256', $this->getPassword()), time() + 3600);
+            setcookie(self::$cookieName, $this->getUsername(), time() + 3600);
+            setcookie(self::$cookiePassword, hash('sha256', $this->getPassword()), time() + 3600);
         }
     }
 
@@ -73,6 +72,14 @@ class LoginView
             return true;
         }
         return false;
+    }
+
+    public function getCookieName() {
+        return self::$cookieName;
+    }
+
+    public function getCookiePassword() {
+        return self::$cookiePassword;
     }
 
     /**
