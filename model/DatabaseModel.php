@@ -2,8 +2,6 @@
 
 require_once "config/Config.php";
 
-//TODO: Split functionality from this class to the separate Login/Register models
-
 class DatabaseModel
 {
     public function __construct()

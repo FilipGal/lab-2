@@ -28,21 +28,12 @@ class LoginController extends BaseController
         }
     }
 
-    /**
-     * Listen for user request to login
-     *
-     * @return bool
-     */
+
     private function isUserLoggedIn(): bool
     {
         return $this->loginView->getLogin();
     }
 
-    /**
-     * Listen for user request to logout
-     *
-     * @return void
-     */
     private function userWantsToLogout()
     {
         return $this->loginView->getLogout();

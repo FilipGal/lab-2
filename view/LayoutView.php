@@ -20,6 +20,7 @@ class LayoutView
      */
     public function renderLayoutView(LoginView $v, RegisterView $rv)
     {
+        //TODO: Move navigation to controller
         $page = null;
         $nav = null;
 

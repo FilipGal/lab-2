@@ -28,29 +28,23 @@ class LoginView
      *
      * @return  void BUT writes to standard output and cookies!
      */
-    public function renderLoginView()
+    public function renderLoginView(): string
     {
         return $this->provideUserFeedback();
     }
 
-    private function inputNotEmpty()
-    {
-        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
-    }
-
-    /**
-     * Generate a view depending on if the user is logged in or not
-     *
-     * @param [string] $message
-     * @return void
-     */
-    private function generateView(string $message)
+    private function generateView(string $message): string
     {
         if ($this->getLogin()) {
             return $this->generateLogoutButtonHTML($message);
         } else {
             return $this->generateLoginFormHTML($message);
         }
+    }
+
+    private function inputNotEmpty(): bool
+    {
+        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
     }
 
     public function setCookie()
@@ -63,7 +57,7 @@ class LoginView
 
     /**
      * Keeps the user logged in if requested by checking checkbox
-     * //TODO: Set cookie as well
+     *
      * @return bool
      */
     private function keepUserLoggedIn(): bool
@@ -74,39 +68,26 @@ class LoginView
         return false;
     }
 
-    public function getCookieName() {
+    public function getCookieName()
+    {
         return self::$cookieName;
     }
 
-    public function getCookiePassword() {
+    public function getCookiePassword()
+    {
         return self::$cookiePassword;
     }
 
-    /**
-     * Checks if the user is currently logged in or not
-     *
-     * @return boolean
-     */
     public function getLogin(): bool
     {
         return $this->session->isLoggedIn();
     }
 
-    /**
-     * Get logout value
-     *
-     * @return void
-     */
     public function getLogout()
     {
         return self::$logout;
     }
 
-    /**
-     * Gets the value of the username, if it's entered
-     *
-     * @return void
-     */
     public function getUsername()
     {
         if (isset($_REQUEST[self::$name])) {
@@ -114,11 +95,6 @@ class LoginView
         }
     }
 
-    /**
-     * Gets the value of the password, if it's entered
-     *
-     * @return void
-     */
     public function getPassword()
     {
         if (isset($_REQUEST[self::$password])) {
@@ -126,12 +102,8 @@ class LoginView
         }
     }
 
-    /**
-     * Provide users with the appropriate feedback
-     * //TODO: Clean this mess up...
-     * @return string
-     */
-    private function provideUserFeedback()
+    //TODO: Clean this up
+    private function provideUserFeedback(): string
     {
 
         $message = '';
@@ -185,7 +157,7 @@ class LoginView
      * @param $message, String output message
      * @return  string, BUT writes to standard output!
      */
-    private function generateLoginFormHTML($message): string
+    private function generateLoginFormHTML(string $message): string
     {
         return '
             <form method="post" >

@@ -16,11 +16,6 @@ class RegisterView
         $this->registerModel = new RegisterModel();
     }
 
-    /**
-     * Called after user clicks the register button
-     *
-     * @return void
-     */
     public function renderRegisterView(): string
     {
         $this->registerModel->registerUser($this->getUsername(), $this->getPassword(), $this->getRepeatPassword());
@@ -74,11 +69,6 @@ class RegisterView
         return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
 
-    /**
-     * Gets the value of the username, if it's entered
-     *
-     * @return void
-     */
     private function getUsername()
     {
         if (isset($_POST[self::$name])) {

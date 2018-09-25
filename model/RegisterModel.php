@@ -28,7 +28,7 @@ class RegisterModel
      * @param string $password the entered password
      * @return void
      */
-    public function registerUser($username, $password, $repeatPassword)
+    public function registerUser(string $username, string $password, string $repeatPassword): void
     {
         if ($username && $password) {
             if ($this->userExists($username) == false
@@ -37,8 +37,6 @@ class RegisterModel
                 && $password === $repeatPassword) {
                 $sql = "INSERT INTO Users (username, password) VALUES ('$username', '$password')";
                 mysqli_query($this->db->connectToDatabase(), $sql);
-            } else {
-                return;
             }
         }
     }
