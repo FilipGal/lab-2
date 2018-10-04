@@ -10,17 +10,10 @@ class LoginModel
         $this->session = new SessionModel();
     }
 
-    /**
-     * Attempt to login
-     *
-     * @param [type] $username the entered username
-     * @param [type] $password  the entered password
-     * @return void
-     */
-    public function attemptLogin($name, $pass)
+    public function attemptLogin($username, $password)
     {
-        if ($name && $pass){
-            if ($this->queryUser($name, $pass)->num_rows > 0) {
+        if ($username && $password){
+            if ($this->queryUser($username, $password)->num_rows > 0) {
                 $this->session->setLoggedIn(true);
             } else {
                 $this->session->setLoggedOut();
@@ -28,13 +21,6 @@ class LoginModel
         }
     }
 
-    /**
-     * Check if username and password matches from db query
-     *
-     * @param [type] $username
-     * @param [type] $password
-     * @return void
-     */
     public function doesUserExist(string $username, string $password)
     {
         return "SELECT username, password FROM Users WHERE BINARY username='$username' AND BINARY password='$password'";
@@ -65,11 +51,6 @@ class LoginModel
         return isset($array[$key]) ? $array[$key] : $default;
     }
 
-    /**
-     * Destroy user session
-     *
-     * @return void
-     */
     public function doLogout(string $logout)
     {
         if ($this->checkIfSet($_POST, $logout)) {

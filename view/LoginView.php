@@ -21,30 +21,23 @@ class LoginView
         $this->loginModel = new LoginModel();
     }
 
-    /**
-     * Create HTTP response
-     *
-     * Should be called after a login attempt has been determined
-     *
-     * @return  void BUT writes to standard output and cookies!
-     */
-    public function renderLoginView(): string
-    {
-        return $this->provideUserFeedback();
-    }
-
-    private function generateView(string $message): string
-    {
-        if ($this->getLogin()) {
-            return $this->generateLogoutButtonHTML($message);
-        } else {
-            return $this->generateLoginFormHTML($message);
-        }
-    }
-
     private function inputNotEmpty(): bool
     {
         return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+    }
+
+    public function getUsername()
+    {
+        if (isset($_REQUEST[self::$name])) {
+            return $_REQUEST[self::$name];
+        }
+    }
+
+    public function getPassword()
+    {
+        if (isset($_REQUEST[self::$password])) {
+            return $_REQUEST[self::$password];
+        }
     }
 
     public function setCookie()
@@ -55,11 +48,6 @@ class LoginView
         }
     }
 
-    /**
-     * Keeps the user logged in if requested by checking checkbox
-     *
-     * @return bool
-     */
     private function keepUserLoggedIn(): bool
     {
         if (isset($_POST[self::$keep])) {
@@ -88,33 +76,27 @@ class LoginView
         return self::$logout;
     }
 
-    public function getUsername()
+    private function generateView(string $message): string
     {
-        if (isset($_REQUEST[self::$name])) {
-            return $_REQUEST[self::$name];
-        }
-    }
-
-    public function getPassword()
-    {
-        if (isset($_REQUEST[self::$password])) {
-            return $_REQUEST[self::$password];
+        if ($this->getLogin()) {
+            return $this->generateLogoutButtonHTML($message);
+        } else {
+            return $this->generateLoginFormHTML($message);
         }
     }
 
     //TODO: Clean this up
     private function provideUserFeedback(): string
     {
-
         $message = '';
 
         if ($this->inputNotEmpty()) {
             $username = $_POST[self::$name];
             $password = $_POST[self::$password];
 
-            if (!$username) {
+            if ((empty($username))) {
                 $message = $this->feedback->missingUsername();
-            } else if (!$password) {
+            } else if (empty($password)) {
                 $message = $this->feedback->missingPassword();
             } else if (empty($username) && empty($password)) {
                 $message = $this->feedback->missingUsername();
@@ -137,11 +119,11 @@ class LoginView
         return $this->generateView($message);
     }
 
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  string BUT writes to standard output!
-     */
+    public function renderLoginView(): string
+    {
+        return $this->provideUserFeedback();
+    }
+
     private function generateLogoutButtonHTML(string $message): string
     {
         return '
@@ -152,11 +134,6 @@ class LoginView
         ';
     }
 
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  string, BUT writes to standard output!
-     */
     private function generateLoginFormHTML(string $message): string
     {
         return '

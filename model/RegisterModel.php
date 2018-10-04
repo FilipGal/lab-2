@@ -8,7 +8,7 @@ class RegisterModel
         $this->db = new DatabaseModel();
     }
 
-    public function userExists($username): bool
+    public function doesUserExist($username): bool
     {
         $sql = "SELECT username FROM Users WHERE username='$username'";
         $user = mysqli_query($this->db->connectToDatabase(), $sql);
@@ -21,17 +21,10 @@ class RegisterModel
         }
     }
 
-    /**
-     * Attempt to insert the newly created user into the db
-     *
-     * @param string $username the entered username
-     * @param string $password the entered password
-     * @return void
-     */
-    public function registerUser(string $username, string $password, string $repeatPassword): void
+    public function registerUser($username, $password, $repeatPassword): void
     {
         if ($username && $password) {
-            if ($this->userExists($username) == false
+            if ($this->doesUserExist($username) == false
                 && strlen($username) > 2
                 && strlen($password) > 5
                 && $password === $repeatPassword) {

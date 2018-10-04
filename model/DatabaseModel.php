@@ -9,11 +9,6 @@ class DatabaseModel
         $this->config = new Config();
     }
 
-    /**
-     * Attempt to connect to mysql database
-     *
-     * @return void
-     */
     public function connectToDatabase()
     {
         $mysqli = new mysqli(

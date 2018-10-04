@@ -11,11 +11,6 @@ class LoginController extends BaseController
         $this->loginView = new LoginView();
     }
 
-    /**
-     * Logs user in or out
-     *
-     * @return void
-     */
     public function loginResponse()
     {
         if (!$this->isUserLoggedIn()) {
@@ -27,7 +22,6 @@ class LoginController extends BaseController
             $this->loginModel->doLogout($this->userWantsToLogout());
         }
     }
-
 
     private function isUserLoggedIn(): bool
     {

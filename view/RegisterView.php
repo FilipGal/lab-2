@@ -50,7 +50,7 @@ class RegisterView
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
 
-            if ($this->registerModel->userExists($this->getUsername()) == true) {
+            if ($this->registerModel->doesUserExist($this->getUsername()) == true) {
                 $message .= $this->feedback->userExists();
             }
         } else {
