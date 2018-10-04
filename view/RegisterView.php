@@ -51,15 +51,29 @@ class RegisterView
         }
     }
 
+    private function isPasswordMatching(): bool
+    {
+        return $this->getPassword() == $this->getRepeatPassword();
+    }
+
+    private function isUsernameTooShort(): bool
+    {
+        return strlen($this->getUsername()) < 3;
+    }
+
+    private function isPasswordTooShort(): bool {
+        return strlen($this->getPassword()) < 6;
+    }
+
     private function provideUserFeedback(): string
     {
         $message = '';
         if ($this->inputNotEmpty()) {
-            if (strlen($this->getUsername()) < 3) {
+            if ($this->isUsernameTooShort()) {
                 $message .= $this->feedback->usernameTooShort() . '<br />';
             }
 
-            if (strlen($this->getPassword()) < 6) {
+            if ($this->isPasswordTooShort()) {
                 $message .= $this->feedback->passwordTooShort() . '<br />';
             }
 
@@ -67,12 +81,12 @@ class RegisterView
                 $message .= $this->feedback->invalidCharacters() . '<br />';
             }
 
-            if ($this->getPassword() != $this->getRepeatPassword()) {
+            if (!$this->isPasswordMatching()) {
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
 
             //TODO: Fix this message!
-            // if ($this->registerModel->doesUserExist($this->getUsername()) == true) {
+            // if ($this->registerModel->isUsernameAvailable($this->getUsername()) == true) {
             //     $message .= $this->feedback->userExists();
             // }
         } else {

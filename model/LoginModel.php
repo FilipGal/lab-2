@@ -4,11 +4,12 @@ require_once 'SessionModel.php';
 class LoginModel
 {
     private $db;
+    private $session;
 
-    public function __construct(DatabaseModel $db)
+    public function __construct(DatabaseModel $db, SessionModel $session)
     {
         $this->db = $db;
-        $this->session = new SessionModel();
+        $this->session = $session;
     }
 
     public function attemptLogin($username, $password)
@@ -22,7 +23,7 @@ class LoginModel
         }
     }
 
-    public function doesUserExist(string $username, string $password)
+    private function doesUserExist(string $username, string $password): string
     {
         return "SELECT username, password FROM Users WHERE BINARY username='$username' AND BINARY password='$password'";
     }
