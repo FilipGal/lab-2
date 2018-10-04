@@ -16,17 +16,28 @@ class RegisterView
         $this->registerModel = new RegisterModel();
     }
 
+    private function userWantsToRegister(): bool
+    {
+        return isset(self::$register);
+    }
+
+    private function userRequestsRegister(): void
+    {
+        if ($this->userWantsToRegister()) {
+            $this->registerModel->registerUser(
+                $this->getUsername(),
+                $this->getPassword(),
+                $this->getRepeatPassword()
+            );
+        }
+    }
+
     public function renderRegisterView(): string
     {
-        $this->registerModel->registerUser($this->getUsername(), $this->getPassword(), $this->getRepeatPassword());
+        $this->userRequestsRegister();
         return $this->provideUserFeedback();
     }
 
-    /**
-     * Provides the user with the appropriate feedback depending on the
-     * error that occurs
-     * @return string
-     */
     private function provideUserFeedback(): string
     {
         $message = '';

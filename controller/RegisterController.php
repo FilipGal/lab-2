@@ -5,9 +5,11 @@ require_once "view/RegisterView.php";
 
 class RegisterController extends BaseController
 {
-    public function __construct()
+    private $v;
+
+    public function __construct(RegisterView $v)
     {
         parent::__construct();
-        $this->registerView = new RegisterView();
+        $this->registerView = $v;
     }
 }

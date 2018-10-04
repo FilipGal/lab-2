@@ -1,14 +1,14 @@
 <?php
 
 require_once 'BaseController.php';
-require_once 'view/LoginView.php';
 
 class LoginController extends BaseController
 {
-    public function __construct()
+    private $v;
+    public function __construct(LoginView $v)
     {
         parent::__construct();
-        $this->loginView = new LoginView();
+        $this->loginView = $v;
     }
 
     public function loginResponse()

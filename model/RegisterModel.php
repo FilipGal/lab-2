@@ -8,13 +8,18 @@ class RegisterModel
         $this->db = new DatabaseModel();
     }
 
+    private function userAlreadyExists(object $user): bool
+    {
+        return $user->num_rows > 0;
+    }
+
     public function doesUserExist($username): bool
     {
         $sql = "SELECT username FROM Users WHERE username='$username'";
         $user = mysqli_query($this->db->connectToDatabase(), $sql);
         $usernameTaken = false;
 
-        if ($user->num_rows > 0) {
+        if ($this->userAlreadyExists($user)) {
             return $usernameTaken = true;
         } else {
             return $usernameTaken = false;
