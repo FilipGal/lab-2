@@ -1,11 +1,13 @@
 <?php
 require_once 'LoginController.php';
+require_once 'RegisterController.php';
 
 class MainController
 {
     private $loginView;
     private $layoutView;
     private $registerView;
+
     private $loginModel;
 
     public function __construct(

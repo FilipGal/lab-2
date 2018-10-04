@@ -1,12 +1,13 @@
 <?php
-require_once 'DatabaseModel.php';
 require_once 'SessionModel.php';
 
 class LoginModel
 {
-    public function __construct()
+    private $db;
+
+    public function __construct(DatabaseModel $db)
     {
-        $this->db = new DatabaseModel();
+        $this->db = $db;
         $this->session = new SessionModel();
     }
 
