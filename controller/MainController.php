@@ -1,23 +1,24 @@
 <?php
 require_once 'LoginController.php';
-require_once 'BaseController.php';
 
-class MainController extends BaseController
+class MainController
 {
     private $loginView;
     private $layoutView;
     private $registerView;
+    private $loginModel;
 
     public function __construct(
         LoginView $loginView,
         LayoutView $layoutView,
-        RegisterView $registerView
+        RegisterView $registerView,
+        LoginModel $loginModel
     ) {
-        parent::__construct();
         $this->loginView = $loginView;
         $this->layoutView = $layoutView;
         $this->registerView = $registerView;
-        $this->loginController = new LoginController($loginView);
+
+        $this->loginController = new LoginController($loginView, $loginModel);
     }
 
     public function render()

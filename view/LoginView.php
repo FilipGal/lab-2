@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Feedback.php';
-require_once 'model/LoginModel.php';
 
 class LoginView
 {
@@ -18,7 +17,6 @@ class LoginView
     {
         $this->feedback = new Feedback();
         $this->session = new SessionModel();
-        $this->loginModel = new LoginModel();
     }
 
     private function inputNotEmpty(): bool
@@ -28,15 +26,15 @@ class LoginView
 
     public function getUsername()
     {
-        if (isset($_REQUEST[self::$name])) {
-            return $_REQUEST[self::$name];
+        if (isset($_POST[self::$name])) {
+            return $_POST[self::$name];
         }
     }
 
     public function getPassword()
     {
-        if (isset($_REQUEST[self::$password])) {
-            return $_REQUEST[self::$password];
+        if (isset($_POST[self::$password])) {
+            return $_POST[self::$password];
         }
     }
 
@@ -71,9 +69,18 @@ class LoginView
         return $this->session->isLoggedIn();
     }
 
-    public function getLogout()
+    public function getLogout(): bool
     {
-        return self::$logout;
+        return isset($_POST[self::$logout]);
+    }
+
+    //TODO: What to do with this?
+    public function doLogout()
+    {
+        if ($this->getLogout()) {
+            $_SESSION = array();
+            session_destroy();
+        }
     }
 
     private function generateView(string $message): string
@@ -91,28 +98,22 @@ class LoginView
         $message = '';
 
         if ($this->inputNotEmpty()) {
-            $username = $_POST[self::$name];
-            $password = $_POST[self::$password];
-
-            if ((empty($username))) {
+            if ((empty($this->getUsername()))) {
                 $message = $this->feedback->missingUsername();
-            } else if (empty($password)) {
+            } else if (empty($this->getPassword())) {
                 $message = $this->feedback->missingPassword();
-            } else if (empty($username) && empty($password)) {
+            } else if (empty($this->getUsername()) && empty($this->getPassword())) {
                 $message = $this->feedback->missingUsername();
-            } else if ($this->loginModel->queryUser($username, $password)->num_rows == 0) {
-                $message = $this->feedback->incorrectCredentials();
             } else if ($this->getLogin() && !$this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedIn();
             } else if ($this->keepUserLoggedIn()) {
                 $message = $this->feedback->loggedInSaveCookie();
             } else {
-                $message = '';
+                $message = $this->feedback->incorrectCredentials();
             }
         }
 
-        //FIXME: Fix to the message is removed when user press F5
-        if (isset($_POST[$this->getLogout()])) {
+        if ($this->getLogout()) {
             $message = $this->feedback->logOut();
         }
 

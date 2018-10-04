@@ -1,14 +1,14 @@
 <?php
 
-require_once 'BaseController.php';
-
-class LoginController extends BaseController
+class LoginController
 {
     private $v;
-    public function __construct(LoginView $v)
+    private $m;
+
+    public function __construct(LoginView $v, LoginModel $m)
     {
-        parent::__construct();
         $this->loginView = $v;
+        $this->loginModel = $m;
     }
 
     public function loginResponse()
@@ -19,7 +19,7 @@ class LoginController extends BaseController
                 $this->loginView->getPassword()
             );
         } else if ($this->userWantsToLogout()) {
-            $this->loginModel->doLogout($this->userWantsToLogout());
+            $this->loginView->doLogout();
         }
     }
 
