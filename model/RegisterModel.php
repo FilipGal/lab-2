@@ -1,11 +1,12 @@
 <?php
-require_once 'model/DatabaseModel.php';
 
 class RegisterModel
 {
-    public function __construct()
+    private $db;
+
+    public function __construct(DatabaseModel $db)
     {
-        $this->db = new DatabaseModel();
+        $this->db = $db;
     }
 
     private function userAlreadyExists(object $user): bool

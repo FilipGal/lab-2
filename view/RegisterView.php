@@ -1,6 +1,6 @@
 <?php
 
-require_once 'model/RegisterModel.php';
+require_once 'Feedback.php';
 
 class RegisterView
 {
@@ -13,43 +13,53 @@ class RegisterView
     public function __construct()
     {
         $this->feedback = new Feedback();
-        $this->registerModel = new RegisterModel();
     }
 
-    private function userWantsToRegister(): bool
+    public function userWantsToRegister(): bool
     {
         return isset(self::$register);
     }
 
-    private function userRequestsRegister(): void
+    public function renderRegisterView(): string
     {
-        if ($this->userWantsToRegister()) {
-            $this->registerModel->registerUser(
-                $this->getUsername(),
-                $this->getPassword(),
-                $this->getRepeatPassword()
-            );
+        return $this->provideUserFeedback();
+    }
+
+    private function inputNotEmpty(): bool
+    {
+        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+    }
+
+    public function getUsername()
+    {
+        if (isset($_POST[self::$name])) {
+            return $_POST[self::$name];
         }
     }
 
-    public function renderRegisterView(): string
+    public function getPassword()
     {
-        $this->userRequestsRegister();
-        return $this->provideUserFeedback();
+        if (isset($_POST[self::$password])) {
+            return $_POST[self::$password];
+        }
+    }
+
+    public function getRepeatPassword()
+    {
+        if (isset($_POST[self::$passwordRepeat])) {
+            return $_POST[self::$passwordRepeat];
+        }
     }
 
     private function provideUserFeedback(): string
     {
         $message = '';
-        if (isset($_POST[self::$name]) && isset($_POST[self::$password])) {
-            $username = $_POST[self::$name];
-            $password = $_POST[self::$password];
-
-            if (strlen($username) < 3) {
+        if ($this->inputNotEmpty()) {
+            if (strlen($this->getUsername()) < 3) {
                 $message .= $this->feedback->usernameTooShort() . '<br />';
             }
 
-            if (strlen($password) < 6) {
+            if (strlen($this->getPassword()) < 6) {
                 $message .= $this->feedback->passwordTooShort() . '<br />';
             }
 
@@ -57,55 +67,25 @@ class RegisterView
                 $message .= $this->feedback->invalidCharacters() . '<br />';
             }
 
-            if ($password != $_POST[self::$passwordRepeat]) {
+            if ($this->getPassword() != $this->getRepeatPassword()) {
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
 
-            if ($this->registerModel->doesUserExist($this->getUsername()) == true) {
-                $message .= $this->feedback->userExists();
-            }
+            //TODO: Fix this message!
+            // if ($this->registerModel->doesUserExist($this->getUsername()) == true) {
+            //     $message .= $this->feedback->userExists();
+            // }
         } else {
             $message = '';
         }
         return $this->generateRegisterFormHTML($message);
     }
 
-    /**
-     * Validate user input
-     *
-     * @return bool
-     */
     public function checkIfUnallowedCharacters(): bool
     {
         return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
 
-    private function getUsername()
-    {
-        if (isset($_POST[self::$name])) {
-            return $_POST[self::$name];
-        }
-    }
-
-    private function getPassword()
-    {
-        if (isset($_POST[self::$password])) {
-            return $_POST[self::$password];
-        }
-    }
-
-    private function getRepeatPassword()
-    {
-        if (isset($_POST[self::$passwordRepeat])) {
-            return $_POST[self::$passwordRepeat];
-        }
-    }
-
-    /**
-     * Generate HTML code on the output buffer for the logout button
-     * @param $message, String output message
-     * @return  string, BUT writes to standard output!
-     */
     private function generateRegisterFormHTML(string $message): string
     {
         return '
