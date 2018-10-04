@@ -1,23 +1,17 @@
 <?php
 require_once 'view/DateTimeView.php';
-require_once 'model/SessionModel.php';
 
 class LayoutView
 {
 
-    public function __construct()
+    private $session;
+
+    public function __construct(SessionModel $session)
     {
         $this->date = new DateTimeView();
-        $this->session = new SessionModel();
+        $this->session = $session;
     }
 
-    /**
-     * Renders the layout view
-     *
-     * @param LoginView $v
-     * @param RegisterView $rv
-     * @return void
-     */
     public function renderLayoutView(LoginView $v, RegisterView $rv)
     {
         //TODO: Move navigation to controller
@@ -56,22 +50,11 @@ class LayoutView
     ';
     }
 
-    /**
-     * Render the datetime view
-     *
-     * @return string
-     */
     private function renderDateTime(): string
     {
         return $this->date->dateTime();
     }
 
-    /**
-     * Renders a header depending on if the user is logged in or not
-     * 
-     * @param boolean $isLoggedIn
-     * @return string
-     */
     private function renderIsLoggedIn(): string
     {
         if ($this->session->isLoggedIn()) {

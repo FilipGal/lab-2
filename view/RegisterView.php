@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Feedback.php';
-
 class RegisterView
 {
     private static $register = 'RegisterView::Register';
@@ -10,9 +8,11 @@ class RegisterView
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
 
-    public function __construct()
+    private $feedback;
+
+    public function __construct(Feedback $feedback)
     {
-        $this->feedback = new Feedback();
+        $this->feedback = $feedback;
     }
 
     public function userWantsToRegister(): bool

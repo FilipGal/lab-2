@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Feedback.php';
-
 class LoginView
 {
     private static $login = 'LoginView::Login';
@@ -13,10 +11,13 @@ class LoginView
     private static $keep = 'LoginView::KeepMeLoggedIn';
     private static $messageId = 'LoginView::Message';
 
-    public function __construct()
+    private $feedback;
+    private $session;
+
+    public function __construct(Feedback $feedback, SessionModel $session)
     {
-        $this->feedback = new Feedback();
-        $this->session = new SessionModel();
+        $this->feedback = $feedback;
+        $this->session = $session;
     }
 
     private function inputNotEmpty(): bool

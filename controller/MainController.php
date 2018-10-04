@@ -1,6 +1,4 @@
 <?php
-require_once 'LoginController.php';
-require_once 'RegisterController.php';
 
 class MainController
 {
@@ -11,19 +9,24 @@ class MainController
     private $loginModel;
     private $registerModel;
 
+    private $loginController;
+    private $registerController;
+
     public function __construct(
         LoginView $loginView,
         LayoutView $layoutView,
         RegisterView $registerView,
         LoginModel $loginModel,
-        RegisterModel $registerModel
+        RegisterModel $registerModel,
+        LoginController $loginController,
+        RegisterController $registerController
     ) {
         $this->loginView = $loginView;
         $this->layoutView = $layoutView;
         $this->registerView = $registerView;
 
-        $this->loginController = new LoginController($loginView, $loginModel);
-        $this->registerController = new RegisterController($registerView, $registerModel);
+        $this->loginController = $loginController;
+        $this->registerController = $registerController;
     }
 
     public function render()

@@ -4,11 +4,13 @@ class LoginController
 {
     private $v;
     private $m;
+    private $s;
 
-    public function __construct(LoginView $v, LoginModel $m)
+    public function __construct(LoginView $v, LoginModel $m, SessionModel $s)
     {
         $this->loginView = $v;
         $this->loginModel = $m;
+        $this->sessionModel = $s;
     }
 
     public function loginResponse()
@@ -25,7 +27,7 @@ class LoginController
 
     private function isUserLoggedIn(): bool
     {
-        return $this->loginView->getLogin();
+        return $this->sessionModel->isLoggedIn();
     }
 
     private function userWantsToLogout()

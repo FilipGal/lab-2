@@ -1,9 +1,12 @@
 <?php
 require_once 'controller/MainController.php';
+require_once 'controller/LoginController.php';
+require_once 'controller/RegisterController.php';
 
 require_once 'view/LoginView.php';
 require_once 'view/LayoutView.php';
 require_once 'view/RegisterView.php';
+require_once 'view/Feedback.php';
 
 require_once 'model/DatabaseModel.php';
 require_once 'model/SessionModel.php';
@@ -17,15 +20,27 @@ if (!isset($_SESSION)) {
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-$loginView = new LoginView();
-$layoutView = new LayoutView();
-$registerView = new RegisterView();
-
 $db = new DatabaseModel();
 $sessionModel = new SessionModel();
 $loginModel = new LoginModel($db, $sessionModel);
 $registerModel = new RegisterModel($db);
 
-$c = new MainController($loginView, $layoutView, $registerView, $loginModel, $registerModel);
+$feedback = new Feedback();
+$layoutView = new LayoutView($sessionModel);
+$loginView = new LoginView($feedback, $sessionModel);
+$registerView = new RegisterView($feedback);
+
+$loginController = new LoginController($loginView, $loginModel, $sessionModel);
+$registerController = new RegisterController($registerView, $registerModel);
+
+$c = new MainController(
+    $loginView,
+    $layoutView,
+    $registerView,
+    $loginModel,
+    $registerModel,
+    $loginController,
+    $registerController
+);
 
 $c->render();
