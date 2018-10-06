@@ -4,31 +4,50 @@ require_once 'view/DateTimeView.php';
 class LayoutView
 {
 
-    private $session;
-
-    public function __construct(SessionModel $session)
+    public function __construct()
     {
         $this->date = new DateTimeView();
-        $this->session = $session;
     }
 
-    public function renderLayoutView(LoginView $v, RegisterView $rv)
+    private function userClicksRegisterLink(): bool
     {
-        //TODO: Move navigation to controller
-        $page = null;
-        $nav = null;
+        return isset($_GET['register']);
+    }
 
-        if (isset($_GET['register'])) {
-            $page = $rv->renderRegisterView();
-            $nav = '<a href="?">Back to login</a>';
+    private function renderView(LoginView $v, RegisterView $rv): string
+    {
+        if ($this->userClicksRegisterLink()) {
+            return $rv->renderRegisterView();
         } else {
-            $page = $v->renderLoginView();
-
-            if (!$this->session->isLoggedIn()) {
-                $nav = '<a href="?register">Register a new user</a>';
-            }
+            return $v->renderLoginView();
         }
+    }
 
+    private function navigationLink(bool $isLoggedIn)
+    {
+        if ($this->userClicksRegisterLink()) {
+            return '<a href="?">Back to login</a>';
+        } else if (!$isLoggedIn) {
+            return '<a href="?register">Register a new user</a>';
+        }
+    }
+
+    private function renderDateTime(): string
+    {
+        return $this->date->dateTime();
+    }
+
+    private function renderIsLoggedIn(bool $isLoggedIn): string
+    {
+        if ($isLoggedIn) {
+            return '<h2>Logged in</h2>';
+        } else {
+            return '<h2>Not logged in</h2>';
+        }
+    }
+
+    public function renderLayoutView(LoginView $v, RegisterView $rv, bool $isLoggedIn)
+    {
         echo '<!DOCTYPE html>
         <html>
             <head>
@@ -37,30 +56,16 @@ class LayoutView
             </head>
             <body>
             <h1>Assignment 2</h1>
-            ' . $nav . '
-                ' . $this->renderIsLoggedIn() . '
+            ' . $this->navigationLink($isLoggedIn) . '
+                ' . $this->renderIsLoggedIn($isLoggedIn) . '
 
                 <div class="container">
-                    ' . $page . '
+                    ' . $this->renderView($v, $rv) . '
 
                     ' . $this->renderDateTime() . '
                 </div>
             </body>
         </html>
     ';
-    }
-
-    private function renderDateTime(): string
-    {
-        return $this->date->dateTime();
-    }
-
-    private function renderIsLoggedIn(): string
-    {
-        if ($this->session->isLoggedIn()) {
-            return '<h2>Logged in</h2>';
-        } else {
-            return '<h2>Not logged in</h2>';
-        }
     }
 }

@@ -12,6 +12,8 @@ class MainController
     private $loginController;
     private $registerController;
 
+    private $sessionModel;
+
     public function __construct(
         LoginView $loginView,
         LayoutView $layoutView,
@@ -19,7 +21,8 @@ class MainController
         LoginModel $loginModel,
         RegisterModel $registerModel,
         LoginController $loginController,
-        RegisterController $registerController
+        RegisterController $registerController,
+        SessionModel $sessionModel
     ) {
         $this->loginView = $loginView;
         $this->layoutView = $layoutView;
@@ -27,6 +30,8 @@ class MainController
 
         $this->loginController = $loginController;
         $this->registerController = $registerController;
+
+        $this->sessionModel = $sessionModel;
     }
 
     public function render()
@@ -36,7 +41,8 @@ class MainController
         $this->registerController->registerResponse();
         $this->layoutView->renderLayoutView(
             $this->loginView,
-            $this->registerView
+            $this->registerView,
+            $this->sessionModel->isLoggedIn()
         );
     }
 }

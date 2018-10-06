@@ -15,7 +15,7 @@ class LoginModel
     public function attemptLogin($username, $password)
     {
         if ($username && $password){
-            if ($this->queryUser($username, $password)->num_rows > 0) {
+            if ($this->doesUserExist($username, $password)->num_rows > 0) {
                 $this->session->setLoggedIn(true);
             } else {
                 $this->session->setLoggedOut();
@@ -23,15 +23,15 @@ class LoginModel
         }
     }
 
-    private function doesUserExist(string $username, string $password): string
+    private function queryUser(string $username, string $password): string
     {
         return "SELECT username, password FROM Users WHERE BINARY username='$username' AND BINARY password='$password'";
     }
 
-    public function queryUser(string $username, string $password)
+    public function doesUserExist(string $username, string $password)
     {
         return mysqli_query(
             $this->db->connectToDatabase(),
-            $this->doesUserExist($username, $password));
+            $this->queryUser($username, $password));
     }
 }

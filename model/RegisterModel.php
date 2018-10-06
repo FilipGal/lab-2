@@ -1,8 +1,12 @@
 <?php
 
+
 class RegisterModel
 {
     private $db;
+    private const MIN_LENGTH_USERNAME = 3;
+    private const MIN_LENGTH_PASSWORD = 6;
+
 
     public function __construct(DatabaseModel $db)
     {
@@ -30,8 +34,8 @@ class RegisterModel
     private function isCredentialsValid($username, $password, $repeatPassword): bool
     {
         return $this->isUsernameAvailable($username) == false
-        && strlen($username) > 2
-        && strlen($password) > 5
+        && strlen($username) >= self::MIN_LENGTH_USERNAME
+        && strlen($password) >= self::MIN_LENGTH_PASSWORD
             && $password === $repeatPassword;
     }
 

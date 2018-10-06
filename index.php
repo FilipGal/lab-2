@@ -26,7 +26,7 @@ $loginModel = new LoginModel($db, $sessionModel);
 $registerModel = new RegisterModel($db);
 
 $feedback = new Feedback();
-$layoutView = new LayoutView($sessionModel);
+$layoutView = new LayoutView();
 $loginView = new LoginView($feedback, $sessionModel);
 $registerView = new RegisterView($feedback);
 
@@ -40,7 +40,8 @@ $c = new MainController(
     $loginModel,
     $registerModel,
     $loginController,
-    $registerController
+    $registerController,
+    $sessionModel
 );
 
 $c->render();
