@@ -1,16 +1,17 @@
 <?php
 require_once 'view/DateTimeView.php';
 
-class LayoutView
-{
+class LayoutView {
+    private $v;
+    private $rv;
 
-    public function __construct()
-    {
+    public function __construct(LoginView $v, RegisterView $rv) {
         $this->date = new DateTimeView();
+        $this->v = $v;
+        $this->rv = $rv;
     }
 
-    public function renderLayoutView(LoginView $v, RegisterView $rv, bool $isLoggedIn)
-    {
+    public function renderLayoutView(bool $isLoggedIn) {
         echo '<!DOCTYPE html>
         <html>
             <head>
@@ -23,7 +24,7 @@ class LayoutView
                 ' . $this->renderIsLoggedIn($isLoggedIn) . '
 
                 <div class="container">
-                    ' . $this->renderView($v, $rv) . '
+                    ' . $this->renderView($this->v, $this->rv) . '
 
                     ' . $this->renderDateTime() . '
                 </div>
@@ -32,22 +33,19 @@ class LayoutView
     ';
     }
 
-    private function renderView(LoginView $v, RegisterView $rv): string
-    {
+    private function renderView(): string {
         if ($this->userClicksRegisterLink()) {
-            return $rv->renderRegisterView();
+            return $this->rv->generateRegisterView();
         } else {
-            return $v->renderLoginView();
+            return $this->v->generateLoginView();
         }
     }
 
-    private function userClicksRegisterLink(): bool
-    {
+    private function userClicksRegisterLink(): bool {
         return isset($_GET['register']);
     }
 
-    private function navigationLink(bool $isLoggedIn)
-    {
+    private function navigationLink(bool $isLoggedIn) {
         if ($this->userClicksRegisterLink()) {
             return '<a href="?">Back to login</a>';
         } else if (!$isLoggedIn) {
@@ -55,13 +53,11 @@ class LayoutView
         }
     }
 
-    private function renderDateTime(): string
-    {
+    private function renderDateTime(): string {
         return $this->date->dateTime();
     }
 
-    private function renderIsLoggedIn(bool $isLoggedIn): string
-    {
+    private function renderIsLoggedIn(bool $isLoggedIn): string {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         } else {

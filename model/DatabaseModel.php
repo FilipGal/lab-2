@@ -2,15 +2,13 @@
 
 require_once "config/Config.php";
 
-class DatabaseModel
-{
-    public function __construct()
-    {
+class DatabaseModel {
+
+    public function __construct() {
         $this->config = new Config();
     }
 
-    public function connectToDatabase()
-    {
+    public function connectToDatabase() {
         $mysqli = new mysqli(
             $this->config->dbHost(),
             $this->config->dbUser(),

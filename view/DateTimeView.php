@@ -1,9 +1,8 @@
 <?php
 
-class DateTimeView
-{
-    public function dateTime(): string
-    {
+class DateTimeView {
+
+    public function dateTime(): string {
         date_default_timezone_set('Europe/Stockholm');
         $day = date('l');
         $dayOfMonth = date('jS');
