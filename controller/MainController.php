@@ -2,7 +2,8 @@
 
 namespace Controller;
 
-class MainController {
+class MainController
+{
     private $loginModel;
     private $registerModel;
     private $sessionModel;
@@ -28,7 +29,8 @@ class MainController {
         $this->registerController = $registerController;
     }
 
-    public function render() {
+    public function render()
+    {
         $this->loginController->loginResponse();
         $this->registerController->registerResponse();
         $this->layoutView->renderLayoutView(

@@ -2,7 +2,8 @@
 
 namespace View;
 
-class LoginView {
+class LoginView
+{
     private static $login = 'LoginView::Login';
     private static $logout = 'LoginView::Logout';
     private static $name = 'LoginView::UserName';
@@ -15,62 +16,73 @@ class LoginView {
     private $feedback;
     private $session;
 
-    public function __construct(\View\Feedback $feedback, \Model\SessionModel $session) {
+    public function __construct(\View\Feedback $feedback, \Model\SessionModel $session)
+    {
         $this->feedback = $feedback;
         $this->session = $session;
     }
 
-    public function setCookie() {
+    public function setCookie()
+    {
         if ($this->keepUserLoggedIn()) {
             setcookie(self::$cookieName, $this->getUsername(), time() + 3600);
             setcookie(self::$cookiePassword, hash('sha256', $this->getPassword()), time() + 3600);
         }
     }
 
-    private function keepUserLoggedIn(): bool {
+    private function keepUserLoggedIn(): bool
+    {
         if (isset($_POST[self::$keep])) {
             return true;
         }
         return false;
     }
 
-    public function getUsername() {
+    public function getUsername()
+    {
         if (isset($_POST[self::$name])) {
             return $_POST[self::$name];
         }
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         if (isset($_POST[self::$password])) {
             return $_POST[self::$password];
         }
     }
 
-    public function getCookieName() {
+    public function getCookieName()
+    {
         return self::$cookieName;
     }
 
-    public function getCookiePassword() {
+    public function getCookiePassword()
+    {
         return self::$cookiePassword;
     }
 
     //TODO: What to do with this?
-    public function doLogout() {
+    public function doLogout()
+    {
         if ($this->getLogout()) {
             $_SESSION = array();
             session_destroy();
         }
     }
 
-    public function getLogout(): bool {
+    public function getLogout(): bool
+    {
         return isset($_POST[self::$logout]);
     }
 
-    private function inputNotEmpty(): bool {
+    private function inputNotEmpty(): bool
+    {
         return isset($_POST[self::$name]) && isset($_POST[self::$password]);
     }
 
-    public function generateLoginView(): string {
+    public function generateLoginView(): string
+    {
         if ($this->getLogin()) {
             return $this->generateLogoutButtonHTML();
         } else {
@@ -78,11 +90,13 @@ class LoginView {
         }
     }
 
-    public function getLogin(): bool {
+    public function getLogin(): bool
+    {
         return $this->session->isLoggedIn();
     }
 
-    private function generateLogoutButtonHTML(): string {
+    private function generateLogoutButtonHTML(): string
+    {
         return '
             <form  method="post" >
                 <p id="' . self::$messageId . '">' . $this->displayUserFeedback() . '</p>
@@ -91,7 +105,8 @@ class LoginView {
         ';
     }
 
-    private function generateLoginFormHTML(): string {
+    private function generateLoginFormHTML(): string
+    {
         return '
             <form method="post" >
                 <fieldset>
@@ -130,7 +145,8 @@ class LoginView {
         ';
     }
 
-    private function displayUserFeedback(): string {
+    private function displayUserFeedback(): string
+    {
         $message = '';
 
         if ($this->inputNotEmpty()) {

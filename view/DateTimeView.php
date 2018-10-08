@@ -2,9 +2,11 @@
 
 namespace View;
 
-class DateTimeView {
+class DateTimeView
+{
 
-    public function dateTime(): string {
+    public function dateTime(): string
+    {
         date_default_timezone_set('Europe/Stockholm');
         $day = date('l');
         $dayOfMonth = date('jS');

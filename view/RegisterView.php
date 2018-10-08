@@ -2,7 +2,8 @@
 
 namespace View;
 
-class RegisterView {
+class RegisterView
+{
     private static $register = 'RegisterView::Register';
     private static $name = 'RegisterView::UserName';
     private static $password = 'RegisterView::Password';
@@ -11,11 +12,13 @@ class RegisterView {
 
     private $feedback;
 
-    public function __construct(\View\Feedback $feedback) {
+    public function __construct(\View\Feedback $feedback)
+    {
         $this->feedback = $feedback;
     }
 
-    private function displayUserFeedback(): string {
+    private function displayUserFeedback(): string
+    {
         $message = '';
         if ($this->inputNotEmpty()) {
             if ($this->isUsernameTooShort()) {
@@ -44,45 +47,54 @@ class RegisterView {
         return $message;
     }
 
-    private function inputNotEmpty(): bool {
+    private function inputNotEmpty(): bool
+    {
         return isset($_POST[self::$name]) && isset($_POST[self::$password]);
     }
 
-    private function isPasswordMatching(): bool {
+    private function isPasswordMatching(): bool
+    {
         return $this->getPassword() == $this->getRepeatPassword();
     }
 
-    private function isUsernameTooShort(): bool {
+    private function isUsernameTooShort(): bool
+    {
         return strlen($this->getUsername()) < 3;
     }
 
-    private function isPasswordTooShort(): bool {
+    private function isPasswordTooShort(): bool
+    {
         return strlen($this->getPassword()) < 6;
     }
 
-    public function getUsername() {
+    public function getUsername()
+    {
         if (isset($_POST[self::$name])) {
             return $_POST[self::$name];
         }
     }
 
-    public function getPassword() {
+    public function getPassword()
+    {
         if (isset($_POST[self::$password])) {
             return $_POST[self::$password];
         }
     }
 
-    public function getRepeatPassword() {
+    public function getRepeatPassword()
+    {
         if (isset($_POST[self::$passwordRepeat])) {
             return $_POST[self::$passwordRepeat];
         }
     }
 
-    private function checkIfUnallowedCharacters(): bool {
+    private function checkIfUnallowedCharacters(): bool
+    {
         return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
 
-    public function generateRegisterView(): string {
+    public function generateRegisterView(): string
+    {
         return '
         <h2>Register new user</h2>
             <form method="post" >
@@ -118,7 +130,8 @@ class RegisterView {
         ';
     }
 
-    public function userWantsToRegister(): bool {
+    public function userWantsToRegister(): bool
+    {
         return isset(self::$register);
     }
 }

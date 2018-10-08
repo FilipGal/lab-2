@@ -2,14 +2,17 @@
 
 namespace Model;
 
-class RegisterModel {
+class RegisterModel
+{
     private $db;
 
-    public function __construct(DatabaseModel $db) {
+    public function __construct(DatabaseModel $db)
+    {
         $this->db = $db;
     }
 
-    public function registerUser($username, $password, $repeatPassword): void {
+    public function registerUser($username, $password, $repeatPassword): void
+    {
         if ($username && $password && $repeatPassword) {
             if ($this->isCredentialsValid($username, $password, $repeatPassword)) {
                 $sql = "INSERT INTO Users (username, password) VALUES ('$username', '$password')";
@@ -19,7 +22,8 @@ class RegisterModel {
         }
     }
 
-    private function isCredentialsValid($username, $password, $repeatPassword): bool {
+    private function isCredentialsValid($username, $password, $repeatPassword): bool
+    {
         $minLengthUsername = 3;
         $minLengthPassword = 6;
         return $this->isUsernameAvailable($username) == false
@@ -28,7 +32,8 @@ class RegisterModel {
             && $password === $repeatPassword;
     }
 
-    private function isUsernameAvailable(string $username): bool {
+    private function isUsernameAvailable(string $username): bool
+    {
         $sql = "SELECT username FROM Users WHERE username='$username'";
         $user = mysqli_query($this->db->connectToDatabase(), $sql);
         $usernameTaken = false;
@@ -40,7 +45,8 @@ class RegisterModel {
         }
     }
 
-    private function userAlreadyExists($user): bool {
+    private function userAlreadyExists($user): bool
+    {
         return $user->num_rows > 0;
     }
 }

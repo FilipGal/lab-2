@@ -3,17 +3,20 @@ namespace View;
 
 require_once 'view/DateTimeView.php';
 
-class LayoutView {
+class LayoutView
+{
     private $v;
     private $rv;
 
-    public function __construct(\View\LoginView $v, \View\RegisterView $rv) {
+    public function __construct(\View\LoginView $v, \View\RegisterView $rv)
+    {
         $this->date = new DateTimeView();
         $this->v = $v;
         $this->rv = $rv;
     }
 
-    public function renderLayoutView(bool $isLoggedIn) {
+    public function renderLayoutView(bool $isLoggedIn)
+    {
         echo '<!DOCTYPE html>
         <html>
             <head>
@@ -33,7 +36,8 @@ class LayoutView {
     ';
     }
 
-    private function navigationLink(bool $isLoggedIn) {
+    private function navigationLink(bool $isLoggedIn)
+    {
         if ($this->userClickedRegisterLink()) {
             return '<a href="?">Back to login</a>';
         } else if (!$isLoggedIn) {
@@ -41,7 +45,8 @@ class LayoutView {
         }
     }
 
-    private function renderView(): string {
+    private function renderView(): string
+    {
         if ($this->userClickedRegisterLink()) {
             return $this->rv->generateRegisterView();
         } else {
@@ -49,15 +54,18 @@ class LayoutView {
         }
     }
 
-    private function userClickedRegisterLink(): bool {
+    private function userClickedRegisterLink(): bool
+    {
         return isset($_GET['register']);
     }
 
-    private function renderDateTime(): string {
+    private function renderDateTime(): string
+    {
         return $this->date->dateTime();
     }
 
-    private function renderIsLoggedIn(bool $isLoggedIn): string {
+    private function renderIsLoggedIn(bool $isLoggedIn): string
+    {
         if ($isLoggedIn) {
             return '<h2>Logged in</h2>';
         } else {
