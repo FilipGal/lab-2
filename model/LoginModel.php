@@ -19,7 +19,7 @@ class LoginModel
             if ($this->doesUserExist($username, $password)->num_rows > 0) {
                 $this->session->setLoggedIn(true);
             } else {
-                $this->session->setLoggedOut();
+                $this->session->doLogout();
             }
         }
     }
@@ -35,5 +35,4 @@ class LoginModel
     {
         return "SELECT username, password FROM Users WHERE BINARY username='$username' AND BINARY password='$password'";
     }
-
 }

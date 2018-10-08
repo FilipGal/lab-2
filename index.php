@@ -28,7 +28,7 @@ $registerModel = new \Model\RegisterModel($db);
 
 $feedback = new \view\Feedback();
 $loginView = new \view\LoginView($feedback, $sessionModel);
-$registerView = new \view\RegisterView($feedback);
+$registerView = new \view\RegisterView($feedback, $registerModel);
 $layoutView = new \view\LayoutView($loginView, $registerView);
 
 $loginController = new \Controller\LoginController($loginView, $loginModel, $sessionModel);

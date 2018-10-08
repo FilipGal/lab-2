@@ -4,20 +4,20 @@ namespace Model;
 
 class SessionModel
 {
-    private static $LOGGED_IN_SESSION_LOCATION = __CLASS__ . 'isLoggedIn';
+    private const LOGGED_IN_SESSION_LOCATION = __CLASS__ . 'isLoggedIn';
 
     public function isLoggedIn(): bool
     {
-        return isset($_SESSION[self::$LOGGED_IN_SESSION_LOCATION]);
+        return isset($_SESSION[self::LOGGED_IN_SESSION_LOCATION]);
     }
 
     public function setLoggedIn(bool $isLoggedIn)
     {
-        return $_SESSION[self::$LOGGED_IN_SESSION_LOCATION] = $isLoggedIn;
+        return $_SESSION[self::LOGGED_IN_SESSION_LOCATION] = $isLoggedIn;
     }
 
-    public function setLoggedOut()
+    public function doLogout()
     {
-        unset($_SESSION[self::$LOGGED_IN_SESSION_LOCATION]);
+        unset($_SESSION[self::LOGGED_IN_SESSION_LOCATION]);
     }
 }

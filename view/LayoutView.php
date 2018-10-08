@@ -8,6 +8,8 @@ class LayoutView
     private $v;
     private $rv;
 
+    private $getRegister = 'register';
+
     public function __construct(\View\LoginView $v, \View\RegisterView $rv)
     {
         $this->date = new DateTimeView();
@@ -56,7 +58,7 @@ class LayoutView
 
     private function userClickedRegisterLink(): bool
     {
-        return isset($_GET['register']);
+        return isset($_GET[$this->getRegister]);
     }
 
     private function renderDateTime(): string

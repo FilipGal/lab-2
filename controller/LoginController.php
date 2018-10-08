@@ -23,8 +23,8 @@ class LoginController
                 $this->loginView->getPassword()
             );
             $this->loginView->setCookie();
-        } else if ($this->userWantsToLogout()) {
-            $this->loginView->doLogout();
+        } else {
+            $this->sessionModel->doLogout();
         }
     }
 
