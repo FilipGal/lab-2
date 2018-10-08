@@ -1,5 +1,4 @@
 <?php
-require_once 'SessionModel.php';
 
 class LoginModel
 {
@@ -22,16 +21,17 @@ class LoginModel
             }
         }
     }
+    
+    public function doesUserExist(string $username, string $password): mysqli_result
+    {
+        return mysqli_query(
+            $this->db->connectToDatabase(),
+            $this->queryUser($username, $password));
+    }
 
     private function queryUser(string $username, string $password): string
     {
         return "SELECT username, password FROM Users WHERE BINARY username='$username' AND BINARY password='$password'";
     }
 
-    public function doesUserExist(string $username, string $password)
-    {
-        return mysqli_query(
-            $this->db->connectToDatabase(),
-            $this->queryUser($username, $password));
-    }
 }

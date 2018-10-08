@@ -9,9 +9,27 @@ class LayoutView
         $this->date = new DateTimeView();
     }
 
-    private function userClicksRegisterLink(): bool
+    public function renderLayoutView(LoginView $v, RegisterView $rv, bool $isLoggedIn)
     {
-        return isset($_GET['register']);
+        echo '<!DOCTYPE html>
+        <html>
+            <head>
+                <meta charset="utf-8">
+                <title>Login Example</title>
+            </head>
+            <body>
+            <h1>Assignment 2</h1>
+            ' . $this->navigationLink($isLoggedIn) . '
+                ' . $this->renderIsLoggedIn($isLoggedIn) . '
+
+                <div class="container">
+                    ' . $this->renderView($v, $rv) . '
+
+                    ' . $this->renderDateTime() . '
+                </div>
+            </body>
+        </html>
+    ';
     }
 
     private function renderView(LoginView $v, RegisterView $rv): string
@@ -21,6 +39,11 @@ class LayoutView
         } else {
             return $v->renderLoginView();
         }
+    }
+
+    private function userClicksRegisterLink(): bool
+    {
+        return isset($_GET['register']);
     }
 
     private function navigationLink(bool $isLoggedIn)
@@ -44,28 +67,5 @@ class LayoutView
         } else {
             return '<h2>Not logged in</h2>';
         }
-    }
-
-    public function renderLayoutView(LoginView $v, RegisterView $rv, bool $isLoggedIn)
-    {
-        echo '<!DOCTYPE html>
-        <html>
-            <head>
-                <meta charset="utf-8">
-                <title>Login Example</title>
-            </head>
-            <body>
-            <h1>Assignment 2</h1>
-            ' . $this->navigationLink($isLoggedIn) . '
-                ' . $this->renderIsLoggedIn($isLoggedIn) . '
-
-                <div class="container">
-                    ' . $this->renderView($v, $rv) . '
-
-                    ' . $this->renderDateTime() . '
-                </div>
-            </body>
-        </html>
-    ';
     }
 }

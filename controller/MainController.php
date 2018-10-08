@@ -2,36 +2,34 @@
 
 class MainController
 {
+    private $loginModel;
+    private $registerModel;
+    private $sessionModel;
+    
     private $loginView;
     private $layoutView;
     private $registerView;
 
-    private $loginModel;
-    private $registerModel;
-
     private $loginController;
     private $registerController;
 
-    private $sessionModel;
 
     public function __construct(
+        LoginModel $loginModel,
+        RegisterModel $registerModel,
+        SessionModel $sessionModel,
         LoginView $loginView,
         LayoutView $layoutView,
         RegisterView $registerView,
-        LoginModel $loginModel,
-        RegisterModel $registerModel,
         LoginController $loginController,
-        RegisterController $registerController,
-        SessionModel $sessionModel
+        RegisterController $registerController
     ) {
+        $this->sessionModel = $sessionModel;
         $this->loginView = $loginView;
         $this->layoutView = $layoutView;
         $this->registerView = $registerView;
-
         $this->loginController = $loginController;
         $this->registerController = $registerController;
-
-        $this->sessionModel = $sessionModel;
     }
 
     public function render()

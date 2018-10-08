@@ -34,14 +34,14 @@ $loginController = new LoginController($loginView, $loginModel, $sessionModel);
 $registerController = new RegisterController($registerView, $registerModel);
 
 $c = new MainController(
+    $loginModel,
+    $registerModel,
+    $sessionModel,
     $loginView,
     $layoutView,
     $registerView,
-    $loginModel,
-    $registerModel,
     $loginController,
-    $registerController,
-    $sessionModel
+    $registerController
 );
 
 $c->render();

@@ -20,25 +20,6 @@ class LoginView
         $this->session = $session;
     }
 
-    private function inputNotEmpty(): bool
-    {
-        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
-    }
-
-    public function getUsername()
-    {
-        if (isset($_POST[self::$name])) {
-            return $_POST[self::$name];
-        }
-    }
-
-    public function getPassword()
-    {
-        if (isset($_POST[self::$password])) {
-            return $_POST[self::$password];
-        }
-    }
-
     public function setCookie()
     {
         if ($this->keepUserLoggedIn()) {
@@ -55,6 +36,20 @@ class LoginView
         return false;
     }
 
+    public function getUsername()
+    {
+        if (isset($_POST[self::$name])) {
+            return $_POST[self::$name];
+        }
+    }
+
+    public function getPassword()
+    {
+        if (isset($_POST[self::$password])) {
+            return $_POST[self::$password];
+        }
+    }
+
     public function getCookieName()
     {
         return self::$cookieName;
@@ -63,16 +58,6 @@ class LoginView
     public function getCookiePassword()
     {
         return self::$cookiePassword;
-    }
-
-    public function getLogin(): bool
-    {
-        return $this->session->isLoggedIn();
-    }
-
-    public function getLogout(): bool
-    {
-        return isset($_POST[self::$logout]);
     }
 
     //TODO: What to do with this?
@@ -91,6 +76,16 @@ class LoginView
         } else {
             return $this->generateLoginFormHTML($message);
         }
+    }
+
+    public function getLogin(): bool
+    {
+        return $this->session->isLoggedIn();
+    }
+
+    public function getLogout(): bool
+    {
+        return isset($_POST[self::$logout]);
     }
 
     //TODO: Clean this up
@@ -119,6 +114,11 @@ class LoginView
         }
 
         return $this->generateView($message);
+    }
+
+    private function inputNotEmpty(): bool
+    {
+        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
     }
 
     public function renderLoginView(): string

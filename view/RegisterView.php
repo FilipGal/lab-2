@@ -25,46 +25,6 @@ class RegisterView
         return $this->provideUserFeedback();
     }
 
-    private function inputNotEmpty(): bool
-    {
-        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
-    }
-
-    public function getUsername()
-    {
-        if (isset($_POST[self::$name])) {
-            return $_POST[self::$name];
-        }
-    }
-
-    public function getPassword()
-    {
-        if (isset($_POST[self::$password])) {
-            return $_POST[self::$password];
-        }
-    }
-
-    public function getRepeatPassword()
-    {
-        if (isset($_POST[self::$passwordRepeat])) {
-            return $_POST[self::$passwordRepeat];
-        }
-    }
-
-    private function isPasswordMatching(): bool
-    {
-        return $this->getPassword() == $this->getRepeatPassword();
-    }
-
-    private function isUsernameTooShort(): bool
-    {
-        return strlen($this->getUsername()) < 3;
-    }
-
-    private function isPasswordTooShort(): bool {
-        return strlen($this->getPassword()) < 6;
-    }
-
     private function provideUserFeedback(): string
     {
         $message = '';
@@ -93,6 +53,47 @@ class RegisterView
             $message = '';
         }
         return $this->generateRegisterFormHTML($message);
+    }
+
+    private function inputNotEmpty(): bool
+    {
+        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+    }
+
+    private function isPasswordMatching(): bool
+    {
+        return $this->getPassword() == $this->getRepeatPassword();
+    }
+
+    private function isUsernameTooShort(): bool
+    {
+        return strlen($this->getUsername()) < 3;
+    }
+
+    private function isPasswordTooShort(): bool
+    {
+        return strlen($this->getPassword()) < 6;
+    }
+
+    public function getUsername()
+    {
+        if (isset($_POST[self::$name])) {
+            return $_POST[self::$name];
+        }
+    }
+
+    public function getPassword()
+    {
+        if (isset($_POST[self::$password])) {
+            return $_POST[self::$password];
+        }
+    }
+
+    public function getRepeatPassword()
+    {
+        if (isset($_POST[self::$passwordRepeat])) {
+            return $_POST[self::$passwordRepeat];
+        }
     }
 
     public function checkIfUnallowedCharacters(): bool

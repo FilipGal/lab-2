@@ -11,12 +11,7 @@ class RegisterController
         $this->rm = $m;
     }
 
-    public function registerResponse()
-    {
-        $this->userRequestsRegister();
-    }
-
-    private function userRequestsRegister(): void
+    public function registerResponse(): void
     {
         if ($this->rv->userWantsToRegister()) {
             $this->rm->registerUser(
