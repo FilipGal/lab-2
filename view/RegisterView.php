@@ -1,5 +1,7 @@
 <?php
 
+namespace View;
+
 class RegisterView {
     private static $register = 'RegisterView::Register';
     private static $name = 'RegisterView::UserName';
@@ -9,19 +11,11 @@ class RegisterView {
 
     private $feedback;
 
-    public function __construct(Feedback $feedback) {
+    public function __construct(\View\Feedback $feedback) {
         $this->feedback = $feedback;
     }
 
-    public function userWantsToRegister(): bool {
-        return isset(self::$register);
-    }
-
-    public function generateRegisterView(): string {
-        return $this->provideUserFeedback();
-    }
-
-    private function provideUserFeedback(): string {
+    private function displayUserFeedback(): string {
         $message = '';
         if ($this->inputNotEmpty()) {
             if ($this->isUsernameTooShort()) {
@@ -47,7 +41,7 @@ class RegisterView {
         } else {
             $message = '';
         }
-        return $this->generateRegisterFormHTML($message);
+        return $message;
     }
 
     private function inputNotEmpty(): bool {
@@ -84,17 +78,17 @@ class RegisterView {
         }
     }
 
-    public function checkIfUnallowedCharacters(): bool {
+    private function checkIfUnallowedCharacters(): bool {
         return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
     }
 
-    private function generateRegisterFormHTML(string $message): string {
+    public function generateRegisterView(): string {
         return '
         <h2>Register new user</h2>
             <form method="post" >
                 <fieldset>
                     <legend>Register a new user - Write username and password</legend>
-                    <p id="' . self::$messageId . '">' . $message . '</p>
+                    <p id="' . self::$messageId . '">' . $this->displayUserFeedback() . '</p>
 
                     <label for="' . self::$name . '">Username :</label>
                     <input
@@ -122,5 +116,9 @@ class RegisterView {
                 </fieldset>
             </form>
         ';
+    }
+
+    public function userWantsToRegister(): bool {
+        return isset(self::$register);
     }
 }

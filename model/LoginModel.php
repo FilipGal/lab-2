@@ -1,5 +1,7 @@
 <?php
 
+namespace Model;
+
 class LoginModel {
     private $db;
     private $session;
@@ -19,7 +21,7 @@ class LoginModel {
         }
     }
 
-    public function doesUserExist(string $username, string $password): mysqli_result {
+    public function doesUserExist(string $username, string $password) {
         return mysqli_query(
             $this->db->connectToDatabase(),
             $this->queryUser($username, $password));

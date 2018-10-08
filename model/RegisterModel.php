@@ -1,5 +1,7 @@
 <?php
 
+namespace Model;
+
 class RegisterModel {
     private $db;
 
@@ -38,7 +40,7 @@ class RegisterModel {
         }
     }
 
-    private function userAlreadyExists(mysqli_result $user): bool {
+    private function userAlreadyExists($user): bool {
         return $user->num_rows > 0;
     }
 }

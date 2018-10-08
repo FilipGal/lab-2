@@ -1,11 +1,13 @@
 <?php
+namespace View;
+
 require_once 'view/DateTimeView.php';
 
 class LayoutView {
     private $v;
     private $rv;
 
-    public function __construct(LoginView $v, RegisterView $rv) {
+    public function __construct(\View\LoginView $v, \View\RegisterView $rv) {
         $this->date = new DateTimeView();
         $this->v = $v;
         $this->rv = $rv;
@@ -22,10 +24,8 @@ class LayoutView {
             <h1>Assignment 2</h1>
             ' . $this->navigationLink($isLoggedIn) . '
                 ' . $this->renderIsLoggedIn($isLoggedIn) . '
-
                 <div class="container">
                     ' . $this->renderView($this->v, $this->rv) . '
-
                     ' . $this->renderDateTime() . '
                 </div>
             </body>
@@ -33,24 +33,24 @@ class LayoutView {
     ';
     }
 
+    private function navigationLink(bool $isLoggedIn) {
+        if ($this->userClickedRegisterLink()) {
+            return '<a href="?">Back to login</a>';
+        } else if (!$isLoggedIn) {
+            return '<a href="?register">Register a new user</a>';
+        }
+    }
+
     private function renderView(): string {
-        if ($this->userClicksRegisterLink()) {
+        if ($this->userClickedRegisterLink()) {
             return $this->rv->generateRegisterView();
         } else {
             return $this->v->generateLoginView();
         }
     }
 
-    private function userClicksRegisterLink(): bool {
+    private function userClickedRegisterLink(): bool {
         return isset($_GET['register']);
-    }
-
-    private function navigationLink(bool $isLoggedIn) {
-        if ($this->userClicksRegisterLink()) {
-            return '<a href="?">Back to login</a>';
-        } else if (!$isLoggedIn) {
-            return '<a href="?register">Register a new user</a>';
-        }
     }
 
     private function renderDateTime(): string {

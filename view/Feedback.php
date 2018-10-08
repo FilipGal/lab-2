@@ -1,4 +1,7 @@
 <?php
+
+namespace View;
+
 class Feedback {
 
     public function missingUsername(): string {

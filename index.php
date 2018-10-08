@@ -1,4 +1,5 @@
 <?php
+
 require_once 'model/DatabaseModel.php';
 require_once 'model/SessionModel.php';
 require_once 'model/LoginModel.php';
@@ -20,20 +21,20 @@ if (!isset($_SESSION)) {
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-$db = new DatabaseModel();
-$sessionModel = new SessionModel();
-$loginModel = new LoginModel($db, $sessionModel);
-$registerModel = new RegisterModel($db);
+$db = new \Model\DatabaseModel();
+$sessionModel = new \Model\SessionModel();
+$loginModel = new \Model\LoginModel($db, $sessionModel);
+$registerModel = new \Model\RegisterModel($db);
 
-$feedback = new Feedback();
-$loginView = new LoginView($feedback, $sessionModel);
-$registerView = new RegisterView($feedback);
-$layoutView = new LayoutView($loginView, $registerView);
+$feedback = new \view\Feedback();
+$loginView = new \view\LoginView($feedback, $sessionModel);
+$registerView = new \view\RegisterView($feedback);
+$layoutView = new \view\LayoutView($loginView, $registerView);
 
-$loginController = new LoginController($loginView, $loginModel, $sessionModel);
-$registerController = new RegisterController($registerView, $registerModel);
+$loginController = new \Controller\LoginController($loginView, $loginModel, $sessionModel);
+$registerController = new \Controller\RegisterController($registerView, $registerModel);
 
-$c = new MainController(
+$c = new \Controller\MainController(
     $loginModel,
     $registerModel,
     $sessionModel,

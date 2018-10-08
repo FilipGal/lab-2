@@ -1,5 +1,7 @@
 <?php
 
+namespace Model;
+
 class SessionModel {
     private static $LOGGED_IN_SESSION_LOCATION = __CLASS__ . 'isLoggedIn';
 

@@ -1,15 +1,17 @@
 <?php
 
+namespace Model;
+
 require_once "config/Config.php";
 
 class DatabaseModel {
 
     public function __construct() {
-        $this->config = new Config();
+        $this->config = new \Config\Config();
     }
 
     public function connectToDatabase() {
-        $mysqli = new mysqli(
+        $mysqli = new \MySQLi(
             $this->config->dbHost(),
             $this->config->dbUser(),
             $this->config->dbPass(),

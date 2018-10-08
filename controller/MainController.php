@@ -1,5 +1,7 @@
 <?php
 
+namespace Controller;
+
 class MainController {
     private $loginModel;
     private $registerModel;
@@ -13,12 +15,12 @@ class MainController {
     private $registerController;
 
     public function __construct(
-        LoginModel $loginModel,
-        RegisterModel $registerModel,
-        SessionModel $sessionModel,
-        LayoutView $layoutView,
-        LoginController $loginController,
-        RegisterController $registerController
+        \Model\LoginModel $loginModel,
+        \Model\RegisterModel $registerModel,
+        \Model\SessionModel $sessionModel,
+        \View\LayoutView $layoutView,
+        \Controller\LoginController $loginController,
+        \Controller\RegisterController $registerController
     ) {
         $this->sessionModel = $sessionModel;
         $this->layoutView = $layoutView;
