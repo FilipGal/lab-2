@@ -5,20 +5,20 @@ namespace Controller;
 class LoginController
 {
     private $v;
-    private $m;
+    private $pur;
     private $s;
 
-    public function __construct(\View\LoginView $v, \Model\LoginModel $m, \Model\SessionModel $s)
+    public function __construct(\View\LoginView $v, \Model\PersistentUserRegistry $pur, \Model\SessionModel $s)
     {
         $this->loginView = $v;
-        $this->loginModel = $m;
+        $this->pur = $pur;
         $this->sessionModel = $s;
     }
 
     public function loginResponse()
     {
         if (!$this->isUserLoggedIn()) {
-            $this->loginModel->attemptLogin(
+            $this->pur->attemptLogin(
                 $this->loginView->getUsername(),
                 $this->loginView->getPassword()
             );

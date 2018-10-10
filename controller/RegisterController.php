@@ -5,18 +5,18 @@ namespace Controller;
 class RegisterController
 {
     private $v;
-    private $m;
+    private $pur;
 
-    public function __construct(\View\RegisterView $v, \Model\RegisterModel $m)
+    public function __construct(\View\RegisterView $v, \Model\PersistentUserRegistry $pur)
     {
         $this->rv = $v;
-        $this->rm = $m;
+        $this->pur = $pur;
     }
 
     public function registerResponse(): void
     {
         if ($this->rv->userWantsToRegister()) {
-            $this->rm->registerUser(
+            $this->pur->addUser(
                 $this->rv->getUsername(),
                 $this->rv->getPassword(),
                 $this->rv->getRepeatPassword()

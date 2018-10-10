@@ -11,12 +11,13 @@ class RegisterView
     private static $messageId = 'RegisterView::Message';
 
     private $feedback;
-    private $rm;
+    // private $rm;
 
-    public function __construct(\View\Feedback $feedback, \Model\RegisterModel $rm)
+    public function __construct(\View\Feedback $feedback)
+    // public function __construct(\View\Feedback $feedback, \Model\RegisterModel $rm)
     {
         $this->feedback = $feedback;
-        $this->rm = $rm;
+        // $this->rm = $rm;
     }
 
     private function displayUserFeedback(): string
@@ -40,9 +41,9 @@ class RegisterView
             }
 
             //TODO: Solve this in a better way..!
-            if ($this->rm->isUsernameAvailable($this->getUsername()) == true) {
-                $message .= $this->feedback->userExists();
-            }
+            // if ($this->rm->isUsernameAvailable($this->getUsername()) == true) {
+            //     $message .= $this->feedback->userExists();
+            // }
         } else {
             $message = '';
         }
