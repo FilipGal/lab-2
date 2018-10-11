@@ -32,7 +32,7 @@ class RegisterModel
             && $password === $repeatPassword;
     }
 
-    public function isUsernameAvailable(string $username): bool
+    private function isUsernameAvailable(string $username): bool
     {
         $sql = "SELECT username FROM Users WHERE username='$username'";
         $user = mysqli_query($this->db->connectToDatabase(), $sql);

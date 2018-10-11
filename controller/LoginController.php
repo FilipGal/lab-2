@@ -5,26 +5,26 @@ namespace Controller;
 class LoginController
 {
     private $v;
-    private $pur;
+    private $m;
     private $s;
 
-    public function __construct(\View\LoginView $v, \Model\PersistentUserRegistry $pur, \Model\SessionModel $s)
+    public function __construct(\View\LoginView $v, \Model\LoginModel $m, \Model\SessionModel $s)
     {
         $this->loginView = $v;
-        $this->pur = $pur;
+        $this->loginModel = $m;
         $this->sessionModel = $s;
     }
 
     public function loginResponse()
     {
         if (!$this->isUserLoggedIn()) {
-            $this->pur->attemptLogin(
+            $this->loginModel->attemptLogin(
                 $this->loginView->getUsername(),
                 $this->loginView->getPassword()
             );
             $this->loginView->setCookie();
-        } else {
-            $this->sessionModel->doLogout();
+        } else if ($this->userWantsToLogout()) {
+            $this->loginView->doLogout();
         }
     }
 

@@ -11,13 +11,10 @@ class RegisterView
     private static $messageId = 'RegisterView::Message';
 
     private $feedback;
-    // private $rm;
 
     public function __construct(\View\Feedback $feedback)
-    // public function __construct(\View\Feedback $feedback, \Model\RegisterModel $rm)
     {
         $this->feedback = $feedback;
-        // $this->rm = $rm;
     }
 
     private function displayUserFeedback(): string
@@ -40,8 +37,8 @@ class RegisterView
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
 
-            //TODO: Solve this in a better way..!
-            // if ($this->rm->isUsernameAvailable($this->getUsername()) == true) {
+            //TODO: Fix this message!
+            // if ($this->registerModel->isUsernameAvailable($this->getUsername()) == true) {
             //     $message .= $this->feedback->userExists();
             // }
         } else {

@@ -63,13 +63,13 @@ class LoginView
     }
 
     //TODO: What to do with this?
-    // public function doLogout()
-    // {
-    //     if ($this->getLogout()) {
-    //         $_SESSION = array();
-    //         session_destroy();
-    //     }
-    // }
+    public function doLogout()
+    {
+        if ($this->getLogout()) {
+            $_SESSION = array();
+            session_destroy();
+        }
+    }
 
     public function getLogout(): bool
     {
