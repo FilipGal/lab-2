@@ -24,13 +24,13 @@ class AuthenticationController
         $this->registerModel = $rm;
     }
 
-    public function route()
+    public function route(): void
     {
         $this->loginResponse();
         $this->registerResponse();
     }
 
-    private function loginResponse()
+    private function loginResponse(): void
     {
         if (!$this->isUserLoggedIn()) {
             $this->loginModel->attemptLogin(
@@ -39,7 +39,7 @@ class AuthenticationController
             );
             $this->loginView->setCookie();
         } else if ($this->userWantsToLogout()) {
-            $this->loginView->doLogout();
+            $this->loginModel->doLogout();
         }
     }
 
@@ -48,7 +48,7 @@ class AuthenticationController
         return $this->sessionModel->isLoggedIn();
     }
 
-    private function userWantsToLogout()
+    private function userWantsToLogout(): bool
     {
         return $this->loginView->getLogout();
     }

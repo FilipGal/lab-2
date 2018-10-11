@@ -52,23 +52,14 @@ class LoginView
         }
     }
 
-    public function getCookieName()
+    public function getCookieName(): string
     {
         return self::$cookieName;
     }
 
-    public function getCookiePassword()
+    public function getCookiePassword(): string
     {
         return self::$cookiePassword;
-    }
-
-    //TODO: What to do with this?
-    public function doLogout()
-    {
-        if ($this->getLogout()) {
-            $_SESSION = array();
-            session_destroy();
-        }
     }
 
     public function getLogout(): bool

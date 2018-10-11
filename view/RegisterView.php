@@ -17,56 +17,6 @@ class RegisterView
         $this->feedback = $feedback;
     }
 
-    private function displayUserFeedback(): string
-    {
-        $message = '';
-        if ($this->inputNotEmpty()) {
-            if ($this->isUsernameTooShort()) {
-                $message .= $this->feedback->usernameTooShort() . '<br />';
-            }
-
-            if ($this->isPasswordTooShort()) {
-                $message .= $this->feedback->passwordTooShort() . '<br />';
-            }
-
-            if (!$this->checkIfUnallowedCharacters()) {
-                $message .= $this->feedback->invalidCharacters() . '<br />';
-            }
-
-            if (!$this->isPasswordMatching()) {
-                $message .= $this->feedback->passwordsNotMatching() . '<br />';
-            }
-
-            //TODO: Fix this message!
-            // if ($this->registerModel->isUsernameAvailable($this->getUsername()) == true) {
-            //     $message .= $this->feedback->userExists();
-            // }
-        } else {
-            $message = '';
-        }
-        return $message;
-    }
-
-    private function inputNotEmpty(): bool
-    {
-        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
-    }
-
-    private function isPasswordMatching(): bool
-    {
-        return $this->getPassword() == $this->getRepeatPassword();
-    }
-
-    private function isUsernameTooShort(): bool
-    {
-        return strlen($this->getUsername()) < 3;
-    }
-
-    private function isPasswordTooShort(): bool
-    {
-        return strlen($this->getPassword()) < 6;
-    }
-
     public function getUsername()
     {
         if (isset($_POST[self::$name])) {
@@ -90,7 +40,7 @@ class RegisterView
 
     private function checkIfUnallowedCharacters(): bool
     {
-        return preg_match('/^[a-zA-Z0-9]+$/', $_POST[self::$name]);
+        return strip_tags($_POST[self::$name]);
     }
 
     public function generateRegisterView(): string
@@ -128,6 +78,58 @@ class RegisterView
                 </fieldset>
             </form>
         ';
+    }
+
+    private function displayUserFeedback(): string
+    {
+        $message = '';
+        if ($this->inputNotEmpty()) {
+            if ($this->isUsernameTooShort()) {
+                $message .= $this->feedback->usernameTooShort() . '<br />';
+            }
+
+            if ($this->isPasswordTooShort()) {
+                $message .= $this->feedback->passwordTooShort() . '<br />';
+            }
+
+            if (!$this->checkIfUnallowedCharacters()) {
+                $message .= $this->feedback->invalidCharacters() . '<br />';
+            }
+
+            if (!$this->isPasswordMatching()) {
+                $message .= $this->feedback->passwordsNotMatching() . '<br />';
+            }
+
+            //TODO: Fix this message!
+            // if ($this->registerModel->isUsernameAvailable($this->getUsername()) == true) {
+            //     $message .= $this->feedback->userExists();
+            // }
+        } else {
+            $message = '';
+        }
+        return $message;
+    }
+
+    private function inputNotEmpty(): bool
+    {
+        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+    }
+
+    private function isUsernameTooShort(): bool
+    {
+        $minLengthUsername = 3;
+        return strlen($this->getUsername()) < $minLengthUsername;
+    }
+
+    private function isPasswordTooShort(): bool
+    {
+        $minLengthPassword = 6;
+        return strlen($this->getPassword()) < $minLengthPassword;
+    }
+
+    private function isPasswordMatching(): bool
+    {
+        return $this->getPassword() == $this->getRepeatPassword();
     }
 
     public function userWantsToRegister(): bool

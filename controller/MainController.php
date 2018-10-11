@@ -18,7 +18,7 @@ class MainController
         $this->auth = $auth;
     }
 
-    public function render()
+    public function render(): void
     {
         $this->auth->route();
         $this->layoutView->renderLayoutView($this->sessionModel->isLoggedIn());
