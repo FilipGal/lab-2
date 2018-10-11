@@ -10,9 +10,8 @@ require_once 'view/LoginView.php';
 require_once 'view/RegisterView.php';
 require_once 'view/LayoutView.php';
 
-require_once 'controller/LoginController.php';
-require_once 'controller/RegisterController.php';
 require_once 'controller/MainController.php';
+require_once 'controller/AuthenticationController.php';
 
 if (!isset($_SESSION)) {
     session_start();
@@ -31,16 +30,8 @@ $loginView = new \view\LoginView($feedback, $sessionModel);
 $registerView = new \view\RegisterView($feedback);
 $layoutView = new \view\LayoutView($loginView, $registerView);
 
-$loginController = new \Controller\LoginController($loginView, $loginModel, $sessionModel);
-$registerController = new \Controller\RegisterController($registerView, $registerModel);
+$auth = new \Controller\AuthenticationController($loginView, $loginModel, $sessionModel, $registerView, $registerModel);
 
-$c = new \Controller\MainController(
-    $loginModel,
-    $registerModel,
-    $sessionModel,
-    $layoutView,
-    $loginController,
-    $registerController
-);
+$c = new \Controller\MainController($sessionModel, $layoutView, $auth);
 
 $c->render();
