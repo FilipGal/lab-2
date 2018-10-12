@@ -9,6 +9,7 @@ require_once 'view/Feedback.php';
 require_once 'view/LoginView.php';
 require_once 'view/RegisterView.php';
 require_once 'view/LayoutView.php';
+require_once 'view/SubmissionForm.php';
 
 require_once 'controller/MainController.php';
 require_once 'controller/AuthenticationController.php';
@@ -25,10 +26,11 @@ $sessionModel = new \Model\SessionModel();
 $loginModel = new \Model\LoginModel($db, $sessionModel);
 $registerModel = new \Model\RegisterModel($db);
 
-$feedback = new \view\Feedback();
-$loginView = new \view\LoginView($feedback, $sessionModel);
-$registerView = new \view\RegisterView($feedback);
-$layoutView = new \view\LayoutView($loginView, $registerView);
+$feedback = new \View\Feedback();
+$sf = new \View\SubmissionForm();
+$loginView = new \View\LoginView($feedback, $sessionModel);
+$registerView = new \View\RegisterView($feedback);
+$layoutView = new \View\LayoutView($loginView, $registerView, $sf);
 
 $auth = new \Controller\AuthenticationController($loginView, $loginModel, $sessionModel, $registerView, $registerModel);
 

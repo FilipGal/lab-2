@@ -8,11 +8,12 @@ class LayoutView
     private $v;
     private $rv;
 
-    public function __construct(\View\LoginView $v, \View\RegisterView $rv)
+    public function __construct(\View\LoginView $v, \View\RegisterView $rv, \View\SubmissionForm $sf)
     {
         $this->date = new DateTimeView();
         $this->v = $v;
         $this->rv = $rv;
+        $this->sf = $sf;
     }
 
     public function renderLayoutView(bool $isLoggedIn)
@@ -29,6 +30,8 @@ class LayoutView
                 ' . $this->renderIsLoggedIn($isLoggedIn) . '
                 <div class="container">
                     ' . $this->renderView($this->v, $this->rv) . '
+                    ' . $this->shouldRenderPosts($isLoggedIn) . '
+                    ' . $this->shouldRenderSubmissionForm($isLoggedIn) . '
                     ' . $this->renderDateTime() . '
                 </div>
             </body>
@@ -51,6 +54,20 @@ class LayoutView
             return $this->rv->generateRegisterView();
         } else {
             return $this->v->generateLoginView();
+        }
+    }
+
+    private function shouldRenderPosts(bool $isLoggedIn)
+    {
+        if ($isLoggedIn) {
+            return $this->sf->renderSubmittedPosts();
+        }
+    }
+
+    private function shouldRenderSubmissionForm(bool $isLoggedIn)
+    {
+        if ($isLoggedIn) {
+            return $this->sf->renderSubmissionInput();
         }
     }
 

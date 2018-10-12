@@ -11,3 +11,12 @@ My code has seen many changes during the period of the course. Some notable exam
  Initially I instantiated new objects wherever they were needed, for instance, the SessionModel had new instances in both the RegisterModel and LoginModel. This was later refactored in favor of dependency injection, making so that I only had to instantiate these objects once. It quickly led to a very bloated MainController that took 7-8 arguments.
  
  I am currently in the process of refactoring this.
+
+ ## Status
+ Things that are not implemented from the test cases are the following
+
+ - Login by cookies
+ - Failed login by too old cookies
+ - Failed login by manipulated cookies
+ - Protection from session hijacking
+ - Validation message for newly registered users

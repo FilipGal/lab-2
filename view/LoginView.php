@@ -74,14 +74,14 @@ class LoginView
 
     public function generateLoginView(): string
     {
-        if ($this->getLogin()) {
+        if ($this->isUserLoggedIn()) {
             return $this->generateLogoutButtonHTML();
         } else {
             return $this->generateLoginFormHTML();
         }
     }
 
-    public function getLogin(): bool
+    public function isUserLoggedIn(): bool
     {
         return $this->session->isLoggedIn();
     }
@@ -99,7 +99,7 @@ class LoginView
     private function generateLoginFormHTML(): string
     {
         return '
-            <form method="post" >
+            <form method="post">
                 <fieldset>
                     <legend>Login - enter Username and password</legend>
                     <p id="' . self::$messageId . '">' . $this->displayUserFeedback() . '</p>
@@ -147,7 +147,7 @@ class LoginView
                 return $message = $this->feedback->missingPassword();
             } else if (empty($this->getUsername()) && empty($this->getPassword())) {
                 return $message = $this->feedback->missingUsername();
-            } else if ($this->getLogin() && !$this->keepUserLoggedIn()) {
+            } else if ($this->isUserLoggedIn() && !$this->keepUserLoggedIn()) {
                 return $message = $this->feedback->loggedIn();
             } else if ($this->keepUserLoggedIn()) {
                 return $message = $this->feedback->loggedInSaveCookie();
