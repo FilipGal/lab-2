@@ -8,7 +8,7 @@ class LayoutView
     private $v;
     private $rv;
 
-    public function __construct(\View\LoginView $v, \View\RegisterView $rv, \View\SubmissionForm $sf)
+    public function __construct(\View\LoginView $v, \View\RegisterView $rv, \View\SubmissionView $sf)
     {
         $this->date = new DateTimeView();
         $this->v = $v;
@@ -27,11 +27,10 @@ class LayoutView
             <body>
             <h1>Assignment 2</h1>
             ' . $this->navigationLink($isLoggedIn) . '
-                ' . $this->renderIsLoggedIn($isLoggedIn) . '
+            ' . $this->renderIsLoggedIn($isLoggedIn) . '
                 <div class="container">
                     ' . $this->renderView($this->v, $this->rv) . '
                     ' . $this->shouldRenderPosts($isLoggedIn) . '
-                    ' . $this->shouldRenderSubmissionForm($isLoggedIn) . '
                     ' . $this->renderDateTime() . '
                 </div>
             </body>
@@ -64,12 +63,12 @@ class LayoutView
         }
     }
 
-    private function shouldRenderSubmissionForm(bool $isLoggedIn)
-    {
-        if ($isLoggedIn) {
-            return $this->sf->renderSubmissionInput();
-        }
-    }
+    // private function shouldRenderSubmissionView(bool $isLoggedIn)
+    // {
+    //     if ($isLoggedIn) {
+    //         return $this->sf->renderSubmissionInput();
+    //     }
+    // }
 
     private function userClickedRegisterLink(): bool
     {

@@ -2,10 +2,10 @@
 
 namespace View;
 
-class SubmissionForm
+class SubmissionView
 {
-    private $submissionText = 'Text';
-    private $post = 'Post';
+    private $submission = 'Text';
+    private $post = 'submit';
 
     public function __construct()
     {
@@ -15,19 +15,19 @@ class SubmissionForm
     {
         return '
             <fieldset>
-                <p>Posts will go here</p>
+                <legend><h3>Write something!</h3></legend>
+                ' . $this->renderSubmissionInput() . '
             </fieldset>
         ';
     }
 
-    public function renderSubmissionInput()
+    private function renderSubmissionInput()
     {
         return '
-        <h3>Write something!</h3>
             <form method="post">
                 <input
                     type="text"
-                    name="' . $this->submissionText . '"
+                    name="' . $this->submission . '"
                     value="' . $this->getSubmissionInput() . '"
                 />
                 <br/>
@@ -43,8 +43,15 @@ class SubmissionForm
 
     private function getSubmissionInput()
     {
-        if (isset($_POST[$this->submissionText])) {
-            return $_POST[$this->submissionText];
+        if (isset($_POST[$this->submission])) {
+            return $_POST[$this->submission];
+        }
+    }
+
+    public function submitPost()
+    {
+        if (isset($_POST[$this->post])) {
+            return ($_POST[$this->post]);
         }
     }
 }

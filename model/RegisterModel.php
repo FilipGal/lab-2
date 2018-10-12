@@ -6,7 +6,7 @@ class RegisterModel
 {
     private $db;
 
-    public function __construct(DatabaseModel $db)
+    public function __construct(\Model\DatabaseModel $db)
     {
         $this->db = $db;
     }
@@ -16,7 +16,7 @@ class RegisterModel
         if ($username && $password && $repeatPassword) {
             if ($this->isCredentialsValid($username, $password, $repeatPassword)) {
                 $sql = "INSERT INTO Users (username, password) VALUES ('$username', '$password')";
-                mysqli_query($this->db->connectToDatabase(), $sql);
+                mysqli_query($this->db->connect(), $sql);
                 header("Location: /?");
             }
         }
@@ -35,7 +35,7 @@ class RegisterModel
     private function isUsernameAvailable(string $username): bool
     {
         $sql = "SELECT username FROM Users WHERE username='$username'";
-        $user = mysqli_query($this->db->connectToDatabase(), $sql);
+        $user = mysqli_query($this->db->connect(), $sql);
         $usernameTaken = false;
 
         if ($this->userAlreadyExists($user)) {

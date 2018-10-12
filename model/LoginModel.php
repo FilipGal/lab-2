@@ -7,7 +7,7 @@ class LoginModel
     private $db;
     private $session;
 
-    public function __construct(DatabaseModel $db, SessionModel $session)
+    public function __construct(\Model\DatabaseModel $db, \Model\SessionModel $session)
     {
         $this->db = $db;
         $this->session = $session;
@@ -27,7 +27,7 @@ class LoginModel
     public function correctUserCredentials(string $username, string $password)
     {
         return mysqli_query(
-            $this->db->connectToDatabase(),
+            $this->db->connect(),
             $this->queryUser($username, $password))->num_rows > 0;
     }
 

@@ -12,9 +12,9 @@ class DatabaseModel
         $this->config = new \Config\Config();
     }
 
-    public function connectToDatabase()
+    public function connect()
     {
-        $mysqli = new \MySQLi(
+        $mysqli = new \MYSQLi(
             $this->config->dbHost(),
             $this->config->dbUser(),
             $this->config->dbPass(),

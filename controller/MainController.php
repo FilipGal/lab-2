@@ -11,11 +11,13 @@ class MainController
     public function __construct(
         \Model\SessionModel $sessionModel,
         \View\LayoutView $layoutView,
-        \Controller\AuthenticationController $auth
+        \Controller\AuthenticationController $auth,
+        \Controller\SubmissionController $sc
     ) {
         $this->sessionModel = $sessionModel;
         $this->layoutView = $layoutView;
         $this->auth = $auth;
+        $this->sc = $sc;
     }
 
     public function render(): void
