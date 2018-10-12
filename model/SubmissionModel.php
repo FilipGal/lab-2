@@ -9,7 +9,7 @@ class SubmissionModel
     public function __construct(\Model\DatabaseModel $db)
     {
         $this->db = $db;
-        echo $this->displayPosts();
+        $this->displayPosts();
     }
 
     public function postSubmission()
@@ -30,11 +30,10 @@ class SubmissionModel
     {
         $query = \mysqli_query($this->db->connect(), "SELECT * FROM posts");
         $posts = array();
-        while ($row = \mysqli_fetch_array($query)) {
-            $posts = $row;
+        while ($row = $query->fetch_array()) {
+            $posts[] = $row['post'];
         }
-
-        var_dump($posts);
+        return $posts;
     }
 
 }

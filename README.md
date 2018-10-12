@@ -20,3 +20,39 @@ My code has seen many changes during the period of the course. Some notable exam
  - Failed login by manipulated cookies
  - Protection from session hijacking
  - Validation message for newly registered users
+
+ # Additional Requirements
+
+ I will attempt to add some simple CRUD functionality where users can post, as well as read other users posts. These posts should only be able to be edited and/or deleted by the author of the post.
+
+ ## Additional Requirements - Use cases
+
+ ### UC1 Submit post
+1. Starts when a user is authenticated and logged in
+2. System presents user with the logged in screen together with the option to submit posts
+3. User enters her post and clicks submit
+4. System handles the request and submits the post
+
+#### Alternate scenarios
+4. i. The post is too long and an error is returned 
+
+ ### UC2 Edit post
+1. Starts when a user is authenticated and logged in
+2. System presents user with the logged in screen together with the option to submit posts
+3. User navigates to a post she has made and clicks the edit button
+4. System presents the user with another input box where the user can enter a new text
+5. User enters the new text and clicks "Save"
+6. System updates the text and rerenders it accordingly.
+
+#### Alternate scenarios
+6. i. The post is too long and an error is returned 
+
+ ### UC3 Delete post
+1. Starts when a user is authenticated and logged in
+2. System presents user with the logged in screen together with the option to submit posts
+3. User navigates to a post she has made and clicks the delete button
+4. System handles the request and deletes the post
+
+### UC4 View post
+1. Starts when a user is authenticated and logged in
+2. System presents user with the logged in screen together with all the posts that have been made
