@@ -26,11 +26,16 @@ class SubmissionView
 
     private function renderPosts()
     {
-        $posts = array();
-        foreach ($this->sm->fetchPosts() as $key) {
-            $posts[] = '<fieldset>' . $key . '</fieldset>';
+        $comment = "";
+        foreach ($this->sm->fetchPosts() as $post) {
+            $comment .= '
+                <fieldset>
+                    <legend><h3>' . $post->getAuthor() . '</h3></legend>
+                    ' . $post->getPost() . '
+                </fieldset>
+            ';
         }
-        return implode('<br/>', $posts);
+        return $comment;
     }
 
     private function renderSubmissionInput()

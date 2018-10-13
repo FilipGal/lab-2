@@ -2,6 +2,8 @@
 
 namespace Model;
 
+require_once 'Comment.php';
+
 class SubmissionModel
 {
     private $db;
@@ -28,10 +30,10 @@ class SubmissionModel
     public function fetchPosts()
     {
         $query = \mysqli_query($this->db->connect(), "SELECT * FROM posts");
-        $posts = array();
-        while ($row = $query->fetch_array()) {
-            $posts[] = $row['post'];
+        $comment = array();
+        while ($result = $query->fetch_assoc()) {
+            array_push($comment, new \Model\Comment($result['author'], $result['post']));
         }
-        return $posts;
+        return $comment;
     }
 }
