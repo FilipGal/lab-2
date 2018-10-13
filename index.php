@@ -30,7 +30,7 @@ $registerModel = new \Model\RegisterModel($db);
 $submissionModel = new \Model\SubmissionModel($db);
 
 $feedback = new \View\Feedback();
-$sv = new \View\SubmissionView();
+$sv = new \View\SubmissionView($submissionModel);
 $loginView = new \View\LoginView($feedback, $sessionModel);
 $registerView = new \View\RegisterView($feedback);
 $layoutView = new \View\LayoutView($loginView, $registerView, $sv);

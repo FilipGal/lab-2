@@ -9,7 +9,6 @@ class SubmissionModel
     public function __construct(\Model\DatabaseModel $db)
     {
         $this->db = $db;
-        $this->displayPosts();
     }
 
     public function postSubmission()
@@ -26,7 +25,7 @@ class SubmissionModel
         return "INSERT INTO posts (post) VALUES ('$post')";
     }
 
-    public function displayPosts()
+    public function fetchPosts()
     {
         $query = \mysqli_query($this->db->connect(), "SELECT * FROM posts");
         $posts = array();
@@ -35,5 +34,4 @@ class SubmissionModel
         }
         return $posts;
     }
-
 }

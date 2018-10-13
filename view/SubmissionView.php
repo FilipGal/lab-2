@@ -7,8 +7,9 @@ class SubmissionView
     private $submission = 'Text';
     private $post = 'submit';
 
-    public function __construct()
+    public function __construct(\Model\SubmissionModel $sm)
     {
+        $this->sm = $sm;
     }
 
     public function renderSubmittedPosts()
@@ -16,9 +17,20 @@ class SubmissionView
         return '
             <fieldset>
                 <legend><h3>Write something!</h3></legend>
+                ' . $this->renderPosts() . '
+                <br/>
                 ' . $this->renderSubmissionInput() . '
             </fieldset>
         ';
+    }
+
+    private function renderPosts()
+    {
+        $posts = array();
+        foreach ($this->sm->fetchPosts() as $key) {
+            $posts[] = '<fieldset>' . $key . '</fieldset>';
+        }
+        return implode('<br/>', $posts);
     }
 
     private function renderSubmissionInput()
