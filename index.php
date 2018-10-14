@@ -36,7 +36,7 @@ $registerView = new \View\RegisterView($feedback);
 $layoutView = new \View\LayoutView($loginView, $registerView, $sv);
 
 $auth = new \Controller\AuthenticationController($loginView, $loginModel, $sessionModel, $registerView, $registerModel);
-$sc = new \Controller\SubmissionController($sv, $submissionModel);
+$sc = new \Controller\SubmissionController($sv, $submissionModel, $sessionModel);
 
 $c = new \Controller\MainController($sessionModel, $layoutView, $auth, $sc);
 

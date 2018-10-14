@@ -57,7 +57,7 @@ class SubmissionView
         ';
     }
 
-    public function getSubmissionInput()
+    public function getPostValue()
     {
         if (isset($_POST[$this->submission])) {
             return $_POST[$this->submission];

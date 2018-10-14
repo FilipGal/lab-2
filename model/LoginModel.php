@@ -18,6 +18,7 @@ class LoginModel
         if ($username && $password) {
             if ($this->correctUserCredentials($username, $password)) {
                 $this->session->setLoggedIn(true);
+                $this->session->setUsername($username);
             } else {
                 $this->session->setLoggedOut();
             }
