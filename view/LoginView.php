@@ -4,14 +4,14 @@ namespace View;
 
 class LoginView
 {
-    private static $login = 'LoginView::Login';
-    private static $logout = 'LoginView::Logout';
-    private static $name = 'LoginView::UserName';
-    private static $password = 'LoginView::Password';
-    private static $cookieName = 'LoginView::CookieName';
-    private static $cookiePassword = 'LoginView::CookiePassword';
-    private static $keep = 'LoginView::KeepMeLoggedIn';
-    private static $messageId = 'LoginView::Message';
+    private $login = 'LoginView::Login';
+    private $logout = 'LoginView::Logout';
+    private $name = 'LoginView::UserName';
+    private $password = 'LoginView::Password';
+    private $cookieName = 'LoginView::CookieName';
+    private $cookiePassword = 'LoginView::CookiePassword';
+    private $keep = 'LoginView::KeepMeLoggedIn';
+    private $messageId = 'LoginView::Message';
 
     private $feedback;
     private $session;
@@ -25,14 +25,14 @@ class LoginView
     public function setCookie()
     {
         if ($this->keepUserLoggedIn()) {
-            setcookie(self::$cookieName, $this->getUsername(), time() + 3600);
-            setcookie(self::$cookiePassword, hash('sha256', $this->getPassword()), time() + 3600);
+            setcookie($this->cookieName, $this->getUsername(), time() + 3600);
+            setcookie($this->cookiePassword, hash('sha256', $this->getPassword()), time() + 3600);
         }
     }
 
     private function keepUserLoggedIn(): bool
     {
-        if (isset($_POST[self::$keep])) {
+        if (isset($_POST[$this->keep])) {
             return true;
         }
         return false;
@@ -40,36 +40,36 @@ class LoginView
 
     public function getUsername()
     {
-        if (isset($_POST[self::$name])) {
-            return $_POST[self::$name];
+        if (isset($_POST[$this->name])) {
+            return $_POST[$this->name];
         }
     }
 
     public function getPassword()
     {
-        if (isset($_POST[self::$password])) {
-            return $_POST[self::$password];
+        if (isset($_POST[$this->password])) {
+            return $_POST[$this->password];
         }
     }
 
     public function getCookieName(): string
     {
-        return self::$cookieName;
+        return $this->cookieName;
     }
 
     public function getCookiePassword(): string
     {
-        return self::$cookiePassword;
+        return $this->cookiePassword;
     }
 
     public function getLogout(): bool
     {
-        return isset($_POST[self::$logout]);
+        return isset($_POST[$this->logout]);
     }
 
     private function inputNotEmpty(): bool
     {
-        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+        return isset($_POST[$this->name]) && isset($_POST[$this->password]);
     }
 
     public function generateLoginView(): string
@@ -90,8 +90,8 @@ class LoginView
     {
         return '
             <form  method="post" >
-                <p id="' . self::$messageId . '">' . $this->displayUserFeedback() . '</p>
-                <input type="submit" name="' . self::$logout . '" value="logout"/>
+                <p id="' . $this->messageId . '">' . $this->displayUserFeedback() . '</p>
+                <input type="submit" name="' . $this->logout . '" value="logout"/>
             </form>
         ';
     }
@@ -102,33 +102,33 @@ class LoginView
             <form method="post">
                 <fieldset>
                     <legend>Login - enter Username and password</legend>
-                    <p id="' . self::$messageId . '">' . $this->displayUserFeedback() . '</p>
+                    <p id="' . $this->messageId . '">' . $this->displayUserFeedback() . '</p>
 
-                    <label for="' . self::$name . '">Username :</label>
+                    <label for="' . $this->name . '">Username :</label>
                     <input
                         type="text"
-                        id="' . self::$name . '"
-                        name="' . self::$name . '"
+                        id="' . $this->name . '"
+                        name="' . $this->name . '"
                         value="' . $this->getUsername() . '"
                     />
 
-                    <label for="' . self::$password . '">Password :</label>
+                    <label for="' . $this->password . '">Password :</label>
                     <input
                     type="password"
-                        id="' . self::$password . '"
-                        name="' . self::$password . '"
+                        id="' . $this->password . '"
+                        name="' . $this->password . '"
                     />
 
-                    <label for="' . self::$keep . '">Keep me logged in  :</label>
+                    <label for="' . $this->keep . '">Keep me logged in  :</label>
                     <input
                         type="checkbox"
-                        id="' . self::$keep . '"
-                        name="' . self::$keep . '"
+                        id="' . $this->keep . '"
+                        name="' . $this->keep . '"
                     />
 
                     <input
                         type="submit"
-                        name="' . self::$login . '"
+                        name="' . $this->login . '"
                         value="login"
                     />
                 </fieldset>

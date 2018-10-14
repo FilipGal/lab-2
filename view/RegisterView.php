@@ -4,11 +4,11 @@ namespace View;
 
 class RegisterView
 {
-    private static $register = 'RegisterView::Register';
-    private static $name = 'RegisterView::UserName';
-    private static $password = 'RegisterView::Password';
-    private static $passwordRepeat = 'RegisterView::PasswordRepeat';
-    private static $messageId = 'RegisterView::Message';
+    private $register = 'RegisterView::Register';
+    private $name = 'RegisterView::UserName';
+    private $password = 'RegisterView::Password';
+    private $passwordRepeat = 'RegisterView::PasswordRepeat';
+    private $messageId = 'RegisterView::Message';
 
     private $feedback;
 
@@ -19,28 +19,28 @@ class RegisterView
 
     public function getUsername()
     {
-        if (isset($_POST[self::$name])) {
-            return $_POST[self::$name];
+        if (isset($_POST[$this->name])) {
+            return $_POST[$this->name];
         }
     }
 
     public function getPassword()
     {
-        if (isset($_POST[self::$password])) {
-            return $_POST[self::$password];
+        if (isset($_POST[$this->password])) {
+            return $_POST[$this->password];
         }
     }
 
     public function getRepeatPassword()
     {
-        if (isset($_POST[self::$passwordRepeat])) {
-            return $_POST[self::$passwordRepeat];
+        if (isset($_POST[$this->passwordRepeat])) {
+            return $_POST[$this->passwordRepeat];
         }
     }
 
     private function checkIfUnallowedCharacters(): bool
     {
-        return strip_tags($_POST[self::$name]);
+        return strip_tags($_POST[$this->name]);
     }
 
     public function generateRegisterView(): string
@@ -50,31 +50,31 @@ class RegisterView
             <form method="post" >
                 <fieldset>
                     <legend>Register a new user - Write username and password</legend>
-                    <p id="' . self::$messageId . '">' . $this->displayUserFeedback() . '</p>
+                    <p id="' . $this->messageId . '">' . $this->displayUserFeedback() . '</p>
 
-                    <label for="' . self::$name . '">Username :</label>
+                    <label for="' . $this->name . '">Username :</label>
                     <input
                         type="text"
-                        id="' . self::$name . '"
-                        name="' . self::$name . '"
+                        id="' . $this->name . '"
+                        name="' . $this->name . '"
                         value="' . $this->getUsername() . '"
                     />
                     <br />
-                    <label for="' . self::$password . '">Password :</label>
+                    <label for="' . $this->password . '">Password :</label>
                     <input
                         type="password"
-                        id="' . self::$password . '"
-                        name="' . self::$password . '"
+                        id="' . $this->password . '"
+                        name="' . $this->password . '"
                     />
                     <br />
-                    <label for="' . self::$passwordRepeat . '">Repeat password :</label>
+                    <label for="' . $this->passwordRepeat . '">Repeat password :</label>
                     <input
                         type="password"
-                        id="' . self::$passwordRepeat . '"
-                        name="' . self::$passwordRepeat . '"
+                        id="' . $this->passwordRepeat . '"
+                        name="' . $this->passwordRepeat . '"
                     />
                     <br />
-                    <input type="submit" name="' . self::$register . '" value="Register" />
+                    <input type="submit" name="' . $this->register . '" value="Register" />
                 </fieldset>
             </form>
         ';
@@ -112,7 +112,7 @@ class RegisterView
 
     private function inputNotEmpty(): bool
     {
-        return isset($_POST[self::$name]) && isset($_POST[self::$password]);
+        return isset($_POST[$this->name]) && isset($_POST[$this->password]);
     }
 
     private function isUsernameTooShort(): bool
@@ -134,6 +134,6 @@ class RegisterView
 
     public function userWantsToRegister(): bool
     {
-        return isset(self::$register);
+        return isset($this->register);
     }
 }
