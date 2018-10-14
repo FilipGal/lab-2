@@ -22,6 +22,7 @@ class MainController
 
     public function render(): void
     {
+        $this->sc->submitPost();
         $this->auth->route();
         $this->layoutView->renderLayoutView($this->sessionModel->isLoggedIn());
     }

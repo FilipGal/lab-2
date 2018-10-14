@@ -45,7 +45,6 @@ class SubmissionView
                 <input
                     type="text"
                     name="' . $this->submission . '"
-                    value="' . $this->getSubmissionInput() . '"
                 />
                 <br/>
 
@@ -58,14 +57,14 @@ class SubmissionView
         ';
     }
 
-    private function getSubmissionInput()
+    public function getSubmissionInput()
     {
         if (isset($_POST[$this->submission])) {
             return $_POST[$this->submission];
         }
     }
 
-    public function submitPost()
+    public function userRequestPost()
     {
         if (isset($_POST[$this->post])) {
             return ($_POST[$this->post]);

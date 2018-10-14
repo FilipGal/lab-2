@@ -13,18 +13,19 @@ class SubmissionModel
         $this->db = $db;
     }
 
-    public function postSubmission()
+    public function postSubmission(string $post)
     {
-        try {
-            return mysqli_query($this->db->connect(), $this->insertPostQuery());
-        } catch (\Exception $e) {
-            return $e;
-        }
+        return mysqli_query($this->db->connect(), $this->insertPostQuery($post));
+
     }
 
     private function insertPostQuery(string $post)
     {
-        return "INSERT INTO posts (post) VALUES ('$post')";
+        if (strlen($post) > 75) {
+            throw new \StringTooLongException();
+        } else {
+            return "INSERT INTO posts (post) VALUES ('$post')";
+        }
     }
 
     public function fetchPosts()

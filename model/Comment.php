@@ -2,9 +2,11 @@
 
 namespace Model;
 
+require_once 'exceptions/StringTooLongException.php';
+
 class Comment
 {
-    public function __construct(string $author, string $post)
+    public function __construct($author, $post)
     {
         $this->author = $author;
         $this->post = $post;
