@@ -15,8 +15,9 @@ class SubmissionModel
 
     public function postSubmission(string $post, string $author)
     {
-        return mysqli_query($this->db->connect(), $this->insertPostQuery($post, $author));
-
+        mysqli_query($this->db->connect(), $this->insertPostQuery($post, $author));
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit();
     }
 
     private function insertPostQuery(string $post, string $author)

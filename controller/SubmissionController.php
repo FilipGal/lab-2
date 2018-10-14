@@ -11,13 +11,12 @@ class SubmissionController
         $this->session = $session;
     }
 
-    //TODO: Fix Post/Redirect/Get
     public function submitPost()
     {
         if ($this->sv->userRequestPost()) {
             {
                 try {
-                    $this->sm->postSubmission($this->sv->getPostValue(), $this->session->getUsername());
+                    $this->sm->postSubmission($this->sv->getPostValue(), $this->session->getLoggedInUsername());
                 } catch (\StringTooLongException $e) {
                     return $e;
                 }
