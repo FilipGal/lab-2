@@ -1,10 +1,70 @@
 # 1dv610 - Code quality
  A login module that is focused on code quality
+ 
+## How to install
+- Clone the repo
+- Open the solution, add a config folder, and add a file called `Config.php`
+- Create a class with the following structure:
+
+```php
+<?php
+
+namespace Config;
+
+class Config
+{
+    private $host = 'your host';
+    private $user = 'your user';
+    private $pass = 'your password';
+    private $name = 'your name';
+
+    public function dbHost()
+    {
+        return $this->host;
+    }
+
+    public function dbUser()
+    {
+        return $this->user;
+    }
+
+    public function dbPass()
+    {
+        return $this->pass;
+    }
+
+    public function dbName()
+    {
+        return $this->name;
+    }
+}
+```
+
+You also need to add two tables to your database, these tables should be named `Users` and `posts` (notice the difference in uppercase). You can do this manually in your mysql database or by running the CLI commands:
+
+Create user table:
+```sql
+CREATE TABLE `Users` (
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(300) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+Create post table:
+```sql
+CREATE TABLE `posts` (
+  `post` VARCHAR(75) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT
+  `author` VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
  ## Observations
 During the period that I have been working on the login module, a lot has changed. Initially, there was no focus on the quality of the code, other than to make stuff work, things that needed to be working were things such as:
 - Register new users
 - Log in with existing users
 - Validate user credentials and give appropriate feedback.
+
  ### Changes
 My code has seen many changes during the period of the course. Some notable examples:
 - Dependency injection
