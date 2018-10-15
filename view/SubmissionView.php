@@ -12,19 +12,19 @@ class SubmissionView
         $this->sm = $sm;
     }
 
-    public function renderSubmittedPosts()
+    public function renderSubmittedPosts(): string
     {
         return '
             <fieldset>
                 <legend><h3>Write something!</h3></legend>
-                ' . $this->renderPosts() . '
-                <br/>
                 ' . $this->renderSubmissionInput() . '
+                <br/>
+                ' . $this->renderPosts() . '
             </fieldset>
         ';
     }
 
-    private function renderPosts()
+    private function renderPosts(): string
     {
         $comment = "";
         foreach ($this->sm->fetchPosts() as $post) {
@@ -38,7 +38,7 @@ class SubmissionView
         return $comment;
     }
 
-    private function renderSubmissionInput()
+    private function renderSubmissionInput(): string
     {
         return '
             <form method="post">
@@ -57,7 +57,7 @@ class SubmissionView
         ';
     }
 
-    public function getPostValue()
+    public function getSubmissionValue()
     {
         if (isset($_POST[$this->submission])) {
             return $_POST[$this->submission];

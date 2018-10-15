@@ -7,20 +7,21 @@ require_once 'Comment.php';
 class SubmissionModel
 {
     private $db;
+    private $requestUri = 'REQUEST_URI';
 
     public function __construct(\Model\DatabaseModel $db)
     {
         $this->db = $db;
     }
 
-    public function postSubmission(string $post, string $author)
+    public function postSubmission(string $post, string $author): void
     {
-        mysqli_query($this->db->connect(), $this->insertPostQuery($post, $author));
-        header("Location: " . $_SERVER['REQUEST_URI']);
+        mysqli_query($this->db->connect(), $this->insertSubmissionQuery($post, $author));
+        header("Location: " . $_SERVER[$this->requestUri]);
         exit();
     }
 
-    private function insertPostQuery(string $post, string $author)
+    private function insertSubmissionQuery(string $post, string $author): string
     {
         if (strlen($post) > 75) {
             throw new \StringTooLongException();
@@ -29,7 +30,7 @@ class SubmissionModel
         }
     }
 
-    public function fetchPosts()
+    public function fetchPosts(): array
     {
         $query = \mysqli_query($this->db->connect(), "SELECT * FROM posts");
         $comment = array();

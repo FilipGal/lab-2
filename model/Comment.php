@@ -6,18 +6,21 @@ require_once 'exceptions/StringTooLongException.php';
 
 class Comment
 {
-    public function __construct($author, $post)
+    private $author;
+    private $post;
+
+    public function __construct(string $author, string $post)
     {
         $this->author = $author;
         $this->post = $post;
     }
 
-    public function getAuthor()
+    public function getAuthor(): string
     {
         return $this->author;
     }
 
-    public function getPost()
+    public function getPost(): string
     {
         return $this->post;
     }
