@@ -1,7 +1,14 @@
-# 1dv610 - Code quality
- A login module that is focused on code quality
+# Introduction
+ A login module that is focused on code quality, done in the course 1dv610 by Filip Gal.
+
+1. General information
+2. Observations
+3. Use cases
+4. Reflection
+
+#   1. General information
  
-## How to install
+##  1.1 How to install
 - Clone the repo
 - Open the solution, add a config folder, and add a file called `Config.php`
 - Create a class with the following structure:
@@ -59,13 +66,13 @@ CREATE TABLE `posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
- ## Observations
+ #  2. Observations
 During the period that I have been working on the login module, a lot has changed. Initially, there was no focus on the quality of the code, other than to make stuff work, things that needed to be working were things such as:
 - Register new users
 - Log in with existing users
 - Validate user credentials and give appropriate feedback.
 
- ### Changes
+ ## 2.1 Changes
 My code has seen many changes during the period of the course. Some notable examples:
 - Dependency injection
 
@@ -73,7 +80,7 @@ Initially I instantiated new objects wherever they were needed, for instance, th
 
 The dependency injection madness in the main controller was somewhat remedied by adding a combined authentication controller, the same ammount of injected objects remain the same, but is abstracted away from the main controller.
 
- ## Status
+ ## 2.2 Status
  Things that are not implemented from the test cases are the following
 
  - Login by cookies
@@ -84,11 +91,11 @@ The dependency injection madness in the main controller was somewhat remedied by
  - UC2
  - UC3
 
- # Additional Requirements
+ #  3. Additional Requirements
 
  I will attempt to add some simple CRUD functionality where users can post, as well as read other users posts. These posts should only be able to be edited and/or deleted by the author of the post.
 
- ## Additional Requirements - Use cases
+ ## 3.1 Additional Requirements - Use cases
 
  ### UC1 Submit post
 1. Starts when a user is authenticated and logged in
@@ -119,3 +126,12 @@ The dependency injection madness in the main controller was somewhat remedied by
 ### UC4 View post
 1. Starts when a user is authenticated and logged in
 2. System presents user with the logged in screen together with all the posts that have been made
+
+#   4. Reflection
+I think I have done a fairly good job in fulfilling much of the examination criteria for this assignment. There are however some requirements I feel like I have not implemented, the most prominent being the `Errors are handled well (Validation, Exceptions)` criteria. The only exception I handle is if a users post is too long in UC1, also, this isn't presented to the user. If I had more time I would improve this exception and how it's handled, I would also add more error handling during the registration of a new user, as well as logging in with a registered user.
+
+Another thing that I would've tried to implement, given more time, would be a specific class for a user, like the `Comments` class, where I could more easily create exceptions for all types of errors that can occur.
+
+I still don't like the dependency injection madness that occurs in `Index.php`, I was thinking about implementing a factory to handle these injections, but it would still result in the same code, and it would still be incredibly arduous to test.
+
+One key takeaway that I have is that it feels like you can always refactor more, but it is important to know when to stop. I spent a good week just refactoring, before I forced myself to let it go and instead start implementing the extra use cases. I feel like the login- & register model could be improved a lot as it feels like there some code that is not directly duplicated there, but that could be refactored in a way that made it fit both use cases.
