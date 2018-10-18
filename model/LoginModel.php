@@ -42,5 +42,4 @@ class LoginModel
         $_SESSION = array();
         session_destroy();
     }
-
 }

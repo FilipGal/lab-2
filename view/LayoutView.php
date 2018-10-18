@@ -63,13 +63,6 @@ class LayoutView
         }
     }
 
-    // private function shouldRenderSubmissionView(bool $isLoggedIn)
-    // {
-    //     if ($isLoggedIn) {
-    //         return $this->sf->renderSubmissionInput();
-    //     }
-    // }
-
     private function userClickedRegisterLink(): bool
     {
         return isset($_GET['register']);

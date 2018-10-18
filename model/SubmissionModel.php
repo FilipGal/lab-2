@@ -8,6 +8,7 @@ class SubmissionModel
 {
     private $db;
     private $requestUri = 'REQUEST_URI';
+    private const MAX_LENGTH_SUBMISSION = 75;
 
     public function __construct(\Model\DatabaseModel $db)
     {
@@ -17,13 +18,18 @@ class SubmissionModel
     public function postSubmission(string $post, string $author): void
     {
         mysqli_query($this->db->connect(), $this->insertSubmissionQuery($post, $author));
+        $this->postRedirect();
+    }
+
+    private function postRedirect()
+    {
         header("Location: " . $_SERVER[$this->requestUri]);
         exit();
     }
 
     private function insertSubmissionQuery(string $post, string $author): string
     {
-        if (strlen($post) > 75) {
+        if (strlen($post) > self::MAX_LENGTH_SUBMISSION) {
             throw new \StringTooLongException();
         } else {
             return "INSERT INTO posts (post, author) VALUES ('$post', '$author')";

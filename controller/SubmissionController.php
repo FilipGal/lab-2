@@ -16,7 +16,7 @@ class SubmissionController
         if ($this->sv->userRequestPost()) {
             {
                 try {
-                    $this->sm->postSubmission($this->sv->getSubmissionValue(), $this->session->getLoggedInUsername());
+                    $this->sm->postSubmission($this->sv->getSubmissionValue(), $this->session->getCurrentUsername());
                 } catch (\StringTooLongException $e) {
                     return $e;
                 }
