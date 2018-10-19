@@ -22,36 +22,6 @@ class LoginView
         $this->session = $session;
     }
 
-    public function setCookie()
-    {
-        if ($this->keepUserLoggedIn()) {
-            setcookie($this->cookieName, $this->getUsername(), time() + 3600);
-            setcookie($this->cookiePassword, hash('sha256', $this->getPassword()), time() + 3600);
-        }
-    }
-
-    private function keepUserLoggedIn(): bool
-    {
-        if (isset($_POST[$this->keep])) {
-            return true;
-        }
-        return false;
-    }
-
-    public function getUsername()
-    {
-        if (isset($_POST[$this->name])) {
-            return $_POST[$this->name];
-        }
-    }
-
-    public function getPassword()
-    {
-        if (isset($_POST[$this->password])) {
-            return $_POST[$this->password];
-        }
-    }
-
     public function getCookieName(): string
     {
         return $this->cookieName;
@@ -60,16 +30,6 @@ class LoginView
     public function getCookiePassword(): string
     {
         return $this->cookiePassword;
-    }
-
-    public function getLogout(): bool
-    {
-        return isset($_POST[$this->logout]);
-    }
-
-    private function inputNotEmpty(): bool
-    {
-        return isset($_POST[$this->name]) && isset($_POST[$this->password]);
     }
 
     public function generateLoginView(): string
@@ -81,16 +41,11 @@ class LoginView
         }
     }
 
-    public function isUserLoggedIn(): bool
-    {
-        return $this->session->isLoggedIn();
-    }
-
     private function generateLogoutButtonHTML(): string
     {
         return '
             <form  method="post" >
-                <p id="' . $this->messageId . '">' . $this->displayUserFeedback() . '</p>
+                <p id="' . $this->messageId . '">' . $this->displayLoginFeedback() . '</p>
                 <input type="submit" name="' . $this->logout . '" value="logout"/>
             </form>
         ';
@@ -102,7 +57,7 @@ class LoginView
             <form method="post">
                 <fieldset>
                     <legend>Login - enter Username and password</legend>
-                    <p id="' . $this->messageId . '">' . $this->displayUserFeedback() . '</p>
+                    <p id="' . $this->messageId . '">' . $this->displayLoginFeedback() . '</p>
 
                     <label for="' . $this->name . '">Username :</label>
                     <input
@@ -136,7 +91,7 @@ class LoginView
         ';
     }
 
-    private function displayUserFeedback(): string
+    private function displayLoginFeedback(): string
     {
         $message = '';
 
@@ -160,5 +115,55 @@ class LoginView
             return $message = $this->feedback->logOut();
         }
         return $message;
+    }
+
+    public function isUserLoggedIn(): bool
+    {
+        return $this->session->isLoggedIn();
+    }
+
+    private function inputNotEmpty(): bool
+    {
+        return isset($_POST[$this->name]) && isset($_POST[$this->password]);
+    }
+
+    public function getUsername()
+    {
+        if (isset($_POST[$this->name])) {
+            return $_POST[$this->name];
+        }
+    }
+
+    public function getPassword()
+    {
+        if (isset($_POST[$this->password])) {
+            return $_POST[$this->password];
+        }
+    }
+
+    public function getLogout(): bool
+    {
+        return isset($_POST[$this->logout]);
+    }
+
+    public function setCookie()
+    {
+        if ($this->keepUserLoggedIn()) {
+            setcookie($this->cookieName, $this->getUsername(), $this->setCookieOneDay());
+            setcookie($this->cookiePassword, hash('sha256', $this->getPassword()), $this->setCookieOneDay());
+        }
+    }
+
+    private function keepUserLoggedIn(): bool
+    {
+        if (isset($_POST[$this->keep])) {
+            return true;
+        }
+        return false;
+    }
+
+    private function setCookieOneDay()
+    {
+        return time() + 86400;
     }
 }

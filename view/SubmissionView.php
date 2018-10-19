@@ -24,20 +24,6 @@ class SubmissionView
         ';
     }
 
-    private function renderPosts(): string
-    {
-        $comment = "";
-        foreach ($this->sm->fetchPosts() as $post) {
-            $comment .= '
-                <fieldset>
-                    <legend><h3>' . $post->getAuthor() . '</h3></legend>
-                    ' . $post->getPost() . '
-                </fieldset>
-            ';
-        }
-        return $comment;
-    }
-
     private function renderSubmissionInput(): string
     {
         return '
@@ -55,6 +41,20 @@ class SubmissionView
                 />
             </form>
         ';
+    }
+
+    private function renderPosts(): string
+    {
+        $comment = "";
+        foreach ($this->sm->fetchPosts() as $post) {
+            $comment .= '
+                <fieldset>
+                    <legend><h3>' . $post->getAuthor() . '</h3></legend>
+                    ' . $post->getPost() . '
+                </fieldset>
+            ';
+        }
+        return $comment;
     }
 
     public function getSubmissionValue()

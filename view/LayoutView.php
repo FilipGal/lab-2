@@ -47,6 +47,15 @@ class LayoutView
         }
     }
 
+    private function renderIsLoggedIn(bool $isLoggedIn): string
+    {
+        if ($isLoggedIn) {
+            return '<h2>Logged in</h2>';
+        } else {
+            return '<h2>Not logged in</h2>';
+        }
+    }
+
     private function renderView(): string
     {
         if ($this->userClickedRegisterLink()) {
@@ -63,22 +72,14 @@ class LayoutView
         }
     }
 
-    private function userClickedRegisterLink(): bool
-    {
-        return isset($_GET['register']);
-    }
-
     private function renderDateTime(): string
     {
         return $this->date->dateTime();
     }
 
-    private function renderIsLoggedIn(bool $isLoggedIn): string
+    private function userClickedRegisterLink(): bool
     {
-        if ($isLoggedIn) {
-            return '<h2>Logged in</h2>';
-        } else {
-            return '<h2>Not logged in</h2>';
-        }
+        return isset($_GET['register']);
     }
+
 }
