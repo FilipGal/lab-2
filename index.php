@@ -26,7 +26,7 @@ ini_set('display_errors', 'On');
 $db = new \Model\DatabaseModel();
 $sm = new \Model\SessionModel();
 $lm = new \Model\LoginModel($db, $sm);
-$drm = new \Model\RegisterModel($db);
+$rm = new \Model\RegisterModel($db);
 $subm = new \Model\SubmissionModel($db);
 
 $feedback = new \View\Feedback();
@@ -35,7 +35,7 @@ $lv = new \View\LoginView($feedback, $sm);
 $rv = new \View\RegisterView($feedback);
 $layout = new \View\LayoutView($lv, $rv, $sv);
 
-$auth = new \Controller\AuthenticationController($lv, $lm, $sm, $rv, $drm);
+$auth = new \Controller\AuthenticationController($lv, $lm, $sm, $rv, $rm);
 $sc = new \Controller\SubmissionController($sv, $subm, $sm);
 
 $c = new \Controller\MainController($sm, $layout, $auth, $sc);
