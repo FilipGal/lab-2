@@ -24,20 +24,20 @@ error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
 $db = new \Model\DatabaseModel();
-$sessionModel = new \Model\SessionModel();
-$loginModel = new \Model\LoginModel($db, $sessionModel);
-$registerModel = new \Model\RegisterModel($db);
-$submissionModel = new \Model\SubmissionModel($db);
+$sm = new \Model\SessionModel();
+$lm = new \Model\LoginModel($db, $sm);
+$drm = new \Model\RegisterModel($db);
+$subm = new \Model\SubmissionModel($db);
 
 $feedback = new \View\Feedback();
-$sv = new \View\SubmissionView($submissionModel);
-$loginView = new \View\LoginView($feedback, $sessionModel);
-$registerView = new \View\RegisterView($feedback);
-$layoutView = new \View\LayoutView($loginView, $registerView, $sv);
+$sv = new \View\SubmissionView($subm);
+$lv = new \View\LoginView($feedback, $sm);
+$rv = new \View\RegisterView($feedback);
+$layout = new \View\LayoutView($lv, $rv, $sv);
 
-$auth = new \Controller\AuthenticationController($loginView, $loginModel, $sessionModel, $registerView, $registerModel);
-$sc = new \Controller\SubmissionController($sv, $submissionModel, $sessionModel);
+$auth = new \Controller\AuthenticationController($lv, $lm, $sm, $rv, $drm);
+$sc = new \Controller\SubmissionController($sv, $subm, $sm);
 
-$c = new \Controller\MainController($sessionModel, $layoutView, $auth, $sc);
+$c = new \Controller\MainController($sm, $layout, $auth, $sc);
 
 $c->render();
