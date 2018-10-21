@@ -38,6 +38,11 @@ class RegisterView
         }
     }
 
+    private function checkIfUnallowedCharacters(): bool
+    {
+        return strip_tags($_POST[$this->name]);
+    }
+
     public function generateRegisterView(): string
     {
         return '
@@ -45,7 +50,7 @@ class RegisterView
             <form method="post" >
                 <fieldset>
                     <legend>Register a new user - Write username and password</legend>
-                    <p id="' . $this->messageId . '">' . $this->displayRegisterFeedback() . '</p>
+                    <p id="' . $this->messageId . '">' . $this->displayUserFeedback() . '</p>
 
                     <label for="' . $this->name . '">Username :</label>
                     <input
@@ -75,7 +80,7 @@ class RegisterView
         ';
     }
 
-    private function displayRegisterFeedback(): string
+    private function displayUserFeedback(): string
     {
         $message = '';
         if ($this->inputNotEmpty()) {
@@ -94,6 +99,11 @@ class RegisterView
             if (!$this->isPasswordMatching()) {
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
+
+            //TODO: Fix this message!
+            // if ($this->registerModel->isUsernameAvailable($this->getUsername()) == true) {
+            //     $message .= $this->feedback->userExists();
+            // }
         } else {
             $message = '';
         }
@@ -115,11 +125,6 @@ class RegisterView
     {
         $minLengthPassword = 6;
         return strlen($this->getPassword()) < $minLengthPassword;
-    }
-
-    private function checkIfUnallowedCharacters(): bool
-    {
-        return strip_tags($_POST[$this->name]);
     }
 
     private function isPasswordMatching(): bool

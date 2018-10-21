@@ -27,7 +27,7 @@ class SessionModel
         return $_SESSION[$this->LOGGED_IN_SESSION_USERNAME] = $username;
     }
 
-    public function getCurrentUsername(): bool
+    public function getCurrentUsername()
     {
         if (isset($_SESSION[$this->LOGGED_IN_SESSION_USERNAME])) {
             return $_SESSION[$this->LOGGED_IN_SESSION_USERNAME];
