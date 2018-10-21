@@ -17,32 +17,6 @@ class RegisterView
         $this->feedback = $feedback;
     }
 
-    public function getUsername()
-    {
-        if (isset($_POST[$this->name])) {
-            return $_POST[$this->name];
-        }
-    }
-
-    public function getPassword()
-    {
-        if (isset($_POST[$this->password])) {
-            return $_POST[$this->password];
-        }
-    }
-
-    public function getRepeatPassword()
-    {
-        if (isset($_POST[$this->passwordRepeat])) {
-            return $_POST[$this->passwordRepeat];
-        }
-    }
-
-    private function checkIfUnallowedCharacters(): bool
-    {
-        return strip_tags($_POST[$this->name]);
-    }
-
     public function generateRegisterView(): string
     {
         return '
@@ -99,11 +73,6 @@ class RegisterView
             if (!$this->isPasswordMatching()) {
                 $message .= $this->feedback->passwordsNotMatching() . '<br />';
             }
-
-            //TODO: Fix this message!
-            // if ($this->registerModel->isUsernameAvailable($this->getUsername()) == true) {
-            //     $message .= $this->feedback->userExists();
-            // }
         } else {
             $message = '';
         }
@@ -130,6 +99,32 @@ class RegisterView
     private function isPasswordMatching(): bool
     {
         return $this->getPassword() == $this->getRepeatPassword();
+    }
+
+    private function checkIfUnallowedCharacters(): bool
+    {
+        return strip_tags($_POST[$this->name]);
+    }
+
+    public function getUsername()
+    {
+        if (isset($_POST[$this->name])) {
+            return $_POST[$this->name];
+        }
+    }
+
+    public function getPassword()
+    {
+        if (isset($_POST[$this->password])) {
+            return $_POST[$this->password];
+        }
+    }
+
+    public function getRepeatPassword()
+    {
+        if (isset($_POST[$this->passwordRepeat])) {
+            return $_POST[$this->passwordRepeat];
+        }
     }
 
     public function userWantsToRegister(): bool

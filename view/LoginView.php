@@ -30,62 +30,6 @@ class LoginView
         }
     }
 
-    private function keepUserLoggedIn(): bool
-    {
-        if (isset($_POST[$this->keep])) {
-            return true;
-        }
-        return false;
-    }
-
-    public function getUsername()
-    {
-        if (isset($_POST[$this->name])) {
-            return $_POST[$this->name];
-        }
-    }
-
-    public function getPassword()
-    {
-        if (isset($_POST[$this->password])) {
-            return $_POST[$this->password];
-        }
-    }
-
-    public function getCookieName(): string
-    {
-        return $this->cookieName;
-    }
-
-    public function getCookiePassword(): string
-    {
-        return $this->cookiePassword;
-    }
-
-    public function getLogout(): bool
-    {
-        return isset($_POST[$this->logout]);
-    }
-
-    private function inputNotEmpty(): bool
-    {
-        return isset($_POST[$this->name]) && isset($_POST[$this->password]);
-    }
-
-    public function generateLoginView(): string
-    {
-        if ($this->isUserLoggedIn()) {
-            return $this->generateLogoutButtonHTML();
-        } else {
-            return $this->generateLoginFormHTML();
-        }
-    }
-
-    public function isUserLoggedIn(): bool
-    {
-        return $this->session->isLoggedIn();
-    }
-
     private function generateLogoutButtonHTML(): string
     {
         return '
@@ -160,5 +104,61 @@ class LoginView
             return $message = $this->feedback->logOut();
         }
         return $message;
+    }
+
+    public function getUsername()
+    {
+        if (isset($_POST[$this->name])) {
+            return $_POST[$this->name];
+        }
+    }
+
+    public function getPassword()
+    {
+        if (isset($_POST[$this->password])) {
+            return $_POST[$this->password];
+        }
+    }
+
+    private function inputNotEmpty(): bool
+    {
+        return isset($_POST[$this->name]) && isset($_POST[$this->password]);
+    }
+
+    private function keepUserLoggedIn(): bool
+    {
+        if (isset($_POST[$this->keep])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getCookieName(): string
+    {
+        return $this->cookieName;
+    }
+
+    public function getCookiePassword(): string
+    {
+        return $this->cookiePassword;
+    }
+
+    public function getLogout(): bool
+    {
+        return isset($_POST[$this->logout]);
+    }
+
+    public function generateLoginView(): string
+    {
+        if ($this->isUserLoggedIn()) {
+            return $this->generateLogoutButtonHTML();
+        } else {
+            return $this->generateLoginFormHTML();
+        }
+    }
+
+    public function isUserLoggedIn(): bool
+    {
+        return $this->session->isLoggedIn();
     }
 }
